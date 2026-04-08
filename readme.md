@@ -11,7 +11,7 @@
 ### 1. 📤 Import Date din CSV (AI Bridge) - NOU
 *   Permite completarea automată a sutelor de note în câteva secunde.
 *   **Flux:** Profesorul fotografiază registrul fizic -> GPT extrage datele în CSV -> Extensia injectează datele direct în SIMU.
-*   Gestionează inteligent perechile (două ore în aceeași zi) și maparea numelor studenților.
+*   Gestionează inteligent perechile (două perechi în aceeași zi) și maparea numelor studenților.
 
 ### 2. 🌙 Mod Întunecat (Dark Mode) - NOU
 *   Interfață complet adaptată pentru protecția ochilor pe timp de noapte.
@@ -20,24 +20,25 @@
 ### 3. 📊 Analytics & Statistici
 *   **Media Grupei:** Calculată automat în timp real.
 *   **Distribuția Notelor:** Grafic vizual cu numărul de note de 10, 9, 8 etc.
-*   **Alerte:** Evidențierea studenților fără note sau cu absențe mari.
+*   **Alerte:** Evidențierea studenților fără note sau cu multe absențe.
 
 ### 4. ⌨️ Productivitate Maximă
 *   **Navigare cu Săgețile:** Te miști prin tabel ca în Excel.
-*   **Auto-Salvare:** Apeși o cifră (1-9) și nota se salvează instant, trecând la următorul rând.
-*   **Bulk Actions:** Dublu-click pe antetul datei pentru a pune absențe tuturor studenților lipsă.
-*   **Copiere Tematici:** Transferă rapid listele de teme între diferite grupe sau registre.
+*   **Auto-Salvare:** Apeși o cifră (1-9) sau a și nota sau absența se salvează instant, trecând la următorul rând.
+*   **Bulk Actions:** Dublu-click pe antetul datei pentru a pune absențe tuturor studenților ce au celule necompletate.
+*   **Copiere Teme:** Transferă rapid listele de teme între diferite grupe sau registre.
 
 ### 5. 👁️ Optimizare Vizuală
-*   **Crosshair:** Evidențiere automată a rândului și coloanei curente.
+*   **Crosshair:** Evidențierea rândului și coloanei unde este indicatorului mouse-ului sau care conțin celula de lucru.
 *   **Heatmap:** Notele sunt colorate diferit (Verde = 9-10, Galben = 5-6, Roșu = 1-4).
-*   **Coloane Compacte:** Ascunderea coloanelor de totalizare pentru a face loc notelor curente.
+*   **Coloane Compacte:** Ascunderea coloanelor de totalizare (Nota medie, evaluări curente etc).
 
 ## 🛠️ Instalare
-1. Descarcă codul sursă.
-2. Deschide Chrome la `chrome://extensions/`.
-3. Activează **Developer Mode** (dreapta sus).
-4. Apasă **Load unpacked** și selectează folderul extensiei.
+1. Descarcă codul sursă (click pe butonul verde din dreapta sus <> Code --> click pe download zip).
+2. Dezarhivează undeva unde nu va fi șters accidental.
+3. Deschide Chrome la `chrome://extensions/`.
+4. Activează **Developer Mode** (dreapta sus).
+5. Apasă **Load unpacked** și selectează folderul extensiei (mapa dezarhivată).
 
 ---
 *Creat cu ❤️ pentru comunitatea academică UPSC.*
