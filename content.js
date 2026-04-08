@@ -1622,27 +1622,76 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
 
     document.addEventListener('dblclick', async function(e) {
         let th = e.target.closest('th');
-        if (th && th.closest('thead') && th.querySelector('span[style*="color"]')) {
-            const colIndex = Array.from(th.parentNode.children).indexOf(th);
-            if (confirm("Puneți absență ('a') tuturor studenților fără notă din această dată?")) {
-                let foundEmpty = true;
-                while(foundEmpty) {
-                    foundEmpty = false;
-                    let rows = document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)');
-                    for(let tr of rows) {
-                        let td = tr.children[colIndex];
-                        if (td) {
-                            let input = td.querySelector('input.student-note');
-                            if (input && !input.disabled && input.value.trim() === '') {
-                                foundEmpty = true; input.value = 'a';
-                                const saveBtn = document.querySelector('#saveEvaluationButton');
-                                if (saveBtn) saveBtn.click();
-                                await new Promise(r => setTimeout(r, 800)); break; 
+        if (th && th.closest('thead')) {
+            const isDateCol = th.innerText.match(/\d{1,2}\s+[a-z]{3}/i) || th.querySelector('span[style*="color"]');
+            if (!isDateCol) return;
+
+            const rowCells = Array.from(th.parentNode.children);
+            let visualColIndex = 0;
+            for (let cell of rowCells) {
+                if (cell === th) break;
+                visualColIndex += parseInt(cell.getAttribute('colspan') || '1');
+            }
+            
+            if (confirm("Puneți absență ('a') tuturor studenților fără notă din această coloană?")) {
+                let processedCount = 0;
+                let maxToProcess = 100; // Limită de siguranță
+
+                // Obținem rândurile inițiale
+                let rows = Array.from(document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)'));
+                
+                for (let i = 0; i < rows.length && processedCount < maxToProcess; i++) {
+                    // Re-scanăm rândurile la fiecare iterație pentru a evita elementele detașate (DOM stale)
+                    const currentRows = document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)');
+                    const tr = currentRows[i];
+                    if (!tr) continue;
+
+                    const cell = tr.children[visualColIndex];
+                    const input = cell?.querySelector('input');
+
+                    if (input && !input.disabled && input.value.trim() === '') {
+                        processedCount++;
+                        console.log(`[Bulk] Procesare rând ${i}, index vizual ${visualColIndex}`);
+                        
+                        // Încercăm să deschidem pop-up-ul
+                        input.click();
+                        input.focus();
+                        await new Promise(r => setTimeout(r, 500));
+
+                        const popup = document.getElementById('keyboardEvaluationsPopup');
+                        let success = false;
+
+                        if (popup && popup.offsetParent !== null) { // Verificăm dacă e vizibil
+                            const buttons = Array.from(popup.querySelectorAll('button'));
+                            const absBtn = buttons.find(b => b.innerText.trim().toLowerCase() === 'a');
+                            
+                            if (absBtn) {
+                                absBtn.click();
+                                await new Promise(r => setTimeout(r, 250));
+                                popup.querySelector('#saveEvaluationButton')?.click();
+                                success = true;
                             }
                         }
+
+                        // FALLBACK: Dacă pop-up-ul nu a funcționat, scriem direct
+                        if (!success) {
+                            console.log(`[Bulk] Fallback pentru rândul ${i}`);
+                            input.value = 'a';
+                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                            document.querySelector('#saveEvaluationButton')?.click();
+                        }
+                        
+                        // Așteptăm salvarea serverului indiferent de metodă
+                        await new Promise(r => setTimeout(r, 1500));
+                        let wait = 0;
+                        while (document.querySelector('.blockUI') && wait < 60) {
+                            await new Promise(r => setTimeout(r, 150)); wait++;
+                        }
+                        await new Promise(r => setTimeout(r, 400));
                     }
                 }
-                alert("Absențele au fost completate cu succes!");
+                alert(`Gata! S-au procesat ${processedCount} rânduri.`);
             }
         }
     });
