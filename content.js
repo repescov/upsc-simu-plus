@@ -236,8 +236,30 @@
 
         .btn-dark-mode { background-color: #5a5c69; color: white; border: 1px solid #3a3b45; }
         body.upsc-dark-mode .btn-dark-mode { background-color: #f6c23e; color: #1a1c24; border-color: #f4b619; }
+        /* Toast Notification */
+        .upsc-toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #4e73df; color: white; padding: 12px 25px; border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10005; font-weight: bold;
+            font-size: 14px; pointer-events: none; opacity: 0; transition: all 0.3s ease;
+        }
+        .upsc-toast.show { opacity: 1; bottom: 50px; }
     `;
     document.head.appendChild(style);
+
+    // Funcție pentru notificări discrete
+    function showToast(message, duration = 3000) {
+        let toast = document.getElementById('upsc-toast-msg');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'upsc-toast-msg';
+            toast.className = 'upsc-toast';
+            document.body.appendChild(toast);
+        }
+        toast.innerText = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), duration);
+    }
 
     // ==========================================
     // 2. SETĂRI FLOTANTE & AUTO-COMPLETARE MODAL
@@ -1468,13 +1490,23 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         const toggleBtn = document.createElement('button');
         toggleBtn.id = 'toggle-topics-btn';
         toggleBtn.className = 'upsc-btn';
-        toggleBtn.innerHTML = '⚙️ Opțiuni Tematici (Copiere)';
+        toggleBtn.innerHTML = '📋 Gestionare teme curriculum';
         
         const buttonsToolbar = document.createElement('div');
         buttonsToolbar.id = 'upsc-topics-toolbar';
         buttonsToolbar.innerHTML = `
-            <button class="upsc-btn upsc-btn-copy" id="btn-copy-topics">📄 Copiază Teme</button>
-            <button class="upsc-btn upsc-btn-paste" id="btn-paste-topics">📋 Lipește Teme (din memorie)</button>
+            <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; align-items: stretch;">
+                <textarea id="upsc-bulk-topics-1" placeholder="Listă Tematici A (ex: Curs)" style="flex: 1; min-height: 100px; padding: 10px; border-radius: 8px; border: 1px solid #d1d3e2; font-size: 13px; font-family: inherit; resize: vertical;"></textarea>
+                <textarea id="upsc-bulk-topics-2" placeholder="Listă Tematici B (ex: Seminar)" style="flex: 1; min-height: 100px; padding: 10px; border-radius: 8px; border: 1px solid #d1d3e2; font-size: 13px; font-family: inherit; resize: vertical;"></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap;">
+                <button class="upsc-btn upsc-btn-paste" id="btn-bulk-apply-topics" style="background-color: #4e73df; color: white; border-radius: 6px;">🚀 Aplică Temele (Alternat A-B)</button>
+                <button class="upsc-btn upsc-btn-copy" id="btn-copy-topics">📄 Copiază în Memorie</button>
+                <button class="upsc-btn upsc-btn-paste" id="btn-paste-topics">📋 Lipește din Memorie</button>
+                <div style="font-size: 11px; color: #858796; margin-top: 5px; width: 100%;">
+                    💡 <b>Tip:</b> Listele vor fi aplicate alternativ (Rând 1 din Lista A, Rând 2 din Lista B, etc). Dacă vrei doar o listă, las-o pe a doua goală.
+                </div>
+            </div>
         `;
 
         topicsActionContainer.appendChild(toggleBtn);
@@ -1504,6 +1536,76 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                 }, 100);
             });
         }
+
+        document.getElementById('btn-bulk-apply-topics').addEventListener('click', async () => {
+            const listA = document.getElementById('upsc-bulk-topics-1').value.split('\n').map(l => l.trim()).filter(l => l !== '');
+            const listB = document.getElementById('upsc-bulk-topics-2').value.split('\n').map(l => l.trim()).filter(l => l !== '');
+            
+            if (listA.length === 0 && listB.length === 0) return showToast("⚠️ Introdu cel puțin o listă de teme!");
+
+            // 1. Mapăm input-urile la secțiuni (Teorie vs Seminar)
+            const inputMappings = [];
+            let currentSection = 'A'; 
+            
+            const allRows = document.querySelectorAll('tr');
+            allRows.forEach(tr => {
+                const cells = tr.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    const text = cell.innerText.toUpperCase();
+                    const style = cell.getAttribute('style') || "";
+                    if (text.includes('SEMINAR') || style.includes('004080')) {
+                        currentSection = 'B';
+                    } 
+                    else if (text.includes('CURS') || text.includes('TEORIE') || style.includes('008000')) {
+                        currentSection = 'A';
+                    }
+                });
+                if (tr.querySelector('input[wire\\:model="topic"]')) {
+                    inputMappings.push(currentSection);
+                }
+            });
+
+            if (inputMappings.length === 0) return showToast("❌ Nu am găsit câmpuri de tematică!");
+
+            const countA = inputMappings.filter(s => s === 'A').length;
+            const countB = inputMappings.filter(s => s === 'B').length;
+
+            showToast(`🚀 Pornesc: ${countA} Teorie, ${countB} Seminar...`);
+
+            let idxA = 0;
+            let idxB = 0;
+            let totalSaved = 0;
+
+            // 2. Procesăm fiecare input folosind maparea salvată
+            for (let i = 0; i < inputMappings.length; i++) {
+                const sectionOfInput = inputMappings[i];
+                const currentInputs = document.querySelectorAll('input[wire\\:model="topic"]');
+                const topicInput = currentInputs[i];
+                if (!topicInput) continue;
+
+                let theme = "";
+                if (sectionOfInput === 'A') {
+                    if (idxA < listA.length) theme = listA[idxA++];
+                } else {
+                    if (idxB < listB.length) theme = listB[idxB++];
+                }
+
+                if (theme && topicInput.value !== theme) {
+                    topicInput.value = theme;
+                    topicInput.dispatchEvent(new window.Event('input', { bubbles: true }));
+                    
+                    const parentTr = topicInput.closest('tr');
+                    const saveBtn = parentTr.querySelector('input[type="submit"][value="Salvare"]');
+                    if (saveBtn) { 
+                        saveBtn.click(); 
+                        totalSaved++; 
+                        await new Promise(r => setTimeout(r, 600)); 
+                        await waitForLivewire(); 
+                    }
+                }
+            }
+            showToast(`✅ Gata! S-au actualizat ${totalSaved} teme.`);
+        });
 
         document.getElementById('btn-copy-topics').addEventListener('click', () => {
             const topicInputs = Array.from(document.querySelectorAll('input[wire\\:model="topic"]'));
