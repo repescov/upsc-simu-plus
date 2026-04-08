@@ -1069,86 +1069,89 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                     ths.forEach(th => {
                         if (th.innerText.match(/\d{1,2}\s+[a-z]{3}/i) || th.innerText.match(/\d{1,2}[\.\/]\d{1,2}/)) matches++;
                     });
-                    if (!dateHeaderRow || matches > dateHeaderRow.matches) {
-                        dateHeaderRow = { tr, matches, ths };
-                    }
+                    if (!dateHeaderRow || matches > dateHeaderRow.matches) { dateHeaderRow = { tr, matches, ths }; }
                 });
 
                 if (!dateHeaderRow || dateHeaderRow.matches === 0) {
                     alert("Nu am putut identifica nicio coloană cu date în antetul tabelului!");
-                    progressArea.style.display = 'none';
-                    return;
+                    progressArea.style.display = 'none'; return;
                 }
 
-                dateHeaderRow.ths.forEach((th, idx) => {
+                let currentVisualIdx = 0;
+                dateHeaderRow.ths.forEach((th) => {
+                    const colspan = parseInt(th.getAttribute('colspan') || '1');
                     let txt = th.innerText.toLowerCase().trim();
                     let m = txt.match(/(\d{1,2})\s+([a-z]{3})/) || txt.match(/(\d{1,2})[\.\/](\d{1,2})/);
                     if (m) {
                         let d = m[1].padStart(2, '0');
                         let monthPart = m[2];
                         let mon = isNaN(monthPart) ? monthMap[monthPart.substring(0,3)] : monthPart.padStart(2, '0');
-                        if (mon) simuDateSlots.push({ date: `${d}.${mon}`, index: idx });
+                        if (mon) {
+                            for (let c = 0; c < colspan; c++) { simuDateSlots.push({ date: `${d}.${mon}`, index: currentVisualIdx + c }); }
+                        }
                     }
+                    currentVisualIdx += colspan;
                 });
+
+                console.log("Harta sloturilor SIMU (Visual Index):", simuDateSlots);
 
                 let totalTasks = 0;
                 let completedTasks = 0;
-                csvRows.forEach(row => {
-                    csvHeader.forEach((h, i) => { if (i > 0 && row[i] && row[i].trim() !== '') totalTasks++; });
-                });
+                csvRows.forEach(row => { csvHeader.forEach((h, i) => { if (i > 0) totalTasks++; }); });
 
                 for (let i = 0; i < csvRows.length; i++) {
                     const row = csvRows[i];
                     const studentNameCSV = row[0];
                     if (!studentNameCSV) continue;
 
-                    const searchName = studentNameCSV.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-                    const searchWords = searchName.split(/\s+/).filter(w => w.length > 2);
-
-                    const simuRows = document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)');
-                    let targetTr = null;
-
-                    for (let tr of simuRows) {
-                        const nameSpan = tr.querySelector('th.text-left span.text-dark');
-                        if (nameSpan) {
-                            const simuName = nameSpan.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                            if (searchWords.every(word => simuName.includes(word))) { targetTr = tr; break; }
-                        }
-                    }
-
-                    if (!targetTr) continue;
-
                     let usedSlots = [];
                     for (let j = 1; j < csvHeader.length; j++) {
-                        const dateCSV = csvHeader[j].trim();
+                        const dateCSV = csvHeader[j] ? csvHeader[j].trim() : '';
                         const valCSV = row[j] ? row[j].trim() : '';
 
-                        // Găsim slotul corespunzător în SIMU chiar dacă valoarea din CSV este goală
                         const slot = simuDateSlots.find(s => s.date === dateCSV && !usedSlots.includes(s.index));
-                        
                         if (slot) {
-                            usedSlots.push(slot.index); // Marcăm slotul ca fiind „consumat” de această coloană din CSV
+                            usedSlots.push(slot.index); 
 
-                            // Injectăm nota doar dacă avem o valoare validă în CSV
                             if (valCSV && valCSV !== '') {
-                                const td = targetTr.children[slot.index];
-                                const input = td?.querySelector('input.student-note');
+                                // RE-CĂUTĂM STUDENTUL ÎN DOM LA FIECARE PAS (pentru a evita erorile de re-randare Livewire)
+                                const simuRows = document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)');
+                                let targetTr = null;
+                                const searchName = studentNameCSV.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+                                const searchWords = searchName.split(/\s+/).filter(w => w.length > 1);
+
+                                for (let tr of simuRows) {
+                                    const nameSpan = tr.querySelector('th.text-left span.text-dark');
+                                    if (nameSpan) {
+                                        const simuName = nameSpan.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                                        if (searchWords.every(word => simuName.includes(word))) { targetTr = tr; break; }
+                                    }
+                                }
+
+                                if (!targetTr) {
+                                    console.warn(`[Import] Studentul "${studentNameCSV}" nu a mai fost găsit după refresh.`);
+                                    continue;
+                                }
+
+                                const cell = targetTr.children[slot.index];
+                                const input = cell?.querySelector('input');
                                 
-                                if (input && !input.disabled && input.value.trim() !== valCSV) {
+                                if (input && !input.disabled) {
+                                    if (input.value.trim().toLowerCase() === valCSV.toLowerCase()) continue;
+
                                     statusText.innerText = `Se completează: ${studentNameCSV} (${dateCSV})...`;
                                     
                                     input.click();
                                     input.focus();
-                                    await new Promise(r => setTimeout(r, 250));
+                                    await new Promise(r => setTimeout(r, 500));
 
                                     const popup = document.getElementById('keyboardEvaluationsPopup');
                                     if (popup) {
                                         const buttons = Array.from(popup.querySelectorAll('button'));
                                         const targetBtn = buttons.find(b => b.innerText.trim().toLowerCase() === valCSV.toLowerCase());
-                                        
                                         if (targetBtn) {
                                             targetBtn.click();
-                                            await new Promise(r => setTimeout(r, 150));
+                                            await new Promise(r => setTimeout(r, 400));
                                             popup.querySelector('#saveEvaluationButton')?.click();
                                         } else {
                                             input.value = valCSV;
@@ -1156,18 +1159,24 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                                             input.dispatchEvent(new Event('change', { bubbles: true }));
                                             document.querySelector('#saveEvaluationButton')?.click();
                                         }
+                                    } else {
+                                        input.value = valCSV;
+                                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                                        document.querySelector('#saveEvaluationButton')?.click();
                                     }
 
                                     completedTasks++;
                                     progressBar.style.width = `${(completedTasks / totalTasks) * 100}%`;
                                     
-                                    await new Promise(r => setTimeout(r, 1200)); 
+                                    // Așteptăm procesarea serverului
+                                    await new Promise(r => setTimeout(r, 1800)); 
                                     let waitAttempts = 0;
-                                    while (document.querySelector('.blockUI') && waitAttempts < 60) {
-                                        await new Promise(r => setTimeout(r, 150));
+                                    while (document.querySelector('.blockUI') && waitAttempts < 100) {
+                                        await new Promise(r => setTimeout(r, 200));
                                         waitAttempts++;
                                     }
-                                    await new Promise(r => setTimeout(r, 400));
+                                    await new Promise(r => setTimeout(r, 800)); 
                                 }
                             }
                         }
