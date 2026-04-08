@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "UPSC SIMU Plus",
+  "version": "13.5",
+  "description": "Optimizare registru (Crosshair, Dark Mode, Import CSV AI, Auto-salvare, Statistici). Creat de Vadim Repeșco.",
+  "author": "Vadim Repeșco",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://simu.upsc.md/*/teacher/electronicRegister/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "world": "MAIN"
+    }
+  ]
+}
