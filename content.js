@@ -1927,4 +1927,71 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         } else if (key !== 'backspace' && key !== 'delete' && key !== 'tab') { e.preventDefault(); }
     }, true);
 
+    function patchDeleteFunction() {
+        if (typeof window.deleteEvaluationButton === 'function' && !window.deleteEvaluationButton.isPatched) {
+            const originalDelete = window.deleteEvaluationButton;
+            window.deleteEvaluationButton = function(noteData) {
+                if (noteData && !noteData.hasClass('student-evaluation')) {
+                    $('#keyboardEvaluationsPopup').addClass('d-none');
+
+                    let note = noteData.val();
+                    let data = {
+                        student_id: noteData.attr('data-student-id'),
+                        note: note,
+                        date: noteData.attr('data-date'),
+                        event_id: noteData.attr('data-event-id')
+                    };
+
+                    let registerId = window.location.pathname.split('/').filter(Boolean).pop();
+                    let url = `https://simu.upsc.md/ro/teacher/electronicRegister/deleteNote/${registerId}`;
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: url,
+                        type: 'POST',
+                        data: data,
+                        beforeSend: function () {
+                            $('.card-body').block({
+                                message: '<div class="custom-loader"></div>',
+                                overlayCSS: {backgroundColor: "#fff"},
+                                css: {backgroundColor: "transparent", border: "none"},
+                            });
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            if (response.type == 'success') {
+                                toastr.success(response.message, 'Success', {progressBar: true});
+                                $('#eregister').load(`https://simu.upsc.md/ro/teacher/electronicRegister/${registerId} #eregister > table`, function () {
+                                    noteData.removeClass('border-primary border-danger');
+                                    $('.card-body').unblock();
+                                });
+                            } else {
+                                toastr.warning(response.message, 'Warning', {progressBar: true});
+                                $('.card-body').unblock();
+                            }
+                        },
+                        error: function (e) {
+                            try {
+                                toastr.error(JSON.parse(e.responseText).message, 'Error', {progressBar: true});
+                            } catch(err) {
+                                toastr.error('Eroare la ștergerea notei.', 'Error', {progressBar: true});
+                            }
+                            $('.card-body').unblock();
+                        }
+                    });
+                } else {
+                    originalDelete(noteData);
+                }
+            };
+            window.deleteEvaluationButton.isPatched = true;
+            console.log("[UPSC SIMU Plus] Successfully patched deleteEvaluationButton.");
+        }
+    }
+
+    patchDeleteFunction();
+    setTimeout(patchDeleteFunction, 200);
+    setTimeout(patchDeleteFunction, 1000);
+
 })();
