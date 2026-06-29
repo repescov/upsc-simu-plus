@@ -1177,13 +1177,17 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                                             popup.querySelector('#saveEvaluationButton')?.click();
                                         } else {
                                             input.value = valCSV;
-                                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                                            if (input.classList.contains('student-evaluation')) {
+                                                input.dispatchEvent(new Event('input', { bubbles: true }));
+                                            }
                                             input.dispatchEvent(new Event('change', { bubbles: true }));
                                             document.querySelector('#saveEvaluationButton')?.click();
                                         }
                                     } else {
                                         input.value = valCSV;
-                                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                                        if (input.classList.contains('student-evaluation')) {
+                                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                                        }
                                         input.dispatchEvent(new Event('change', { bubbles: true }));
                                         document.querySelector('#saveEvaluationButton')?.click();
                                     }
@@ -1775,11 +1779,12 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                             }
                         }
 
-                        // FALLBACK: Dacă pop-up-ul nu a funcționat, scriem direct
                         if (!success) {
                             console.log(`[Bulk] Fallback pentru rândul ${i}`);
                             input.value = 'a';
-                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                            if (input.classList.contains('student-evaluation')) {
+                                input.dispatchEvent(new Event('input', { bubbles: true }));
+                            }
                             input.dispatchEvent(new Event('change', { bubbles: true }));
                             document.querySelector('#saveEvaluationButton')?.click();
                         }
@@ -1821,6 +1826,17 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
 
     function triggerAutoSaveNote(input, valueToSave) {
         input.value = valueToSave;
+
+        // Try to click the matching button in the popup (for student-note inputs where the new site requires choosing from the popup)
+        const popup = document.getElementById('keyboardEvaluationsPopup');
+        if (popup) {
+            const buttons = Array.from(popup.querySelectorAll('button'));
+            const targetBtn = buttons.find(b => b.innerText.trim().toLowerCase() === valueToSave.toLowerCase());
+            if (targetBtn) {
+                targetBtn.click();
+            }
+        }
+
         const currentTd = input.closest('td');
         const tdIndex = Array.from(currentTd.closest('tr').children).indexOf(currentTd);
         const nextRow = currentTd.closest('tr').nextElementSibling;
@@ -1878,11 +1894,35 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
 
         if (targetInput && !targetInput.disabled) { e.preventDefault(); targetInput.focus(); targetInput.select(); return; }
 
+        if (key === 'enter') {
+            e.preventDefault(); e.stopPropagation();
+            const saveBtn = document.querySelector('#saveEvaluationButton');
+            if (saveBtn) saveBtn.click();
+            return;
+        }
+
+        if (key === 'backspace' || key === 'delete') {
+            e.preventDefault(); e.stopPropagation();
+            input.value = '';
+            const deleteBtn = document.querySelector('#deleteEvaluationButton');
+            if (deleteBtn) deleteBtn.click();
+            return;
+        }
+
         const validKeys = ['a', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
         if (validKeys.includes(key)) {
             e.preventDefault(); e.stopPropagation();
             if (key === 'a' || (key >= '2' && key <= '9')) triggerAutoSaveNote(input, key);
-            else if (key === '1') input.value = '1';
+            else if (key === '1') {
+                input.value = '1';
+                // Click the button "1" in the popup to set it as active preview
+                const popup = document.getElementById('keyboardEvaluationsPopup');
+                if (popup) {
+                    const buttons = Array.from(popup.querySelectorAll('button'));
+                    const targetBtn = buttons.find(b => b.innerText.trim() === '1');
+                    if (targetBtn) targetBtn.click();
+                }
+            }
             else if (key === '0') { if (input.value === '1') triggerAutoSaveNote(input, '10'); else input.value = ''; }
         } else if (key !== 'backspace' && key !== 'delete' && key !== 'tab') { e.preventDefault(); }
     }, true);

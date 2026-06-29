@@ -1,5 +1,5 @@
 # 🎓 UPSC SIMU Plus
-**Versiunea:** 13.6 (Ediția AI & Curriculum)  
+**Versiunea:** 13.7 (Adaptare pentru Noul SIMU & Auto-Salvare Optimizată)  
 **Autor:** Vadim Repeșco  
 **Platforma țintă:** `https://simu.upsc.md/*/teacher/electronicRegister/*`
 
@@ -30,7 +30,8 @@
 
 ### 5. ⌨️ Productivitate Maximă
 *   **Navigare cu Săgețile:** Te miști prin tabel ca în Excel.
-*   **Auto-Salvare:** Apeși o cifră (1-9) sau "a" și nota sau absența se salvează instant, trecând la următorul rând.
+*   **Auto-Salvare (Adaptat Noului SIMU):** Apeși o cifră (2-9) sau "a" și nota sau absența se salvează instant prin simularea fluxului din pop-up-ul nativ, ocolind blocarea scrierii directe de la tastatură. Pentru nota `10`, se apasă tastele `1` apoi `0`. Pentru a confirma nota `1` se apasă tasta `Enter`.
+*   **Ștergere Rapidă:** Tastele `Backspace` și `Delete` șterg automat nota atât din câmp, cât și de pe server.
 *   **Bulk Actions:** Dublu-click pe antetul datei pentru a pune absențe tuturor studenților ce au celule necompletate.
 
 ### 6. 👁️ Optimizare Vizuală
