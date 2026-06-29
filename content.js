@@ -244,6 +244,24 @@
             font-size: 14px; pointer-events: none; opacity: 0; transition: all 0.3s ease;
         }
         .upsc-toast.show { opacity: 1; bottom: 50px; }
+
+        /* Rânduri selectabile pentru selectarea grupei */
+        .clickable-group-row {
+            cursor: pointer;
+            transition: background-color 0.15s ease, transform 0.1s ease;
+        }
+        .clickable-group-row:hover {
+            background-color: rgba(78, 115, 223, 0.08) !important;
+        }
+        body.upsc-dark-mode .clickable-group-row:hover {
+            background-color: rgba(78, 115, 223, 0.15) !important;
+        }
+
+        /* Ascundere ultima coloană pe pagina de selectare a grupei */
+        body.upsc-selection-page table th:last-child,
+        body.upsc-selection-page table td:last-child {
+            display: none !important;
+        }
     `;
     document.head.appendChild(style);
 
@@ -2015,6 +2033,94 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
             console.log("[UPSC SIMU Plus] Successfully patched deleteEvaluationButton.");
         }
     }
+
+    // Optimizări pentru pagina de selectare a grupei (rânduri clicabile, abrevieri, ascundere coloane)
+    function initSelectionPageOptimizations() {
+        // Dacă suntem pe pagina catalogului propriu-zis (există #eregister), oprim optimizările de selectare
+        if (document.getElementById('eregister')) return;
+
+        // Căutăm dacă pe pagină există vreun tabel ce conține link-uri către registre
+        const hasRegisterTable = Array.from(document.querySelectorAll('table tr')).some(tr => {
+            const links = Array.from(tr.querySelectorAll('a[href]'));
+            return links.some(a => {
+                const href = a.href || a.getAttribute('href') || '';
+                return href && /\/electronicRegister\/\d+(\/|$|\?)/.test(href);
+            });
+        });
+
+        if (!hasRegisterTable) return;
+
+        // Adăugăm clasa pe body pentru a activa regulile CSS specifice paginii de selectare
+        if (!document.body.classList.contains('upsc-selection-page')) {
+            document.body.classList.add('upsc-selection-page');
+            console.log("[UPSC SIMU Plus] Detected register selection table. Added selection page optimizations.");
+        }
+
+        // 1. Optimizare rânduri selectabile/clicabile
+        const rows = document.querySelectorAll('table tr');
+        rows.forEach(tr => {
+            if (tr.dataset.rowClickablePatched) return;
+
+            const links = Array.from(tr.querySelectorAll('a[href]'));
+            const registerLink = links.find(a => {
+                const href = a.href || a.getAttribute('href') || '';
+                return href && /\/electronicRegister\/\d+(\/|$|\?)/.test(href);
+            });
+
+            if (registerLink) {
+                tr.dataset.rowClickablePatched = 'true';
+                tr.classList.add('clickable-group-row');
+
+                tr.addEventListener('click', (e) => {
+                    // Dacă s-a dat click pe un buton/link interactiv din interior, lăsăm comportamentul normal
+                    if (e.target.closest('a, button, input, select, textarea')) {
+                        return;
+                    }
+                    // Navigăm către registrul corespunzător
+                    if (e.ctrlKey || e.metaKey) {
+                        window.open(registerLink.href, '_blank');
+                    } else {
+                        window.location.href = registerLink.href;
+                    }
+                });
+            }
+        });
+
+        // 2. Optimizare text celule (Ciclul I/II, FMTI) - Căutare independentă de indexul coloanei
+        const tbodyRows = document.querySelectorAll('table tbody tr, table tr');
+        tbodyRows.forEach(tr => {
+            if (tr.dataset.columnsOptimized) return;
+
+            const cells = tr.querySelectorAll('td');
+            if (cells.length > 0) {
+                cells.forEach(cell => {
+                    const text = cell.textContent || '';
+
+                    // Ciclul
+                    if (text.includes('Ciclul I') && !text.includes('Ciclul II')) {
+                        cell.textContent = 'Ciclul I';
+                    } else if (text.includes('Ciclul II')) {
+                        cell.textContent = 'Ciclul II';
+                    }
+
+                    // Facultatea
+                    if (text.includes('Fizică, Matematică și Tehnologii Informaționale') || 
+                        text.includes('Fizică, Matematică') || 
+                        text.includes('Fizica, Matematica') ||
+                        text.includes('F.M.T.I.') ||
+                        text.includes('FMTI')) {
+                        cell.textContent = 'FMTI';
+                    }
+                });
+                
+                tr.dataset.columnsOptimized = 'true';
+            }
+        });
+    }
+
+    initSelectionPageOptimizations();
+    const selectionPageObserver = new MutationObserver(initSelectionPageOptimizations);
+    selectionPageObserver.observe(document.body, { childList: true, subtree: true });
 
     patchDeleteFunction();
     setTimeout(patchDeleteFunction, 200);
