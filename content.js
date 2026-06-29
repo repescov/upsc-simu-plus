@@ -1904,8 +1904,27 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         if (key === 'backspace' || key === 'delete') {
             e.preventDefault(); e.stopPropagation();
             input.value = '';
-            const deleteBtn = document.querySelector('#deleteEvaluationButton');
-            if (deleteBtn) deleteBtn.click();
+            
+            if (typeof window.deleteEvaluationButton === 'function') {
+                const $input = window.jQuery ? window.jQuery(input) : input;
+                window.deleteEvaluationButton($input);
+            } else {
+                // Fallback to DOM buttons if JS function is not available
+                if (input.classList.contains('student-evaluation')) {
+                    const deleteBtn = document.querySelector('#deleteEvaluationButton');
+                    if (deleteBtn) deleteBtn.click();
+                } else {
+                    const popup = document.getElementById('keyboardEvaluationsPopup');
+                    if (popup) {
+                        popup.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                    }
+                    const saveBtn = document.querySelector('#saveEvaluationButton');
+                    if (saveBtn) {
+                        saveBtn.disabled = false;
+                        saveBtn.click();
+                    }
+                }
+            }
             return;
         }
 
@@ -1973,6 +1992,13 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                             }
                         },
                         error: function (e) {
+                            if (e.status === 404 || e.status === 405) {
+                                console.warn("[UPSC SIMU Plus] deleteNote endpoint not found. Falling back to setNote with empty value.");
+                                if (typeof window.saveEvaluationButton === 'function') {
+                                    window.saveEvaluationButton(noteData);
+                                    return;
+                                }
+                            }
                             try {
                                 toastr.error(JSON.parse(e.responseText).message, 'Error', {progressBar: true});
                             } catch(err) {
