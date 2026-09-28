@@ -3,247 +3,941 @@
 
     // Schimbare titlu pagină
     document.title = 'SIMU UPSC';
+    console.log('%c[UPSC SIMU Plus v15.0]%c Modern SaaS Design Activat! 🚀', 'background: #4f46e5; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;', 'color: #4f46e5; font-weight: bold;');
 
     // ==========================================
     // 1. INJECTAREA STILIZĂRII (CSS Universal)
     // ==========================================
     const style = document.createElement('style');
     style.textContent = `
-        .content > .row:first-of-type > .col-lg-12 { display: flex; gap: 20px; margin-bottom: 5px; }
-        @media (max-width: 1200px) { .content > .row:first-of-type > .col-lg-12 { flex-direction: column; } }
-        .card { flex: 1; border: none !important; border-radius: 12px !important; box-shadow: 0 4px 15px rgba(0,0,0,0.04) !important; margin-bottom: 15px !important; }
-        .card-header { background: transparent !important; border-bottom: none !important; padding: 1.5rem 1.5rem 0.5rem !important; }
-        .list-group-item { padding: 0.4rem 1rem !important; border: none !important; background-color: transparent !important; }
-
-        th[style*="background-color: #008000"], th[style*="background-color: #004080"],
-        th[style*="background-color: #008000!important;"], th[style*="background-color: #004080!important;"] {
-            background-color: transparent !important; color: #4e73df !important; font-size: 1.1rem !important;
-            font-weight: bold !important; border-bottom: 2px solid #e3e6f0 !important; text-transform: uppercase; letter-spacing: 1px;
+        :root {
+            --upsc-primary: #4f46e5;
+            --upsc-primary-hover: #4338ca;
+            --upsc-primary-light: #eef2ff;
+            --upsc-border-subtle: #e2e8f0;
+            --upsc-shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+            --upsc-shadow-md: 0 4px 14px -2px rgba(15,23,42,0.08), 0 2px 6px -2px rgba(15,23,42,0.04);
+            --upsc-shadow-xl: 0 20px 45px -10px rgba(15,23,42,0.25);
         }
-        #eregister span[style*="color: #008000"] { color: #1cc88a !important; font-weight: 900 !important; font-size: 1.1rem; } 
-        #eregister span[style*="color: #004080"] { color: #36b9cc !important; font-weight: 900 !important; font-size: 1.1rem; } 
 
-        .tab-pane.scrollable-content { height: calc(100vh - 280px) !important; overflow: auto !important; border-radius: 8px; border: 1px solid #edf2f9; }
-        #eregister thead.sticky-thead th { position: sticky; top: 0; z-index: 11; background-color: #2c3e50 !important; color: #ffffff !important; border-top: none !important; }
+        .container-fluid > .row:first-of-type > .col-lg-12,
+        .content > .row:first-of-type > .col-lg-12 { display: flex; gap: 20px; margin-bottom: 12px; }
+        @media (max-width: 1200px) { 
+            .container-fluid > .row:first-of-type > .col-lg-12,
+            .content > .row:first-of-type > .col-lg-12 { flex-direction: column; } 
+        }
+        .card { 
+            flex: 1; border: 1px solid #e2e8f0 !important; border-radius: 16px !important; 
+            box-shadow: 0 4px 16px -2px rgba(15,23,42,0.06) !important; margin-bottom: 16px !important; 
+            background: #ffffff !important; transition: box-shadow 0.2s ease; overflow: hidden !important;
+        }
+        .card-header { background: #f8fafc !important; border-bottom: 1px solid #f1f5f9 !important; padding: 1.25rem 1.5rem !important; }
+        .list-group-item { padding: 0.45rem 1rem !important; border: none !important; background-color: transparent !important; color: #334155; }
+
+        /* TABEL DISCIPLINA SUS (Sumar Unitate Curs) */
+        .panel.panel-default {
+            border: 1px solid #e2e8f0 !important; border-radius: 12px !important; overflow: hidden !important; 
+            box-shadow: 0 4px 12px -2px rgba(15,23,42,0.04) !important; margin-bottom: 0 !important; background: #ffffff !important;
+        }
+        .panel.panel-default table { margin-bottom: 0 !important; border: none !important; width: 100% !important; }
+        .panel.panel-default table th, .panel.panel-default table td { 
+            border: 1px solid #f1f5f9 !important; padding: 10px 14px !important; font-size: 13.5px !important; vertical-align: middle !important; 
+        }
+        .panel.panel-default table thead th { 
+            background: #f8fafc !important; color: #475569 !important; font-weight: 800 !important; font-size: 12px !important; 
+            text-transform: uppercase; letter-spacing: 0.6px; 
+        }
+        .panel.panel-default table thead th[style*="background-color: #008000"],
+        .panel.panel-default table thead th[style*="background-color: rgb(0, 128, 0)"] { 
+            background: #ecfdf5 !important; color: #047857 !important; border-bottom: 2.5px solid #10b981 !important; font-weight: 800 !important; 
+        }
+        .panel.panel-default table thead th[style*="background-color: #004080"],
+        .panel.panel-default table thead th[style*="background-color: rgb(0, 64, 128)"] { 
+            background: #eff6ff !important; color: #1d4ed8 !important; border-bottom: 2.5px solid #3b82f6 !important; font-weight: 800 !important; 
+        }
+        .panel.panel-default table thead th[style*="background-color: #e30d0d"],
+        .panel.panel-default table thead th[style*="background-color: rgb(227, 13, 13)"] { 
+            background: #fef2f2 !important; color: #b91c1c !important; border-bottom: 2.5px solid #ef4444 !important; font-weight: 800 !important; 
+        }
+
+        /* CONTAINER REGISTRU PRINCIPAL */
+        .tab-pane.scrollable-content { 
+            height: calc(100vh - 250px) !important; overflow: auto !important; border-radius: 16px !important; 
+            border: 1.5px solid #e2e8f0 !important; background: #ffffff !important; box-shadow: 0 10px 30px -5px rgba(15,23,42,0.08) !important;
+        }
+        #eregister { background: #ffffff !important; }
+        #eregister table.table, #eregister table.table-sm { 
+            border-collapse: separate !important; border-spacing: 0 !important; 
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif !important; 
+            width: 100% !important; border: none !important; margin-bottom: 0 !important;
+        }
+
+        /* 1. Antet Semestru (Rândul 1 Thead) */
+        #eregister thead tr:first-child th,
+        #eregister table.table-sm thead tr:first-child th { 
+            position: sticky !important; top: 0 !important; z-index: 25 !important;
+            background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%) !important; color: #f8fafc !important; 
+            border: none !important; font-size: 13px !important; font-weight: 800 !important; 
+            letter-spacing: 2px !important; text-transform: uppercase !important; 
+            padding: 10px 20px !important; text-align: left !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        /* 2. Antet Date & Grupa (Rândul 2 Thead - .register-notes-header) */
+        #eregister .register-notes-header th,
+        #eregister table.table-sm thead tr.register-notes-header th { 
+            position: sticky !important; top: 38px !important; z-index: 15 !important; 
+            background: #f8fafc !important; color: #334155 !important; 
+            border-bottom: 2px solid #cbd5e1 !important; border-right: 1px solid #e2e8f0 !important; 
+            border-top: none !important; vertical-align: middle !important; 
+            padding: 8px 6px !important; transition: all 0.15s ease !important;
+        }
+        #eregister table.table-sm thead tr.register-notes-header th.p-2 { 
+            position: sticky !important; top: 38px !important; left: 0 !important; z-index: 30 !important;
+            background: #f8fafc !important; border-right: 2px solid #cbd5e1 !important; border-bottom: 2px solid #cbd5e1 !important;
+            padding: 10px 16px !important; text-align: left !important; min-width: 16rem !important; width: 16rem !important;
+            box-shadow: 4px 0 12px rgba(0,0,0,0.04) !important;
+        }
+        #eregister table.table-sm thead tr.register-notes-header th.p-2 > div[style*="width"] { 
+            font-weight: 800 !important; font-size: 13.5px !important; color: #4f46e5 !important; line-height: 1.35 !important; 
+        }
+
+        /* Buton Adăugare Eveniment / Oră */
+        div[data-target="#addEventModal"] {
+            background: linear-gradient(135deg, #4f46e5, #3b82f6) !important; width: 34px !important; height: 34px !important; 
+            border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; 
+            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.4) !important; transition: all 0.2s ease !important; cursor: pointer !important;
+        }
+        div[data-target="#addEventModal"]:hover { transform: scale(1.12); box-shadow: 0 5px 14px rgba(79, 70, 229, 0.5) !important; }
+        div[data-target="#addEventModal"] img { filter: brightness(0) invert(1) !important; width: 16px !important; height: 16px !important; }
+
+        /* Coloanele de Date din Antet */
+        #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):not(:nth-last-child(-n+7)) { 
+            min-width: 52px !important; font-size: 12.5px !important; font-weight: 700 !important; 
+            line-height: 1.35 !important; cursor: pointer !important; text-align: center !important;
+        }
+        #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):not(:nth-last-child(-n+7)):hover,
+        #eregister table.table-sm thead tr.register-notes-header th.hovered-col,
+        #eregister table.table-sm thead tr.register-notes-header th.focused-col { 
+            background: #eef2ff !important; color: #4f46e5 !important; border-bottom-color: #4f46e5 !important; 
+        }
+
+        /* Badge-uri Tip Oră: Curs (C), Seminar (S), Examen (E) */
+        #eregister .register-notes-header th span[style*="color: #008000"],
+        #eregister .register-notes-header th span[style*="color: rgb(0, 128, 0)"] { 
+            display: inline-block !important; background: #ecfdf5 !important; color: #047857 !important; 
+            border: 1px solid #a7f3d0 !important; border-radius: 6px !important; padding: 2px 7px !important; 
+            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
+            box-shadow: 0 1px 2px rgba(16,185,129,0.12) !important;
+        }
+        #eregister .register-notes-header th span[style*="color: #004080"],
+        #eregister .register-notes-header th span[style*="color: rgb(0, 64, 128)"] { 
+            display: inline-block !important; background: #eff6ff !important; color: #1d4ed8 !important; 
+            border: 1px solid #bfdbfe !important; border-radius: 6px !important; padding: 2px 7px !important; 
+            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
+            box-shadow: 0 1px 2px rgba(37,99,235,0.12) !important;
+        }
+        #eregister .register-notes-header th span[style*="color: #e30d0d"],
+        #eregister .register-notes-header th span[style*="color: rgb(227, 13, 13)"] { 
+            display: inline-block !important; background: #fef2f2 !important; color: #b91c1c !important; 
+            border: 1px solid #fecaca !important; border-radius: 6px !important; padding: 2px 7px !important; 
+            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
+            box-shadow: 0 1px 2px rgba(239,68,68,0.12) !important;
+        }
+        #eregister .register-notes-header th span[style*="color: #7c3aed"],
+        #eregister .register-notes-header th span[style*="color: rgb(124, 58, 237)"] { 
+            display: inline-block !important; background: #f5f3ff !important; color: #6d28d9 !important; 
+            border: 1px solid #ddd6fe !important; border-radius: 6px !important; padding: 2px 7px !important; 
+            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
+        }
+
+        /* 3. COLOANA 1: NUMELE STUDENTULUI (Sticky Left) */
+        #eregister table.table-sm tbody th.text-left { 
+            position: sticky !important; left: 0 !important; background-color: #ffffff !important; z-index: 10 !important; 
+            border-right: 2px solid #cbd5e1 !important; border-bottom: 1px solid #f1f5f9 !important; 
+            width: 16rem !important; min-width: 16rem !important; padding: 8px 16px !important; 
+            box-shadow: 4px 0 10px rgba(0,0,0,0.03) !important; vertical-align: middle !important;
+            text-align: left !important; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        #eregister table.table-sm tbody th.text-left .user-avatar { 
+            width: 36px !important; height: 36px !important; border-radius: 10px !important; object-fit: cover !important; 
+            border: 2px solid #e2e8f0 !important; margin-right: 12px !important; vertical-align: middle !important; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important; display: inline-block !important;
+        }
+        #eregister table.table-sm tbody th.text-left span.text-dark { 
+            display: inline-block !important; font-size: 14px !important; font-weight: 700 !important; 
+            color: #1e293b !important; vertical-align: middle !important; line-height: 1.35 !important; 
+            white-space: normal !important; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            transform-origin: left center !important;
+        }
+        #eregister table.table-sm tbody tr:hover th.text-left { background-color: #f8fafc !important; }
+        #eregister table.table-sm tbody tr:hover th.text-left .user-avatar { border-color: #4f46e5 !important; transform: scale(1.08); }
+        #eregister table.table-sm tbody tr:hover th.text-left span.text-dark { color: #4f46e5 !important; }
+
+        /* Evidențiere puternică la Focus pe rând + mărire nume student */
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row th.text-left { 
+            background-color: #e0e7ff !important; 
+            border-left: 5px solid #4f46e5 !important; 
+            box-shadow: 4px 0 14px rgba(79, 70, 229, 0.18) !important; 
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row th.text-left .user-avatar { 
+            border-color: #4f46e5 !important; 
+            transform: scale(1.18); 
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35) !important; 
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row th.text-left span.text-dark { 
+            color: #3730a3 !important; 
+            font-size: 15.5px !important; 
+            font-weight: 800 !important; 
+            transform: scale(1.06) translateX(4px); 
+        }
+
+        /* 4. RÂNDURI ȘI CELULE TABEL */
+        #eregister table.table-sm tbody tr { border-bottom: 1px solid #f1f5f9 !important; transition: background-color 0.15s ease !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover { background-color: #f8fafc !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row { background-color: #e0e7ff !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td { background-color: #eef2ff !important; }
+
+        #eregister table.table-sm tbody td { 
+            padding: 4px 2px !important; vertical-align: middle !important; border: none !important; 
+            border-bottom: 1px solid #f1f5f9 !important; border-right: 1px solid rgba(241, 245, 249, 0.9) !important; 
+            text-align: center !important;
+        }
+        body:not(.upsc-dark-mode) .hovered-col, 
+        body:not(.upsc-dark-mode) .focused-col, 
+        body:not(.upsc-dark-mode) .col-hover { background-color: #f8fafc !important; transition: background-color 0.1s; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.hovered-col,
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-hover { background-color: #f1f5f9 !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.focused-col { background-color: #eef2ff !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.focused-col { background-color: #dbeafe !important; }
+
+        /* 5. CĂSUȚE NOTE ȘI EVALUĂRI (Toate input-urile din tabel) */
+        /* 5. CĂSUȚE NOTE ȘI EVALUĂRI (Toate input-urile din tabel) */
+        #eregister table.table-sm tbody td input,
+        #eregister .student-note, 
+        #eregister .student-evaluation {
+            height: 36px !important; width: 36px !important; font-size: 14.5px !important; font-weight: 700 !important;
+            padding: 0 !important; text-align: center !important; line-height: 36px !important;
+            border-radius: 8px !important; 
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important; outline: none !important; margin: 0 auto !important; display: inline-block !important;
+        }
+
+        /* Culori de bază doar pentru celule fără notă/absență (Light Mode) */
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
+            background-color: #ffffff !important; 
+            border: 1.5px solid #cbd5e1 !important; 
+            color: #1e293b !important;
+        }
+
+        #eregister table.table-sm tbody td input:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important; transform: translateY(-1px);
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs):hover {
+            border-color: #94a3b8 !important; 
+        }
+
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input:focus {
+            background-color: #ffffff !important; border: 2.5px solid #4f46e5 !important; 
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.22), 0 4px 12px rgba(79, 70, 229, 0.18) !important; 
+            transform: scale(1.18); z-index: 100 !important; position: relative;
+        }
+
+        /* Suprimare bug SIMU: prevenire transparență completă pe hover/focus în Light Mode */
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.focused-col input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
+            background-color: #ffffff !important;
+        }
+
+        #eregister table.table-sm tbody td input:disabled {
+            opacity: 1 !important; font-weight: 800 !important; background: #f8fafc !important; 
+            border: 1.5px solid #e2e8f0 !important; color: #475569 !important; cursor: default !important;
+        }
         
-        /* OPTIMIZARE COLOANA 1 */
-        #eregister th.text-left { 
-            position: sticky; left: 0; background-color: #ffffff; z-index: 12 !important; border-right: 2px solid #e3e6f0 !important; 
-            width: 11rem !important; min-width: 11rem !important; padding-left: 8px !important;
+        /* HEATMAP REFINAT - Culori vii și clare pentru note și absențe (Light Mode) */
+        #eregister input.grade-excellent,
+        #eregister table.table-sm tbody td input.grade-excellent,
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-excellent { 
+            background-color: #d1fae5 !important; 
+            border: 1.5px solid #10b981 !important; 
+            color: #065f46 !important; 
+            font-weight: 800 !important; 
+            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.22) !important; 
+        } 
+        #eregister input.grade-good,
+        #eregister table.table-sm tbody td input.grade-good,
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-good { 
+            background-color: #dbeafe !important; 
+            border: 1.5px solid #3b82f6 !important; 
+            color: #1e40af !important; 
+            font-weight: 800 !important; 
+            box-shadow: 0 2px 5px rgba(59, 130, 246, 0.22) !important; 
+        } 
+        #eregister input.grade-ok,
+        #eregister table.table-sm tbody td input.grade-ok,
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-ok { 
+            background-color: #fef3c7 !important; 
+            border: 1.5px solid #f59e0b !important; 
+            color: #92400e !important; 
+            font-weight: 800 !important; 
+            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.22) !important; 
+        } 
+        #eregister input.grade-bad,
+        #eregister table.table-sm tbody td input.grade-bad,
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-bad { 
+            background-color: #fee2e2 !important; 
+            border: 1.5px solid #ef4444 !important; 
+            color: #991b1b !important; 
+            font-weight: 800 !important; 
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.22) !important; 
+        } 
+        #eregister input.grade-abs,
+        #eregister table.table-sm tbody td input.grade-abs,
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-abs { 
+            background-color: #ffe4e6 !important; 
+            border: 1.5px solid #f43f5e !important; 
+            color: #be123c !important; 
+            font-weight: 900 !important; 
+            box-shadow: 0 2px 5px rgba(244, 63, 94, 0.28) !important; 
+        } 
+
+        /* 6. COLOANE TOTALIZARE ȘI EVALUĂRI PERIODICE (Ultimele 7 coloane) */
+        #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(-n+7) {
+            position: sticky !important; top: 38px !important; z-index: 18 !important;
+            background: #f1f5f9 !important; color: #475569 !important;
+            font-size: 11px !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;
+            border-bottom: 2px solid #cbd5e1 !important; border-left: 1px solid #e2e8f0 !important; border-top: none !important;
+            padding: 8px 3px !important; vertical-align: middle !important;
         }
-        #eregister tbody th.text-left span.text-dark { 
-            display: inline-block; transition: all 0.2s ease-in-out; transform-origin: left center;
-            font-size: 15.5px !important; font-weight: 700 !important; white-space: normal !important; line-height: 1.2;
+        #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(7) {
+            border-left: 2.5px solid #6366f1 !important;
+            box-shadow: -6px 0 10px -4px rgba(15, 23, 42, 0.08) !important;
         }
-        
-        /* Crosshair: Hover (Mouse) + Focus (Tastatură) */
-        #eregister:not(.disable-hover) tbody tr:hover td, #eregister:not(.disable-hover) tbody tr:hover th,
-        #eregister tbody tr.focused-row td, #eregister tbody tr.focused-row th { background-color: #f1f4f9 !important; }
-        
-        #eregister:not(.disable-hover) tbody tr:hover th.text-left span.text-dark,
-        #eregister tbody tr.focused-row th.text-left span.text-dark { 
-            color: #1a4b8c !important; transform: scale(1.08) translateX(3px); font-weight: 800 !important; 
+        #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(1) {
+            background: #eef2ff !important; color: #4338ca !important; border-left: 2px solid #6366f1 !important;
         }
-        
-        .hovered-col, .focused-col { background-color: #e8ecf4 !important; transition: background-color 0.1s; }
-        #eregister thead.sticky-thead th.hovered-col,
-        #eregister thead.sticky-thead th.focused-col { background-color: #3b526b !important; } 
-        #eregister thead.sticky-thead th[class*="border-0"] { cursor: pointer; transition: all 0.2s; }
-        #eregister thead.sticky-thead th[class*="border-0"]:hover { background-color: #4e73df !important; }
 
-        /* Zebra Striping (vertical) */
-        #eregister tbody td:nth-child(even) { background-color: rgba(241, 245, 249, 0.4); }
-
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        input.student-note, input.student-evaluation {
-            height: 40px !important; width: 40px !important; font-size: 16px !important; font-weight: 700;
-            background-color: #f8f9fa !important; border: 1px solid #d1d3e2 !important; border-radius: 6px !important; color: #3a3b45 !important; transition: all 0.2s;
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(-n+7) {
+            background-color: #ffffff !important; border-left: 1px solid #f1f5f9 !important;
         }
-        input.student-note:focus, input.student-evaluation:focus {
-            background-color: #ffffff !important; border: 3px solid #2e59d9 !important; 
-            box-shadow: 0 4px 12px rgba(78, 115, 223, 0.4) !important; transform: scale(1.2); z-index: 999;
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(7) { 
+            border-left: 2.5px solid #6366f1 !important; 
+            box-shadow: -6px 0 10px -4px rgba(15, 23, 42, 0.08) !important;
         }
-        
-        /* HEATMAP COLORS - Specificity & Dark Mode Fix */
-        input.grade-excellent { background-color: #e6f4ea !important; border-color: #bce4c8 !important; color: #0f8b5a !important; } 
-        input.grade-good { background-color: #e2f0fb !important; border-color: #b6d4fe !important; color: #215eab !important; } 
-        input.grade-ok { background-color: #fef4c7 !important; border-color: #fde08b !important; color: #b7790a !important; } 
-        input.grade-bad { background-color: #fdf3f2 !important; border-color: #f8c9c4 !important; color: #e74a3b !important; } 
-        input.grade-abs { background-color: #fff0f0 !important; border-color: #ffcccc !important; color: #e74a3b !important; font-weight: 900 !important; } 
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(7) input { 
+            background-color: #f8fafc !important; border-color: #e2e8f0 !important; color: #64748b !important; font-weight: 700 !important;
+        }
 
-        body.upsc-dark-mode input.grade-excellent { background-color: #1e4620 !important; color: #a2f3a2 !important; border-color: #2d5a30 !important; }
-        body.upsc-dark-mode input.grade-good { background-color: #1a335a !important; color: #a5c5ed !important; border-color: #2e4a7d !important; }
-        body.upsc-dark-mode input.grade-ok { background-color: #4d3a07 !important; color: #fde08b !important; border-color: #634d0a !important; }
-        body.upsc-dark-mode input.grade-bad { background-color: #4d1a17 !important; color: #f8c9c4 !important; border-color: #632521 !important; }
-        body.upsc-dark-mode input.grade-abs { background-color: #3d1515 !important; color: #ff8a80 !important; border-color: #5a1a1a !important; }
+        /* Nota Semestrială Finală (Ultima Coloană) */
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) { 
+            background-color: #f8faff !important; border-left: 2px solid #6366f1 !important; 
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) input { 
+            background-color: #eef2ff !important; border: 2px solid #818cf8 !important; color: #4338ca !important; 
+            font-size: 15px !important; font-weight: 900 !important; box-shadow: 0 2px 6px rgba(99, 102, 241, 0.2) !important; 
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) input[style*="color:red"],
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) input[style*="color: red"] { 
+            background-color: #fff1f2 !important; border: 2px solid #f43f5e !important; color: #e11d48 !important; 
+            box-shadow: 0 2px 6px rgba(244, 63, 94, 0.2) !important; 
+        }
 
-        #eregister th:nth-last-child(7), #eregister td:nth-last-child(7) { border-left: 3px solid #e74a3b !important; }
-        #eregister td:nth-last-child(7) input { color: #e74a3b !important; font-weight: 900 !important; background-color: #fdf3f2 !important; border-color: #f8c9c4 !important; }
+        body.hide-extra-cols #eregister th:nth-last-child(-n+7), 
+        body.hide-extra-cols #eregister td:nth-last-child(-n+7) { display: none !important; }
 
-        body.hide-extra-cols #eregister th:nth-last-child(-n+6), body.hide-extra-cols #eregister td:nth-last-child(-n+6) { display: none !important; }
-        #toggle-extra-cols-btn { margin-bottom: 10px; font-weight: 600; cursor: pointer; border-radius: 20px; padding: 6px 15px; background-color: #eaecf4; color: #5a5c69; border: none; transition: all 0.2s;}
-        #toggle-extra-cols-btn:hover { background-color: #dde2f1; color: #2e59d9; }
+        /* 6.1 COLOANE ORE TRECUTE (PÂNĂ LA ZIUA DE AZI) ȘI ZIUA CURENTĂ (LIGHT MODE) */
+        body:not(.upsc-dark-mode) #eregister table.table-sm thead tr.register-notes-header th.col-past {
+            background: #eef2f6 !important;
+            color: #475569 !important;
+            border-bottom: 2.5px solid #94a3b8 !important;
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-past {
+            background-color: #f1f5f9 !important;
+            border-right: 1px solid #e2e8f0 !important;
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-past input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+        }
 
-        .tab-pane .table thead.thead-dark.sticky-thead th { background-color: #ffffff !important; border-bottom: 2px solid #e3e6f0 !important; color: #5a5c69 !important; }
-        .tab-pane .table thead.thead-dark.sticky-thead th[style*="#008000"] { color: #1cc88a !important; border-bottom: 3px solid #1cc88a !important; }
-        .tab-pane .table thead.thead-dark.sticky-thead th[style*="#004080"] { color: #36b9cc !important; border-bottom: 3px solid #36b9cc !important; }
+        /* Semnalizare căsuțe uitate/necompletate din trecut */
+        #eregister table.table-sm tbody td.col-past input.input-missing-past {
+            border: 1.5px dashed #f59e0b !important;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15) !important;
+        }
+
+        /* Coloana lecției de AZI */
+        body:not(.upsc-dark-mode) #eregister table.table-sm thead tr.register-notes-header th.col-today {
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+            border-bottom: 3px solid #3b82f6 !important;
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-today {
+            background-color: #f0f7ff !important;
+            border-right: 1px solid #bfdbfe !important;
+        }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-today input:focus {
+            border-color: #2563eb !important;
+        }
+
+        /* Badge "AZI" */
+        .badge-today {
+            display: inline-block !important;
+            background: linear-gradient(135deg, #4f46e5, #3b82f6) !important;
+            color: #ffffff !important;
+            font-size: 10px !important;
+            font-weight: 800 !important;
+            padding: 1px 6px !important;
+            border-radius: 9999px !important;
+            margin-top: 3px !important;
+            letter-spacing: 0.5px !important;
+            box-shadow: 0 1px 4px rgba(79, 70, 229, 0.3) !important;
+        }
+
+        /* Linia de separare cronologică între trecut și viitor */
+        #eregister table.table-sm thead tr.register-notes-header th.col-last-past,
+        #eregister table.table-sm tbody td.col-last-past {
+            border-right: 2.5px solid #6366f1 !important;
+            box-shadow: 4px 0 8px -3px rgba(99, 102, 241, 0.18) !important;
+        }
+
+        /* Interacțiune Hover și Focus pentru celulele din orele trecute și de azi (Light Mode) */
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover td.col-past { background-color: #e2e8f0 !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-past { background-color: #e0e7ff !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-past.focused-col { background-color: #c7d2fe !important; }
+
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover td.col-today { background-color: #e0f2fe !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-today { background-color: #dbeafe !important; }
+        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-today.focused-col { background-color: #bfdbfe !important; }
+
+
         tr[wire\\:id] td:nth-child(4), tr[wire\\:id] td:nth-child(5) { display: none !important; }
-        input[wire\\:model="topic"] { width: 100% !important; height: 42px !important; border-radius: 6px !important; border: 1px solid #d1d3e2 !important; padding: 8px 15px !important; font-size: 1rem !important; color: #5a5c69 !important; transition: all 0.2s; }
-        input[wire\\:model="topic"]:focus { border-color: #4e73df !important; background-color: #fff !important; box-shadow: 0 0 0 0.2rem rgba(78,115,223,0.25) !important; outline: none; }
+        input[wire\\:model="topic"] { width: 100% !important; height: 40px !important; border-radius: 8px !important; border: 1.5px solid #cbd5e1 !important; padding: 8px 14px !important; font-size: 0.95rem !important; color: #334155 !important; transition: all 0.2s; }
+        input[wire\\:model="topic"]:focus { border-color: #4f46e5 !important; background-color: #fff !important; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18) !important; outline: none; }
         #eregister thead th button.btn-danger { display: none !important; }
 
-        /* Setări Flotante & QR */
-        #upsc-settings-fab { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background-color: #4e73df; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 9999; transition: transform 0.2s; }
-        #upsc-settings-fab:hover { transform: scale(1.1) rotate(45deg); }
+
+        /* BARA DE CONTROL (TOOLBAR) */
+        .upsc-controls-wrapper { 
+            display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+            padding: 8px 14px; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px);
+            border: 1px solid #e2e8f0; border-radius: 30px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            width: fit-content;
+        }
+        .upsc-brand-badge {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+            letter-spacing: 0.3px;
+        }
+        .upsc-brand-badge b { font-weight: 900; background: rgba(255,255,255,0.22); padding: 1px 7px; border-radius: 6px; }
+
+        .upsc-btn { 
+            padding: 7px 16px; border-radius: 9999px; font-weight: 600; cursor: pointer; border: none; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            font-size: 13.5px; display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
+        }
+        .upsc-btn:hover { transform: translateY(-1.5px); box-shadow: 0 5px 12px rgba(0,0,0,0.12); }
+        .upsc-btn:active { transform: translateY(0); }
+
+        #toggle-extra-cols-btn, #toggle-pair-absences-btn, #toggle-highlight-past-btn { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        #toggle-extra-cols-btn:hover, #toggle-pair-absences-btn:hover, #toggle-highlight-past-btn:hover { background-color: #e2e8f0; color: #0f172a; }
+        #toggle-pair-absences-btn.active {
+            background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+            color: #ffffff !important;
+            border-color: #0284c7 !important;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35) !important;
+        }
+        #toggle-pair-absences-btn.active b {
+            background: rgba(255, 255, 255, 0.22);
+            padding: 1px 6px;
+            border-radius: 6px;
+        }
+        #toggle-highlight-past-btn.active {
+            background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+            color: #ffffff !important;
+            border-color: #4f46e5 !important;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35) !important;
+        }
+        #toggle-highlight-past-btn.active b {
+            background: rgba(255, 255, 255, 0.22);
+            padding: 1px 6px;
+            border-radius: 6px;
+        }
+
+        .btn-stats { 
+            background: linear-gradient(135deg, #7c3aed, #6d28d9); color: white; 
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3); 
+        }
+        .btn-stats:hover { box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4); }
+
+        .btn-export { 
+            background: linear-gradient(135deg, #10b981, #059669); color: white; 
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3); 
+        }
+        .btn-export:hover { box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
+
+        .btn-open-import { 
+            background: linear-gradient(135deg, #f59e0b, #d97706); color: white; 
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3); 
+        }
+        .btn-open-import:hover { box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4); }
+
+        /* FLOATING SETTINGS FAB & PANEL */
+        #upsc-settings-fab { 
+            position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; 
+            background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; display: flex; 
+            align-items: center; justify-content: center; cursor: pointer; 
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35); z-index: 9999; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid rgba(255,255,255,0.25);
+        }
+        #upsc-settings-fab:hover { transform: scale(1.1) rotate(60deg); box-shadow: 0 12px 30px rgba(79, 70, 229, 0.45); }
+        #upsc-settings-fab svg { width: 24px; height: 24px; }
         
-        #upsc-settings-panel { position: fixed; bottom: 80px; right: 20px; width: 380px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 9998; padding: 20px; display: none; border: 1px solid #e3e6f0; max-height: 80vh; overflow-y: auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        #upsc-settings-panel.active { display: block; animation: slideUp 0.3s ease; }
-        #upsc-settings-panel h5 { margin-top: 0; font-size: 18px; font-weight: bold; color: #4e73df; border-bottom: 2px solid #edf2f9; padding-bottom: 12px; margin-bottom: 15px;}
+        #upsc-settings-panel { 
+            position: fixed; bottom: 88px; right: 24px; width: 390px; background: rgba(255, 255, 255, 0.97); 
+            backdrop-filter: blur(16px); border-radius: 16px; box-shadow: 0 20px 45px -10px rgba(15,23,42,0.22); 
+            z-index: 9998; padding: 22px; display: none; border: 1px solid #e2e8f0; 
+            max-height: 82vh; overflow-y: auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
+        }
+        #upsc-settings-panel.active { display: block; animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        #upsc-settings-panel label { font-size: 14px; font-weight: 700; color: #3a3b45; margin-bottom: 6px; display: block; margin-top: 15px;}
-        #upsc-settings-panel input, #upsc-settings-panel select { width: 100%; padding: 10px 12px; border: 1px solid #d1d3e2; border-radius: 6px; font-size: 15px; color: #3a3b45; background-color: #f8f9fa; transition: all 0.2s; box-sizing: border-box; }
-        #upsc-settings-panel input:focus, #upsc-settings-panel select:focus { background-color: #fff; border-color: #4e73df; outline: none; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);}
+        .upsc-panel-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 16px; }
+        .upsc-panel-title { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; color: #1e293b; }
+        .upsc-btn-icon-close { 
+            background: #f1f5f9; border: none; border-radius: 50%; width: 28px; height: 28px; 
+            display: flex; align-items: center; justify-content: center; cursor: pointer; color: #64748b; 
+            font-size: 13px; font-weight: bold; transition: all 0.15s ease;
+        }
+        .upsc-btn-icon-close:hover { background: #e2e8f0; color: #0f172a; }
         
-        .help-tip { background-color: #e2f0fb; border-left: 4px solid #4e73df; padding: 15px; border-radius: 6px; margin-top: 20px; font-size: 13.5px; color: #215eab; line-height: 1.6; }
-        .help-tip b { color: #1a4b8c; font-weight: 800; }
+        #upsc-settings-panel label { font-size: 13.5px; font-weight: 700; color: #334155; margin-bottom: 6px; display: block; margin-top: 14px; }
+        #upsc-settings-panel input, #upsc-settings-panel select { 
+            width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; 
+            font-size: 14px; color: #1e293b; background-color: #f8fafc; transition: all 0.2s ease; box-sizing: border-box; 
+        }
+        #upsc-settings-panel input:focus, #upsc-settings-panel select:focus { 
+            background-color: #ffffff; border-color: #4f46e5; outline: none; 
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); 
+        }
+        
+        .help-tip { 
+            background-color: #eef2ff; border-left: 4px solid #4f46e5; padding: 14px; border-radius: 10px; 
+            margin-top: 18px; font-size: 13px; color: #3730a3; line-height: 1.55; 
+        }
+        .help-tip b { color: #1e1b4b; font-weight: 800; }
         
         #mia-qr-container { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out; text-align: center; }
-        #mia-qr-container.show-qr { max-height: 250px; opacity: 1; margin-top: 8px; }
-        .donation { text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #d1d3e2; font-size: 14px; font-weight: 600; color: #5a5c69; }
+        #mia-qr-container.show-qr { max-height: 260px; opacity: 1; margin-top: 10px; }
+        .donation { text-align: center; margin-top: 22px; padding-top: 14px; border-top: 1px dashed #e2e8f0; font-size: 13px; font-weight: 600; color: #64748b; }
 
-        /* TOGGLE SWITCH STYLE */
-        .upsc-switch-wrapper { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding: 10px 0; border-top: 1px solid #edf2f9; }
-        .upsc-switch-label { font-size: 15px; font-weight: 700; color: #3a3b45; }
-        .upsc-switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+        /* COMUTATOR MODERN iOS SWITCH */
+        .upsc-switch-wrapper { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding: 12px 0; border-top: 1px solid #f1f5f9; }
+        .upsc-switch-label { font-size: 14px; font-weight: 700; color: #334155; }
+        .upsc-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .upsc-switch input { opacity: 0; width: 0; height: 0; }
-        .upsc-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
-        .upsc-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .upsc-slider { background-color: #4e73df; }
-        input:checked + .upsc-slider:before { transform: translateX(22px); }
+        .upsc-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 9999px; }
+        .upsc-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        input:checked + .upsc-slider { background-color: #4f46e5; }
+        input:checked + .upsc-slider:before { transform: translateX(20px); }
 
-        /* Panou Acțiuni Teme, Statistici, Export */
-        .upsc-controls-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;}
-        .upsc-btn { padding: 6px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: all 0.2s; font-size: 13.5px; display: inline-flex; align-items: center; gap: 5px;}
-        .upsc-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        .btn-stats { background-color: #6f42c1; color: white; border: 1px solid #59339d;}
-        .btn-export { background-color: #1cc88a; color: white; border: 1px solid #13855c; margin-left: 5px; }
-        
-        #upsc-topics-toolbar-wrapper { margin: 25px 0 10px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e3e6f0; display: flex; flex-direction: column; align-items: flex-start; }
-        #toggle-topics-btn { border: 1px solid #36b9cc; color: #36b9cc; background: transparent; }
-        #toggle-topics-btn.active { background-color: #36b9cc; color: #fff; }
-        #toggle-topics-btn:hover { background-color: #2c9faf; color: #fff; }
-        #upsc-topics-toolbar { display: flex; gap: 10px; margin-top: 12px; overflow: hidden; transition: all 0.3s ease; flex-wrap: wrap;}
-        .upsc-btn-copy { background-color: #f6c23e; color: #fff; border-radius: 6px;}
-        .upsc-btn-paste { background-color: #1cc88a; color: #fff; border-radius: 6px;}
+        /* SECTIUNE TEMATICI */
+        #upsc-topics-toolbar-wrapper { 
+            margin: 22px 0 10px 0; padding: 16px; background-color: #ffffff; border-radius: 14px; 
+            border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: flex-start; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        #toggle-topics-btn { 
+            border: 1.5px solid #06b6d4; color: #0891b2; background: #ecfeff; font-weight: 700;
+        }
+        #toggle-topics-btn.active { background-color: #06b6d4; color: #ffffff; }
+        #toggle-topics-btn:hover { background-color: #0891b2; color: #ffffff; }
+        #upsc-topics-toolbar { display: flex; gap: 10px; margin-top: 14px; overflow: hidden; transition: all 0.3s ease; flex-wrap: wrap; width: 100%; }
+        .upsc-btn-apply { background: linear-gradient(135deg, #4f46e5, #4338ca); color: #fff; border-radius: 8px;}
+        .upsc-btn-copy { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border-radius: 8px;}
+        .upsc-btn-paste { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border-radius: 8px;}
 
         /* CSS MODAL STATISTICI */
-        #upsc-stats-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-        #upsc-stats-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
-        #upsc-stats-modal { background: #fff; border-radius: 12px; width: 450px; max-width: 90%; padding: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative;}
-        #upsc-stats-modal h3 { margin: 0 0 20px 0; color: #4e73df; font-weight: 800; border-bottom: 2px solid #eaecf4; padding-bottom: 10px; font-size: 20px;}
-        .stats-top-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: #f8f9fa; border: 1px solid #e3e6f0; border-radius: 8px; padding: 15px 5px; text-align: center; }
-        .stat-val { font-size: 26px; font-weight: 900; color: #3a3b45; line-height: 1; }
-        .stat-desc { font-size: 11px; font-weight: 700; color: #858796; text-transform: uppercase; margin-top: 5px; letter-spacing: 0.5px;}
-        .stat-card.primary .stat-val { color: #4e73df; }
-        .stat-card.success .stat-val { color: #1cc88a; }
-        .stat-card.danger .stat-val { color: #e74a3b; }
-        .stat-card.info .stat-val { color: #36b9cc; }
-        .stat-missing { font-size: 11px; color: #e74a3b; margin-top: 8px; font-weight: 800; background: #fdf3f2; padding: 3px 8px; border-radius: 6px; border: 1px solid #f8c9c4; display: inline-block;}
+        #upsc-stats-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65) !important; z-index: 10000 !important; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        #upsc-stats-overlay.active { display: flex !important; animation: fadeIn 0.2s ease; }
+        #upsc-stats-modal { background: #ffffff; border-radius: 18px; width: 480px; max-width: 92%; padding: 26px; box-shadow: 0 20px 45px -10px rgba(15,23,42,0.25); position: relative; border: 1px solid rgba(255,255,255,0.8); }
+        #upsc-stats-modal h3 { color: #4f46e5; margin: 0; font-size: 20px; font-weight: 800; }
         
-        .chart-wrap { margin-top: 10px; }
-        .chart-title { font-size: 13px; font-weight: bold; color: #5a5c69; margin-bottom: 10px; text-align: center; text-transform: uppercase;}
+        .upsc-modal-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 18px; }
+        .upsc-modal-close { 
+            background: #f1f5f9; border: none; border-radius: 50%; width: 30px; height: 30px; 
+            display: flex; align-items: center; justify-content: center; cursor: pointer; color: #64748b; 
+            font-size: 14px; font-weight: bold; transition: all 0.15s ease;
+        }
+        .upsc-modal-close:hover { background: #e2e8f0; color: #0f172a; }
+
+        .stats-top-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 6px; text-align: center; transition: all 0.2s ease; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .stat-val { font-size: 26px; font-weight: 900; line-height: 1; letter-spacing: -0.5px; }
+        .stat-desc { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.5px;}
+        .stat-card.primary .stat-val { color: #4f46e5; }
+        .stat-card.success .stat-val { color: #10b981; }
+        .stat-card.danger .stat-val { color: #f43f5e; }
+        .stat-card.info .stat-val { color: #06b6d4; }
+        .stat-missing { font-size: 11px; color: #e11d48; margin-top: 6px; font-weight: 700; background: #fff1f2; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecdd3; display: inline-block;}
+        
+        .chart-wrap { margin-top: 14px; background: #f8fafc; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .chart-title { font-size: 12.5px; font-weight: 800; color: #475569; margin-bottom: 12px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;}
         .bar-row { display: flex; align-items: center; margin-bottom: 6px; }
-        .bar-label { width: 35px; font-size: 13px; font-weight: 800; color: #5a5c69; text-align: right; padding-right: 8px;}
-        .bar-track { flex: 1; background: #eaecf4; height: 14px; border-radius: 7px; overflow: hidden; position: relative; }
-        .bar-fill { height: 100%; border-radius: 7px; transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); width: 0%; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; font-size: 10px; font-weight: bold; color: white;}
-        .bar-count { width: 30px; font-size: 13px; font-weight: bold; color: #3a3b45; text-align: left; padding-left: 8px;}
+        .bar-label { width: 32px; font-size: 13px; font-weight: 800; color: #475569; text-align: right; padding-right: 8px;}
+        .bar-track { flex: 1; background: #e2e8f0; height: 12px; border-radius: 9999px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; border-radius: 9999px; transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1); width: 0%; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; font-size: 9px; font-weight: 800; color: white;}
+        .bar-count { width: 28px; font-size: 12px; font-weight: 700; color: #334155; text-align: left; padding-left: 8px;}
         
-        #btn-close-stats { margin-top: 25px; width: 100%; padding: 12px; background: #eaecf4; color: #5a5c69; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.2s; font-size: 14px;}
-        #btn-close-stats:hover { background: #d1d3e2; color: #3a3b45; }
+        #btn-close-stats { margin-top: 20px; width: 100%; padding: 11px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 14px;}
+        #btn-close-stats:hover { background: #e2e8f0; color: #0f172a; }
 
-        /* CSS MODAL IMPORT (CORRECTED) */
-        #upsc-import-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7) !important; z-index: 10001 !important; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        /* CSS MODAL IMPORT */
+        #upsc-import-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65) !important; z-index: 10001 !important; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
         #upsc-import-overlay.active { display: flex !important; animation: fadeIn 0.3s ease; }
-        #upsc-import-modal { background: #fff; border-radius: 16px; width: 580px; max-width: 95%; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; max-height: 90vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.2); }
-        #upsc-import-modal h3 { margin: 0 0 15px 0; color: #1cc88a; font-weight: 800; border-bottom: 2px solid #e3e6f0; padding-bottom: 15px; font-size: 22px; text-align: center;}
+        #upsc-import-modal { background: #ffffff; border-radius: 20px; width: 600px; max-width: 95%; padding: 28px; box-shadow: 0 20px 45px -10px rgba(15,23,42,0.25); position: relative; max-height: 90vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.8); }
+        #upsc-import-modal h3 { margin: 0; color: #10b981; font-weight: 800; font-size: 20px; }
         
-        .prompt-box { background: #f0f4ff; border: 1px dashed #4e73df; padding: 18px; border-radius: 10px; margin-bottom: 25px; position: relative; margin-top: 15px;}
-        .prompt-text { font-family: 'Courier New', monospace; font-size: 13px; color: #2e59d9; white-space: pre-wrap; margin: 0; line-height: 1.5; font-weight: 600; }
-        .btn-copy-prompt { position: absolute; top: -12px; right: 15px; padding: 6px 12px; font-size: 11px; background: #4e73df; color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(78, 115, 223, 0.3); transition: all 0.2s; }
-        .btn-copy-prompt:hover { background: #2e59d9; transform: scale(1.05); }
+        .prompt-box { background: #f8fafc; border: 1.5px dashed #cbd5e1; padding: 18px; border-radius: 12px; margin-bottom: 22px; position: relative; margin-top: 12px;}
+        .prompt-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12.5px; color: #334155; white-space: pre-wrap; margin: 0; line-height: 1.6; font-weight: 500; }
+        .btn-copy-prompt { position: absolute; top: -12px; right: 14px; padding: 5px 14px; font-size: 11.5px; background: #4f46e5; color: white; border: none; border-radius: 9999px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); transition: all 0.2s; }
+        .btn-copy-prompt:hover { background: #4338ca; transform: scale(1.04); }
         
-        .import-upload-zone { border: 3px dashed #1cc88a; background: #f6fffb; padding: 40px 20px; text-align: center; border-radius: 12px; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; margin-top: 15px;}
-        .import-upload-zone:hover { background: #e8fdf5; border-color: #13855c; transform: translateY(-2px); }
-        .import-upload-zone i { font-size: 40px; color: #1cc88a; display: block; margin-bottom: 15px; }
-        .import-upload-zone span { font-size: 15px; font-weight: 700; color: #13855c; }
+        .import-upload-zone { border: 2.5px dashed #10b981; background: #ecfdf5; padding: 36px 20px; text-align: center; border-radius: 14px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 10px; margin-top: 12px;}
+        .import-upload-zone:hover { background: #d1fae5; border-color: #059669; transform: translateY(-2px); }
+        .import-zone-icon { font-size: 38px; margin-bottom: 10px; }
+        .import-upload-zone span { font-size: 14.5px; font-weight: 700; color: #047857; }
         
-        #btn-close-import { margin-top: 20px; width: 100%; padding: 12px; background: #f8f9fa; color: #858796; border: 1px solid #e3e6f0; border-radius: 8px; font-weight: bold; cursor: pointer; transition: all 0.2s; font-size: 14px;}
-        #btn-close-import:hover { background: #eaecf4; color: #5a5c69; }
+        #btn-close-import { margin-top: 22px; width: 100%; padding: 11px; background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 14px;}
+        #btn-close-import:hover { background: #e2e8f0; color: #0f172a; }
 
-        /* DARK MODE - MODAL IMPORT FORCE */
-        body.upsc-dark-mode #upsc-import-modal { background-color: #22252f !important; color: #d1d3e2 !important; border: 1px solid #3a3b45 !important; }
-        body.upsc-dark-mode #upsc-import-modal h3 { color: #1cc88a !important; border-bottom-color: #3a3b45 !important; }
-        body.upsc-dark-mode .prompt-box { background-color: #1a2436 !important; border-color: #2e59d9 !important; }
-        body.upsc-dark-mode .prompt-text { color: #a5c5ed !important; }
-        body.upsc-dark-mode .import-upload-zone { background-color: rgba(28, 200, 138, 0.05) !important; border-color: #1cc88a !important; }
-        body.upsc-dark-mode .import-upload-zone span { color: #1cc88a !important; }
-        body.upsc-dark-mode #btn-close-import { background-color: #2e323f !important; border-color: #3a3b45 !important; color: #d1d3e2 !important; }
-        body.upsc-dark-mode #upsc-import-modal p { color: #a5a5a5 !important; }
-
-        .btn-open-import { background-color: #f6c23e !important; color: white !important; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* DARK MODE STYLES */
-        body.upsc-dark-mode { background-color: #1a1c24 !important; color: #d1d3e2 !important; }
-        body.upsc-dark-mode .card, body.upsc-dark-mode #upsc-settings-panel, body.upsc-dark-mode #upsc-stats-modal { background-color: #22252f !important; color: #d1d3e2 !important; border: 1px solid #2e323f !important; box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important; }
-        body.upsc-dark-mode #eregister th.text-left { background-color: #22252f !important; color: #d1d3e2 !important; border-right: 2px solid #2e323f !important; }
-        body.upsc-dark-mode #eregister tbody th.text-left span.text-dark { color: #d1d3e2 !important; }
+        /* DARK MODE 2.0 (SLATE / ZINC HIGH-END THEME) */
+        body.upsc-dark-mode { background-color: #0b0f19 !important; color: #cbd5e1 !important; }
+        body.upsc-dark-mode .card, 
+        body.upsc-dark-mode #upsc-settings-panel, 
+        body.upsc-dark-mode #upsc-stats-modal,
+        body.upsc-dark-mode #upsc-import-modal,
+        body.upsc-dark-mode #upsc-topics-toolbar-wrapper { 
+            background-color: #131b2e !important; color: #cbd5e1 !important; 
+            border-color: rgba(255, 255, 255, 0.08) !important; box-shadow: 0 16px 36px rgba(0,0,0,0.4) !important; 
+        }
+        body.upsc-dark-mode .upsc-controls-wrapper {
+            background: rgba(19, 27, 46, 0.9) !important; border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.upsc-dark-mode .upsc-panel-title,
+        body.upsc-dark-mode #upsc-stats-modal h3,
+        body.upsc-dark-mode #upsc-import-modal h3 { color: #f8fafc !important; }
+        body.upsc-dark-mode .upsc-panel-header,
+        body.upsc-dark-mode .upsc-modal-header { border-bottom-color: rgba(255, 255, 255, 0.08) !important; }
+        body.upsc-dark-mode .upsc-btn-icon-close,
+        body.upsc-dark-mode .upsc-modal-close { background: #1e293b !important; color: #94a3b8 !important; }
+        body.upsc-dark-mode .upsc-btn-icon-close:hover,
+        body.upsc-dark-mode .upsc-modal-close:hover { background: #334155 !important; color: #fff !important; }
+
+        body.upsc-dark-mode .panel.panel-default { background-color: #131b2e !important; border-color: rgba(255, 255, 255, 0.08) !important; }
+        body.upsc-dark-mode .panel.panel-default table th, body.upsc-dark-mode .panel.panel-default table td { background-color: #131b2e !important; color: #cbd5e1 !important; border-color: rgba(255, 255, 255, 0.06) !important; }
+        body.upsc-dark-mode .panel.panel-default table thead th { background-color: #0f172a !important; color: #94a3b8 !important; }
+
+        body.upsc-dark-mode .tab-pane.scrollable-content { background-color: #0b0f19 !important; border-color: #1e293b !important; }
+        body.upsc-dark-mode #eregister { background-color: #0b0f19 !important; }
+        body.upsc-dark-mode #eregister table.table,
+        body.upsc-dark-mode #eregister table.table-sm { background-color: #0b0f19 !important; }
+
+        body.upsc-dark-mode #eregister thead.sticky-thead tr:first-child th,
+        body.upsc-dark-mode #eregister table.table-sm thead tr:first-child th {
+            background: #090d16 !important; color: #f8fafc !important; border-bottom: 2px solid #1e293b !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.p-2 {
+            background: #131b2e !important; border-right: 2px solid #1e293b !important; border-bottom: 2px solid #1e293b !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):not(:nth-last-child(-n+7)) {
+            background: #131b2e !important; color: #cbd5e1 !important; border-bottom: 2px solid #1e293b !important; border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):hover,
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.hovered-col,
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.focused-col {
+            background: #1e293b !important; color: #818cf8 !important; border-bottom-color: #6366f1 !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(-n+7) {
+            background: #162033 !important; color: #94a3b8 !important; border-left: 1px solid rgba(255, 255, 255, 0.06) !important; border-bottom: 2px solid #1e293b !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(1) {
+            background: #1e1b4b !important; color: #a5b4fc !important; border-left: 2px solid #6366f1 !important;
+        }
+
+        body.upsc-dark-mode #eregister table.table-sm tbody th.text-left { 
+            background-color: #131b2e !important; color: #f1f5f9 !important; 
+            border-right: 2px solid rgba(255, 255, 255, 0.08) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody th.text-left span.text-dark { color: #f1f5f9 !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody th.text-left .user-avatar { border-color: #334155 !important; }
+
+        /* Evidențiere Hover în Dark Mode */
         body.upsc-dark-mode #eregister:not(.disable-hover) tbody tr:hover td, 
         body.upsc-dark-mode #eregister:not(.disable-hover) tbody tr:hover th,
-        body.upsc-dark-mode #eregister tbody tr.focused-row td, 
-        body.upsc-dark-mode #eregister tbody tr.focused-row th { background-color: #2a2e3d !important; }
-        body.upsc-dark-mode .hovered-col, body.upsc-dark-mode .focused-col { background-color: #2d3243 !important; }
-        body.upsc-dark-mode input.student-note, body.upsc-dark-mode input.student-evaluation, 
-        body.upsc-dark-mode input[wire\\:model="topic"], body.upsc-dark-mode #upsc-settings-panel input, 
-        body.upsc-dark-mode #upsc-settings-panel select { background-color: #1a1c24 !important; border: 1px solid #3a3b45 !important; color: #fff !important; }
-        body.upsc-dark-mode .help-tip { background-color: #1a2436 !important; border-left-color: #4e73df !important; color: #a5c5ed !important; }
-        body.upsc-dark-mode #upsc-topics-toolbar-wrapper { background-color: #22252f !important; border-color: #2e323f !important; }
-        body.upsc-dark-mode .stat-card { background: #1a1c24 !important; border-color: #2e323f !important; }
-        body.upsc-dark-mode .stat-val { color: #fff !important; }
-        body.upsc-dark-mode .bar-track { background: #2e323f !important; }
-        body.upsc-dark-mode #toggle-extra-cols-btn, body.upsc-dark-mode #btn-close-stats { background-color: #2e323f !important; color: #d1d3e2 !important; }
-        body.upsc-dark-mode #eregister tbody td:nth-child(even) { background-color: rgba(255, 255, 255, 0.03); }
-        body.upsc-dark-mode .list-group-item { color: #d1d3e2 !important; }
-        body.upsc-dark-mode .breadcrumb { background-color: #22252f !important; }
-        body.upsc-dark-mode .breadcrumb-item.active { color: #858796 !important; }
-        body.upsc-dark-mode .main-header { background-color: #22252f !important; border-bottom: 1px solid #2e323f !important; }
-        body.upsc-dark-mode .nav-link { color: #d1d3e2 !important; }
-        body.upsc-dark-mode #eregister thead.sticky-thead th.hovered-col, body.upsc-dark-mode #eregister thead.sticky-thead th.focused-col { background-color: #4e73df !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover,
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover > td,
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover > th { background-color: #162033 !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover th.text-left span.text-dark { color: #818cf8 !important; }
 
-        /* DARK MODE - CARD HEADER & SUMMARY TABLE */
-        body.upsc-dark-mode .card-header { background-color: #22252f !important; border-bottom: 1px solid #2e323f !important; }
-        body.upsc-dark-mode .card-header .bg-light, body.upsc-dark-mode .card-header .table th, body.upsc-dark-mode .card-header .table td { background-color: #2a2e3d !important; color: #d1d3e2 !important; border-color: #3a3b45 !important; }
-        body.upsc-dark-mode .card-header .text-dark { color: #d1d3e2 !important; }
-        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #008000"] { background-color: rgba(28, 200, 138, 0.2) !important; color: #1cc88a !important; border-bottom: 2px solid #1cc88a !important; }
-        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #004080"] { background-color: rgba(54, 185, 204, 0.2) !important; color: #36b9cc !important; border-bottom: 2px solid #36b9cc !important; }
+        /* Evidențiere Puternică la Focus în Dark Mode */
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row { background-color: #1e294d !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td { background-color: #1a233e !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row th.text-left {
+            background-color: #1e294d !important;
+            border-left: 5px solid #818cf8 !important;
+            box-shadow: 4px 0 14px rgba(0, 0, 0, 0.5) !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row th.text-left span.text-dark {
+            color: #ffffff !important;
+            font-size: 15.5px !important;
+            font-weight: 800 !important;
+            transform: scale(1.06) translateX(4px);
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row th.text-left .user-avatar {
+            border-color: #818cf8 !important;
+            transform: scale(1.18);
+            box-shadow: 0 4px 12px rgba(129, 140, 248, 0.4) !important;
+        }
 
-        .btn-dark-mode { background-color: #5a5c69; color: white; border: 1px solid #3a3b45; }
-        body.upsc-dark-mode .btn-dark-mode { background-color: #f6c23e; color: #1a1c24; border-color: #f4b619; }
+        /* Coloane evidențiate în Dark Mode */
+        body.upsc-dark-mode .hovered-col, 
+        body.upsc-dark-mode .col-hover,
+        body.upsc-dark-mode #eregister table.table-sm tbody td.hovered-col,
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-hover,
+        body.upsc-dark-mode #eregister table.table-sm tbody th.col-hover,
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-hover:nth-last-child(-n+7),
+        body.upsc-dark-mode #eregister table.table-sm tbody td.hovered-col:nth-last-child(-n+7) { 
+            background-color: #162033 !important; 
+        }
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.focused-col {
+            background: #1e294d !important;
+            color: #c7d2fe !important;
+            border-bottom: 3px solid #818cf8 !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td.focused-col { background-color: #182038 !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.focused-col { background-color: #243054 !important; }
+
+        /* Toate celulele și input-urile din tabel în Dark Mode - NICIUN ELEMENT ALB */
+        body.upsc-dark-mode #eregister table.table-sm tbody td,
+        body.upsc-dark-mode #eregister table.table-sm tbody th {
+            border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+            border-right-color: rgba(255, 255, 255, 0.04) !important;
+        }
+
+        body.upsc-dark-mode #eregister table.table-sm tbody td input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body.upsc-dark-mode #eregister table.table-sm tbody td.hovered-col input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body.upsc-dark-mode #eregister table.table-sm tbody td.focused-col input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
+        body.upsc-dark-mode input[wire\:model="topic"], 
+        body.upsc-dark-mode #upsc-settings-panel input, 
+        body.upsc-dark-mode #upsc-settings-panel select,
+        body.upsc-dark-mode #upsc-topics-toolbar textarea { 
+            background-color: #0b0f19 !important; border: 1.5px solid #334155 !important; color: #f8fafc !important; 
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td input:hover { border-color: #64748b !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody td input:focus { 
+            border-color: #818cf8 !important; background-color: #0f172a !important; 
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25) !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td input:disabled { background-color: #111827 !important; border-color: #1f2937 !important; color: #9ca3af !important; }
+
+        /* Coloanele de totalizare în Dark Mode */
+        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(-n+7) {
+            background-color: #131b2e !important; border-left: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover td:nth-last-child(-n+7) {
+            background-color: #162033 !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td:nth-last-child(-n+7) {
+            background-color: #1a233e !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(7) input { 
+            background-color: #111827 !important; border-color: #334155 !important; color: #94a3b8 !important; 
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(1) {
+            background-color: #161c36 !important; border-left: 2px solid #6366f1 !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td:nth-last-child(1) {
+            background-color: #1e2448 !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(1) input {
+            background-color: #1e1b4b !important; border-color: #6366f1 !important; color: #c7d2fe !important;
+        }
+
+        /* HEATMAP în Dark Mode cu specificitate maximă */
+        #eregister input.grade-excellent,
+        body.upsc-dark-mode #eregister input.grade-excellent,
+        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-excellent { 
+            background-color: rgba(16, 185, 129, 0.3) !important; 
+            color: #6ee7b7 !important; 
+            border: 1.5px solid rgba(52, 211, 153, 0.6) !important; 
+            font-weight: 800 !important;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15) !important;
+        }
+        #eregister input.grade-good,
+        body.upsc-dark-mode #eregister input.grade-good,
+        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-good { 
+            background-color: rgba(59, 130, 246, 0.3) !important; 
+            color: #93c5fd !important; 
+            border: 1.5px solid rgba(96, 165, 250, 0.6) !important; 
+            font-weight: 800 !important;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15) !important;
+        }
+        #eregister input.grade-ok,
+        body.upsc-dark-mode #eregister input.grade-ok,
+        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-ok { 
+            background-color: rgba(245, 158, 11, 0.3) !important; 
+            color: #fde68a !important; 
+            border: 1.5px solid rgba(251, 191, 36, 0.6) !important; 
+            font-weight: 800 !important;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15) !important;
+        }
+        #eregister input.grade-bad,
+        body.upsc-dark-mode #eregister input.grade-bad,
+        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-bad { 
+            background-color: rgba(239, 68, 68, 0.3) !important; 
+            color: #fca5a5 !important; 
+            border: 1.5px solid rgba(248, 113, 113, 0.6) !important; 
+            font-weight: 800 !important;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15) !important;
+        }
+        #eregister input.grade-abs,
+        body.upsc-dark-mode #eregister input.grade-abs,
+        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-abs { 
+            background-color: rgba(225, 29, 72, 0.35) !important; 
+            color: #fda4af !important; 
+            border: 1.5px solid rgba(251, 113, 133, 0.7) !important; 
+            font-weight: 900 !important; 
+            box-shadow: 0 2px 6px rgba(225, 29, 72, 0.2) !important; 
+        }
+
+        /* 6.2 COLOANE ORE TRECUTE ȘI ZIUA CURENTĂ (DARK MODE) */
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.col-past {
+            background: #0f1626 !important;
+            color: #94a3b8 !important;
+            border-bottom: 2.5px solid #334155 !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-past {
+            background-color: #101726 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-past input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
+            background-color: #0b101b !important;
+            border-color: #1e293b !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-past input.input-missing-past {
+            border: 1.5px dashed #f59e0b !important;
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2) !important;
+        }
+
+        /* Coloana de azi în Dark Mode */
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.col-today {
+            background: #17223b !important;
+            color: #93c5fd !important;
+            border-bottom: 3px solid #60a5fa !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-today {
+            background-color: #131c31 !important;
+            border-right: 1px solid #2563eb !important;
+        }
+        body.upsc-dark-mode .badge-today {
+            background: linear-gradient(135deg, #6366f1, #818cf8) !important;
+            color: #ffffff !important;
+            box-shadow: 0 1px 6px rgba(129, 140, 248, 0.4) !important;
+        }
+        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.col-last-past,
+        body.upsc-dark-mode #eregister table.table-sm tbody td.col-last-past {
+            border-right: 2.5px solid #818cf8 !important;
+            box-shadow: 4px 0 8px -3px rgba(129, 140, 248, 0.3) !important;
+        }
+
+        /* Interacțiune Hover și Focus pentru celulele din orele trecute și de azi (Dark Mode) */
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover td.col-past { background-color: #162033 !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-past { background-color: #1a233e !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-past.focused-col { background-color: #243054 !important; }
+
+        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover td.col-today { background-color: #192642 !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-today { background-color: #1e2e50 !important; }
+        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-today.focused-col { background-color: #2b3e6b !important; }
+
+        body.upsc-dark-mode .stat-card,
+        body.upsc-dark-mode .chart-wrap { background: #0b0f19 !important; border-color: #1e293b !important; }
+        body.upsc-dark-mode .stat-val { color: #f8fafc !important; }
+        body.upsc-dark-mode .bar-track { background: #1e293b !important; }
+        body.upsc-dark-mode .prompt-box { background-color: #0b0f19 !important; border-color: #334155 !important; }
+        body.upsc-dark-mode .prompt-text { color: #93c5fd !important; }
+        body.upsc-dark-mode .import-upload-zone { background-color: rgba(16, 185, 129, 0.08) !important; border-color: #10b981 !important; }
+        body.upsc-dark-mode .import-upload-zone span { color: #34d399 !important; }
+        body.upsc-dark-mode #toggle-extra-cols-btn,
+        body.upsc-dark-mode #toggle-pair-absences-btn,
+        body.upsc-dark-mode #toggle-highlight-past-btn,
+        body.upsc-dark-mode #btn-close-stats,
+        body.upsc-dark-mode #btn-close-import { background-color: #1e293b !important; border-color: #334155 !important; color: #cbd5e1 !important; }
+        body.upsc-dark-mode #toggle-extra-cols-btn:hover,
+        body.upsc-dark-mode #toggle-pair-absences-btn:hover,
+        body.upsc-dark-mode #toggle-highlight-past-btn:hover,
+        body.upsc-dark-mode #btn-close-stats:hover,
+        body.upsc-dark-mode #btn-close-import:hover { background-color: #334155 !important; color: #fff !important; }
+        body.upsc-dark-mode #toggle-pair-absences-btn.active { 
+            background: linear-gradient(135deg, #0284c7, #0369a1) !important; 
+            color: #ffffff !important; 
+            border-color: #38bdf8 !important; 
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.45) !important; 
+        }
+        body.upsc-dark-mode #toggle-pair-absences-btn.active b { 
+            background: rgba(255, 255, 255, 0.22); padding: 1px 6px; border-radius: 6px; 
+        }
+        body.upsc-dark-mode #toggle-highlight-past-btn.active { 
+            background: linear-gradient(135deg, #4338ca, #4f46e5) !important; 
+            color: #ffffff !important; 
+            border-color: #818cf8 !important; 
+            box-shadow: 0 2px 8px rgba(129, 140, 248, 0.45) !important; 
+        }
+        body.upsc-dark-mode #toggle-highlight-past-btn.active b { 
+            background: rgba(255, 255, 255, 0.22); padding: 1px 6px; border-radius: 6px; 
+        }
+        body.upsc-dark-mode .help-tip { background-color: #162033 !important; border-left-color: #4f46e5 !important; color: #93c5fd !important; }
+        body.upsc-dark-mode .help-tip b { color: #e2e8f0 !important; }
+        body.upsc-dark-mode .list-group-item { color: #cbd5e1 !important; }
+        body.upsc-dark-mode .breadcrumb { background-color: #131b2e !important; }
+        body.upsc-dark-mode .breadcrumb-item.active { color: #94a3b8 !important; }
+        body.upsc-dark-mode .main-header { background-color: #131b2e !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; }
+        body.upsc-dark-mode .nav-link { color: #cbd5e1 !important; }
+
+        body.upsc-dark-mode .card-header { background-color: #131b2e !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; }
+        body.upsc-dark-mode .card-header .bg-light, body.upsc-dark-mode .card-header .table th, body.upsc-dark-mode .card-header .table td { background-color: #1e293b !important; color: #cbd5e1 !important; border-color: #334155 !important; }
+        body.upsc-dark-mode .card-header .text-dark { color: #cbd5e1 !important; }
+        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #008000"] { background-color: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; border-bottom: 2px solid #10b981 !important; }
+        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #004080"] { background-color: rgba(6, 182, 212, 0.2) !important; color: #22d3ee !important; border-bottom: 2px solid #06b6d4 !important; }
+        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #e30d0d"] { background-color: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; border-bottom: 2px solid #ef4444 !important; }
+
+
         /* Toast Notification */
         .upsc-toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: #4e73df; color: white; padding: 12px 25px; border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10005; font-weight: bold;
-            font-size: 14px; pointer-events: none; opacity: 0; transition: all 0.3s ease;
+            position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); color: #ffffff; 
+            padding: 10px 24px; border-radius: 9999px; box-shadow: 0 20px 30px -5px rgba(0,0,0,0.3); 
+            z-index: 10005; font-weight: 600; font-size: 14px; pointer-events: none; opacity: 0; 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(255,255,255,0.15);
         }
-        .upsc-toast.show { opacity: 1; bottom: 50px; }
+        .upsc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         /* Rânduri selectabile pentru selectarea grupei */
         .clickable-group-row {
@@ -251,10 +945,10 @@
             transition: background-color 0.15s ease, transform 0.1s ease;
         }
         .clickable-group-row:hover {
-            background-color: rgba(78, 115, 223, 0.08) !important;
+            background-color: rgba(79, 70, 229, 0.08) !important;
         }
         body.upsc-dark-mode .clickable-group-row:hover {
-            background-color: rgba(78, 115, 223, 0.15) !important;
+            background-color: rgba(79, 70, 229, 0.18) !important;
         }
 
         /* Ascundere ultima coloană pe pagina de selectare a grupei */
@@ -859,10 +1553,28 @@
         <option value="616">Mariana Zubenschi</option>
     `;
 
-    const fab = document.createElement('div'); fab.id = 'upsc-settings-fab'; fab.innerHTML = '⚙️';
+    const fab = document.createElement('div'); 
+    fab.id = 'upsc-settings-fab'; 
+    fab.setAttribute('title', 'Setări UPSC SIMU Plus');
+    fab.innerHTML = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+    `;
+
     const panel = document.createElement('div'); panel.id = 'upsc-settings-panel';
     panel.innerHTML = `
-        <h5>Setări UPSC SIMU Plus</h5>
+        <div class="upsc-panel-header">
+            <div class="upsc-panel-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: #4f46e5;">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span>Setări UPSC SIMU Plus</span>
+            </div>
+            <button id="upsc-settings-close" class="upsc-btn-icon-close" title="Închide">✕</button>
+        </div>
         
         <label>Profesor</label>
         <select id="set-teacher">
@@ -883,6 +1595,28 @@
             </label>
         </div>
 
+        <div class="upsc-switch-wrapper">
+            <div>
+                <span class="upsc-switch-label">🔗 Duplicare absențe la ore pereche</span>
+                <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">Pune automat absență ('a') și la ora din aceeași dată</div>
+            </div>
+            <label class="upsc-switch">
+                <input type="checkbox" id="set-pair-absences" ${localStorage.getItem('upsc_auto_pair_absences') !== null ? (localStorage.getItem('upsc_auto_pair_absences') === 'true' ? 'checked' : '') : 'checked'}>
+                <span class="upsc-slider"></span>
+            </label>
+        </div>
+
+        <div class="upsc-switch-wrapper">
+            <div>
+                <span class="upsc-switch-label">📅 Evidențiere ore trecute / azi</span>
+                <div style="font-size: 11.5px; color: #64748b; margin-top: 2px;">Nuanță mai închisă pentru lecțiile parcurse până în prezent și ziua curentă</div>
+            </div>
+            <label class="upsc-switch">
+                <input type="checkbox" id="set-highlight-past" ${localStorage.getItem('upsc_highlight_past_cols') !== null ? (localStorage.getItem('upsc_highlight_past_cols') === 'true' ? 'checked' : '') : 'checked'}>
+                <span class="upsc-slider"></span>
+            </label>
+        </div>
+
         <div class="help-tip">
             💡 <b>Nu știi ID-ul Blocului/Auditoriului?</b><br><br>
             Deschide <b>Inspectare (Ctrl+Shift+I)</b>, dă click pe iconița "săgeată" și selectează lista dorită. Copiază cifra din <code>value="..."</code>.
@@ -890,10 +1624,10 @@
 
         <div class="donation">
             Îți este utilă această extensie?<br>
-            <a href="#" id="toggle-qr-btn" style="color: #f6c23e; font-weight: bold; text-decoration: none; display: inline-block; padding: 5px 12px; background: #fff8e1; border-radius: 6px; margin-top: 8px; border: 1px solid #fce8b2; transition: all 0.2s; font-size: 11px;">☕ Oferă o cafea autorului (MIA)</a>
+            <a href="#" id="toggle-qr-btn" style="color: #d97706; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; background: #fffbeb; border-radius: 9999px; margin-top: 8px; border: 1px solid #fde68a; transition: all 0.2s; font-size: 12px;">☕ Oferă o cafea autorului (MIA)</a>
             <div id="mia-qr-container">
-                <img src="https://i.imgur.com/ss0xMzu.jpeg" width="192" height="192" style="border-radius: 8px; border: 1px solid #e3e6f0; padding: 5px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 5px;">
-                <div style="font-size: 10px; color: #858796; margin-top: 5px; font-weight: normal;">Scanează cu orice aplicație bancară din MD</div>
+                <img src="https://i.imgur.com/ss0xMzu.jpeg" width="192" height="192" style="border-radius: 12px; border: 1px solid #e2e8f0; padding: 6px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,0.08); margin-top: 8px;">
+                <div style="font-size: 11px; color: #64748b; margin-top: 6px; font-weight: 500;">Scanează cu orice aplicație bancară din MD</div>
             </div>
         </div>
     `;
@@ -901,6 +1635,10 @@
     document.getElementById('set-teacher').value = s_teacher;
 
     fab.addEventListener('click', () => panel.classList.toggle('active'));
+    const closeSettingsBtn = document.getElementById('upsc-settings-close');
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', () => panel.classList.remove('active'));
+    }
     panel.addEventListener('input', (e) => {
         if(e.target.id === 'set-teacher') { localStorage.setItem('upsc_set_teacher', e.target.value); s_teacher = e.target.value; }
         if(e.target.id === 'set-block') { localStorage.setItem('upsc_set_block', e.target.value); s_block = e.target.value; }
@@ -909,6 +1647,35 @@
             const isDark = e.target.checked;
             localStorage.setItem('upsc_dark_mode', isDark);
             document.body.classList.toggle('upsc-dark-mode', isDark);
+        }
+        if(e.target.id === 'set-pair-absences') {
+            const isPair = e.target.checked;
+            localStorage.setItem('upsc_auto_pair_absences', isPair ? 'true' : 'false');
+            const toolbarBtn = document.getElementById('toggle-pair-absences-btn');
+            if (toolbarBtn) {
+                toolbarBtn.innerHTML = isPair ? '🔗 Absențe Pereche: <b>ACTIV</b>' : '🔗 Absențe Pereche: <b>OPRIT</b>';
+                if (isPair) toolbarBtn.classList.add('active');
+                else toolbarBtn.classList.remove('active');
+            }
+            if (window.toastr) {
+                if (isPair) toastr.success("Absențe pereche activate!", "UPSC Plus", { progressBar: true });
+                else toastr.info("Absențe pereche dezactivate.", "UPSC Plus", { progressBar: true });
+            }
+        }
+        if(e.target.id === 'set-highlight-past') {
+            const isHighlight = e.target.checked;
+            localStorage.setItem('upsc_highlight_past_cols', isHighlight ? 'true' : 'false');
+            const toolbarBtn = document.getElementById('toggle-highlight-past-btn');
+            if (toolbarBtn) {
+                toolbarBtn.innerHTML = isHighlight ? '📅 Ore Trecute: <b>ACTIV</b>' : '📅 Ore Trecute: <b>OPRIT</b>';
+                if (isHighlight) toolbarBtn.classList.add('active');
+                else toolbarBtn.classList.remove('active');
+            }
+            highlightDateColumns();
+            if (window.toastr) {
+                if (isHighlight) toastr.success("Evidențierea orelor trecute activată!", "UPSC Plus", { progressBar: true });
+                else toastr.info("Evidențierea orelor trecute dezactivată.", "UPSC Plus", { progressBar: true });
+            }
         }
     });
 
@@ -979,6 +1746,71 @@
             localStorage.setItem('upsc_hide_extra_cols', hidden ? 'true' : 'false'); updBtn(hidden);
         });
 
+        // Buton Absențe Pereche (Duble)
+        let pairAbsState = localStorage.getItem('upsc_auto_pair_absences') !== null 
+            ? localStorage.getItem('upsc_auto_pair_absences') === 'true' 
+            : true;
+        
+        const pairAbsBtn = document.createElement('button');
+        pairAbsBtn.id = 'toggle-pair-absences-btn';
+        pairAbsBtn.className = 'upsc-btn';
+        const updPairBtn = (isActive) => {
+            pairAbsBtn.innerHTML = isActive 
+                ? '🔗 Absențe Pereche: <b>ACTIV</b>' 
+                : '🔗 Absențe Pereche: <b>OPRIT</b>';
+            pairAbsBtn.title = isActive 
+                ? 'Absențele puse la o oră se pun automat și la ora pereche din aceeași dată. Click pentru dezactivare.' 
+                : 'Click pentru a activa duplicarea automată a absenței la orele pereche din aceeași dată.';
+            if (isActive) pairAbsBtn.classList.add('active');
+            else pairAbsBtn.classList.remove('active');
+        };
+        updPairBtn(pairAbsState);
+        pairAbsBtn.addEventListener('click', e => {
+            e.preventDefault();
+            pairAbsState = !pairAbsState;
+            localStorage.setItem('upsc_auto_pair_absences', pairAbsState ? 'true' : 'false');
+            updPairBtn(pairAbsState);
+            const settingsSwitch = document.getElementById('set-pair-absences');
+            if (settingsSwitch) settingsSwitch.checked = pairAbsState;
+            if (window.toastr) {
+                if (pairAbsState) toastr.success("Absențe pereche activate! La notarea absenței ('a'), se va completa automat și ora pereche.", "UPSC Plus", { progressBar: true });
+                else toastr.info("Absențe pereche dezactivate.", "UPSC Plus", { progressBar: true });
+            }
+        });
+
+        // Buton Evidențiere Ore Trecute
+        let highlightPastState = localStorage.getItem('upsc_highlight_past_cols') !== null 
+            ? localStorage.getItem('upsc_highlight_past_cols') === 'true' 
+            : true;
+
+        const highlightPastBtn = document.createElement('button');
+        highlightPastBtn.id = 'toggle-highlight-past-btn';
+        highlightPastBtn.className = 'upsc-btn';
+        const updHighlightPastBtn = (isActive) => {
+            highlightPastBtn.innerHTML = isActive 
+                ? '📅 Ore Trecute: <b>ACTIV</b>' 
+                : '📅 Ore Trecute: <b>OPRIT</b>';
+            highlightPastBtn.title = isActive 
+                ? 'Coloanele până la ziua de azi sunt evidențiate cu o nuanță mai închisă. Click pentru dezactivare.' 
+                : 'Click pentru a evidenția coloanele până la ziua de azi cu o nuanță mai închisă.';
+            if (isActive) highlightPastBtn.classList.add('active');
+            else highlightPastBtn.classList.remove('active');
+        };
+        updHighlightPastBtn(highlightPastState);
+        highlightPastBtn.addEventListener('click', e => {
+            e.preventDefault();
+            highlightPastState = !highlightPastState;
+            localStorage.setItem('upsc_highlight_past_cols', highlightPastState ? 'true' : 'false');
+            updHighlightPastBtn(highlightPastState);
+            const settingsSwitch = document.getElementById('set-highlight-past');
+            if (settingsSwitch) settingsSwitch.checked = highlightPastState;
+            highlightDateColumns();
+            if (window.toastr) {
+                if (highlightPastState) toastr.success("Evidențierea orelor trecute activată!", "UPSC Plus", { progressBar: true });
+                else toastr.info("Evidențierea orelor trecute dezactivată.", "UPSC Plus", { progressBar: true });
+            }
+        });
+
         // Buton Statistici
         const statsBtn = document.createElement('button');
         statsBtn.id = 'btn-show-stats';
@@ -997,7 +1829,14 @@
         openImportBtn.className = 'upsc-btn btn-open-import';
         openImportBtn.innerHTML = '📤 Importă din CSV';
 
+        const brandBadge = document.createElement('div');
+        brandBadge.className = 'upsc-brand-badge';
+        brandBadge.innerHTML = '⚡ UPSC Plus <b>v15.0</b>';
+
+        controlsBar.appendChild(brandBadge);
         controlsBar.appendChild(tBtn);
+        controlsBar.appendChild(pairAbsBtn);
+        controlsBar.appendChild(highlightPastBtn);
         controlsBar.appendChild(statsBtn);
         controlsBar.appendChild(exportBtn);
         controlsBar.appendChild(openImportBtn);
@@ -1009,12 +1848,15 @@
         importOverlay.id = 'upsc-import-overlay';
         importOverlay.innerHTML = `
             <div id="upsc-import-modal">
-                <h3>📤 Import Date din Registru Fizic</h3>
-                <p style="font-size: 13px; color: #5a5c69; margin-bottom: 15px;">
+                <div class="upsc-modal-header">
+                    <h3>📤 Import Date din Registru Fizic</h3>
+                    <button class="upsc-modal-close" id="btn-close-import-x" title="Închide">✕</button>
+                </div>
+                <p style="font-size: 13.5px; color: #64748b; margin-bottom: 16px; line-height: 1.5;">
                     Urmează pașii de mai jos pentru a completa automat registrul digital folosind inteligența artificială (GPT).
                 </p>
                 
-                <div style="font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #4e73df;">Pasul 1: Copiază textul de mai jos și trimite-l către GPT împreună cu poza registrului:</div>
+                <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 8px; color: #4f46e5;">Pasul 1: Copiază textul de mai jos și trimite-l către GPT împreună cu poza registrului:</div>
                 <div class="prompt-box">
                     <button class="btn-copy-prompt" id="btn-copy-import-prompt">Copiază prompt</button>
                     <p class="prompt-text" id="import-prompt-text">Te rog să extragi datele din această fotografie a registrului universitar fizic. 
@@ -1025,17 +1867,17 @@ Notează absențele cu litera "a".
 Asigură-te că numele studenților sunt extrase complet și corect.</p>
                 </div>
 
-                <div style="font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #1cc88a;">Pasul 2: Încarcă fișierul CSV generat de GPT:</div>
+                <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 8px; color: #10b981;">Pasul 2: Încarcă fișierul CSV generat de GPT:</div>
                 <div class="import-upload-zone" id="csv-drop-zone">
-                    <i class="fas fa-file-csv"></i>
+                    <div class="import-zone-icon">📄</div>
                     <span id="csv-file-name">Trage fișierul aici sau dă click pentru selectare</span>
                     <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
                 </div>
 
-                <div id="import-progress-area" style="display: none; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                    <div style="font-weight: bold; font-size: 13px; margin-bottom: 5px;" id="import-status-text">Se procesează...</div>
-                    <div style="height: 10px; background: #e3e6f0; border-radius: 5px; overflow: hidden;">
-                        <div id="import-progress-bar" style="height: 100%; background: #1cc88a; width: 0%; transition: width 0.3s;"></div>
+                <div id="import-progress-area" style="display: none; margin-top: 20px; padding: 16px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <div style="font-weight: 700; font-size: 13px; margin-bottom: 6px; color: #334155;" id="import-status-text">Se procesează...</div>
+                    <div style="height: 8px; background: #e2e8f0; border-radius: 9999px; overflow: hidden;">
+                        <div id="import-progress-bar" style="height: 100%; background: linear-gradient(90deg, #10b981, #059669); width: 0%; transition: width 0.3s;"></div>
                     </div>
                 </div>
 
@@ -1052,6 +1894,8 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
 
         const closeImport = () => importOverlay.classList.remove('active');
         document.getElementById('btn-close-import').addEventListener('click', closeImport);
+        const closeImportX = document.getElementById('btn-close-import-x');
+        if (closeImportX) closeImportX.addEventListener('click', closeImport);
         importOverlay.addEventListener('click', (e) => { if (e.target === importOverlay) closeImport(); });
 
         document.getElementById('btn-copy-import-prompt').addEventListener('click', () => {
@@ -1242,7 +2086,10 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         statsOverlay.id = 'upsc-stats-overlay';
         statsOverlay.innerHTML = `
             <div id="upsc-stats-modal">
-                <h3>📊 Statistici Evaluare Curentă</h3>
+                <div class="upsc-modal-header">
+                    <h3>📊 Statistici Evaluare Curentă</h3>
+                    <button class="upsc-modal-close" id="btn-close-stats-x" title="Închide">✕</button>
+                </div>
                 <div class="stats-top-grid">
                     <div class="stat-card primary">
                         <div class="stat-val" id="stat-total-grades">0</div>
@@ -1360,8 +2207,8 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                 document.getElementById('stat-eval2').innerText = (eval2Grades.reduce((a,b)=>a+b,0) / eval2Grades.length).toFixed(2);
                 let missingBadge2 = document.getElementById('stat-eval2-missing');
                 if (eval2Missing > 0) {
-                    let totalEval1 = eval1Grades.length + eval1Missing;
-					missingBadge1.innerText = `⚠️ ${eval1Missing} din ${totalEval1} fără notă`;
+                    let totalEval2 = eval2Grades.length + eval2Missing;
+                    missingBadge2.innerText = `⚠️ ${eval2Missing} din ${totalEval2} fără notă`;
                     missingBadge2.style.display = 'inline-block';
                 } else {
                     missingBadge2.style.display = 'none';
@@ -1390,10 +2237,10 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                 let count = dist[i];
                 let widthPct = (count / maxFreq) * 100;
                 
-                let barColor = '#e74a3b'; 
-                if(i >= 9) barColor = '#1cc88a'; 
-                else if(i >= 7) barColor = '#4e73df'; 
-                else if(i >= 5) barColor = '#f6c23e'; 
+                let barColor = '#f43f5e'; 
+                if(i >= 9) barColor = '#10b981'; 
+                else if(i >= 7) barColor = '#3b82f6'; 
+                else if(i >= 5) barColor = '#f59e0b'; 
 
                 chartContainer.innerHTML += `
                     <div class="bar-row">
@@ -1422,6 +2269,8 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
             }, 300);
         };
         document.getElementById('btn-close-stats').addEventListener('click', closeStats);
+        const closeStatsX = document.getElementById('btn-close-stats-x');
+        if (closeStatsX) closeStatsX.addEventListener('click', closeStats);
         statsOverlay.addEventListener('click', (e) => { if (e.target === statsOverlay) closeStats(); });
 
         // LOGICA EXPORT CSV
@@ -1459,6 +2308,7 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                 let cleanText = th.innerText.split('Sigur stergeti')[0]; 
                 cleanText = cleanText.replace(/\s+/g, ' ').trim(); 
                 cleanText = cleanText.replace(/Semestrul \d/gi, '').replace(groupName, '').trim();
+                cleanText = cleanText.replace(/\bAZI\b/gi, '').trim();
                 cleanText = cleanText.replace(/^[-–—\s]+|[-–—\s]+$/g, '');
 
                 let parts = cleanText.split(' ');
@@ -1517,15 +2367,15 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         const buttonsToolbar = document.createElement('div');
         buttonsToolbar.id = 'upsc-topics-toolbar';
         buttonsToolbar.innerHTML = `
-            <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px; align-items: stretch;">
-                <textarea id="upsc-bulk-topics-1" placeholder="Listă Tematici A (ex: Curs)" style="flex: 1; min-height: 100px; padding: 10px; border-radius: 8px; border: 1px solid #d1d3e2; font-size: 13px; font-family: inherit; resize: vertical;"></textarea>
-                <textarea id="upsc-bulk-topics-2" placeholder="Listă Tematici B (ex: Seminar)" style="flex: 1; min-height: 100px; padding: 10px; border-radius: 8px; border: 1px solid #d1d3e2; font-size: 13px; font-family: inherit; resize: vertical;"></textarea>
+            <div style="display: flex; gap: 12px; width: 100%; margin-bottom: 12px; align-items: stretch;">
+                <textarea id="upsc-bulk-topics-1" placeholder="Listă Tematici A (ex: Curs)" style="flex: 1; min-height: 100px; padding: 12px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 13.5px; font-family: inherit; resize: vertical; box-sizing: border-box;"></textarea>
+                <textarea id="upsc-bulk-topics-2" placeholder="Listă Tematici B (ex: Seminar)" style="flex: 1; min-height: 100px; padding: 12px; border-radius: 10px; border: 1.5px solid #cbd5e1; font-size: 13.5px; font-family: inherit; resize: vertical; box-sizing: border-box;"></textarea>
             </div>
-            <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap;">
-                <button class="upsc-btn upsc-btn-paste" id="btn-bulk-apply-topics" style="background-color: #4e73df; color: white; border-radius: 6px;">🚀 Aplică Temele (Alternat A-B)</button>
+            <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap; align-items: center;">
+                <button class="upsc-btn upsc-btn-apply" id="btn-bulk-apply-topics">🚀 Aplică Temele (Alternat A-B)</button>
                 <button class="upsc-btn upsc-btn-copy" id="btn-copy-topics">📄 Copiază în Memorie</button>
                 <button class="upsc-btn upsc-btn-paste" id="btn-paste-topics">📋 Lipește din Memorie</button>
-                <div style="font-size: 11px; color: #858796; margin-top: 5px; width: 100%;">
+                <div style="font-size: 12px; color: #64748b; margin-top: 6px; width: 100%;">
                     💡 <b>Tip:</b> Listele vor fi aplicate alternativ (Rând 1 din Lista A, Rând 2 din Lista B, etc). Dacă vrei doar o listă, las-o pe a doua goală.
                 </div>
             </div>
@@ -1669,16 +2519,17 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
     // 4. UI EXTRAS (Heatmap, Data, Crosshair, Bulk)
     // ==========================================
     function applyHeatmap() {
-        document.querySelectorAll('input.student-note, input.student-evaluation').forEach(input => {
-            let val = input.value.toLowerCase().trim();
+        document.querySelectorAll('#eregister input.student-note, #eregister input.student-evaluation, #eregister tbody td input').forEach(input => {
+            let val = (input.value || '').toLowerCase().trim();
             input.classList.remove('grade-excellent', 'grade-good', 'grade-ok', 'grade-bad', 'grade-abs');
-            if (val === 'a') input.classList.add('grade-abs');
-            else {
-                let n = parseFloat(val);
+            if (val === 'a') {
+                input.classList.add('grade-abs');
+            } else if (val !== '') {
+                let n = parseFloat(val.replace(',', '.'));
                 if (!isNaN(n)) {
-                    if (n >= 9) input.classList.add('grade-excellent');
-                    else if (n >= 7) input.classList.add('grade-good');
-                    else if (n >= 5) input.classList.add('grade-ok');
+                    if (n >= 8.5) input.classList.add('grade-excellent');
+                    else if (n >= 6.5) input.classList.add('grade-good');
+                    else if (n >= 4.5) input.classList.add('grade-ok');
                     else if (n > 0) input.classList.add('grade-bad');
                 }
             }
@@ -1694,11 +2545,158 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         });
     }
 
+    function highlightDateColumns() {
+        const eregisterTable = document.querySelector('#eregister table.table-sm');
+        if (!eregisterTable) return;
+
+        const isEnabled = localStorage.getItem('upsc_highlight_past_cols') !== null 
+            ? localStorage.getItem('upsc_highlight_past_cols') === 'true' 
+            : true;
+
+        const headerRow = eregisterTable.querySelector('thead tr.register-notes-header');
+        const tbodyRows = Array.from(eregisterTable.querySelectorAll('tbody tr'));
+        if (!headerRow || tbodyRows.length === 0) return;
+
+        const headerCells = Array.from(headerRow.children);
+        const totalCols = headerCells.length;
+
+        // Dacă funcționalitatea este dezactivată, curățăm toate clasele și badge-urile
+        if (!isEnabled) {
+            eregisterTable.querySelectorAll('.col-past, .col-today, .col-last-past').forEach(el => {
+                el.classList.remove('col-past', 'col-today', 'col-last-past');
+            });
+            eregisterTable.querySelectorAll('.badge-today').forEach(el => el.remove());
+            eregisterTable.querySelectorAll('.input-missing-past').forEach(el => el.classList.remove('input-missing-past'));
+            return;
+        }
+
+        // Calculăm data curentă în format YYYY-MM-DD (ora locală a utilizatorului)
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const todayStr = `${year}-${month}-${day}`;
+
+        let lastPastColIdx = -1;
+
+        // Coloanele de lecții sunt de la indexul 1 până la totalCols - 7 exclusiv (ultimele 7 sunt de totalizare)
+        const maxLessonCol = Math.max(1, totalCols - 7);
+
+        for (let colIdx = 1; colIdx < maxLessonCol; colIdx++) {
+            // Obținem data coloanei din primul rând care conține un input cu data-date
+            let colDate = null;
+            for (let r = 0; r < Math.min(tbodyRows.length, 5); r++) {
+                const cell = tbodyRows[r]?.children[colIdx];
+                const inp = cell?.querySelector('input[data-date]');
+                if (inp && inp.getAttribute('data-date')) {
+                    colDate = inp.getAttribute('data-date').trim();
+                    break;
+                }
+            }
+
+            // Fallback dacă nu a fost găsit în tbody: căutăm în header wire:initial-data
+            if (!colDate && headerCells[colIdx]) {
+                const headerHtml = headerCells[colIdx].innerHTML;
+                const match = headerHtml.match(/["']date["']\s*:\s*["'](\d{4}-\d{2}-\d{2})["']/);
+                if (match) colDate = match[1];
+            }
+
+            const th = headerCells[colIdx];
+            if (!th) continue;
+
+            // Curățăm clasele și badge-urile vechi de pe header
+            th.classList.remove('col-past', 'col-today', 'col-last-past');
+            const existingBadge = th.querySelector('.badge-today');
+            if (existingBadge) existingBadge.remove();
+
+            if (!colDate || !/^\d{4}-\d{2}-\d{2}$/.test(colDate)) {
+                // Dacă nu avem o dată validă pentru coloană, curățăm și celulele
+                tbodyRows.forEach(row => {
+                    const td = row.children[colIdx];
+                    if (td) {
+                        td.classList.remove('col-past', 'col-today', 'col-last-past');
+                        const inp = td.querySelector('input');
+                        if (inp) inp.classList.remove('input-missing-past');
+                    }
+                });
+                continue;
+            }
+
+            const isPast = colDate < todayStr;
+            const isToday = colDate === todayStr;
+
+            if (isPast) {
+                th.classList.add('col-past');
+                lastPastColIdx = colIdx;
+            } else if (isToday) {
+                th.classList.add('col-today');
+                lastPastColIdx = colIdx;
+                const badge = document.createElement('span');
+                badge.className = 'badge-today';
+                badge.textContent = 'AZI';
+                th.appendChild(badge);
+            }
+
+            // Aplicăm stilurile pe fiecare celulă din rândurile tabelului
+            tbodyRows.forEach(row => {
+                const td = row.children[colIdx];
+                if (!td) return;
+
+                td.classList.remove('col-past', 'col-today', 'col-last-past');
+                const inp = td.querySelector('input.student-note, input.student-evaluation');
+
+                if (isPast) {
+                    td.classList.add('col-past');
+                    if (inp) {
+                        const val = inp.value.trim();
+                        if (val === '' && !inp.disabled && !inp.readOnly) {
+                            inp.classList.add('input-missing-past');
+                            inp.title = "Atenție: Lecție trecută fără notă sau absență completată";
+                        } else {
+                            inp.classList.remove('input-missing-past');
+                            if (inp.title === "Atenție: Lecție trecută fără notă sau absență completată") {
+                                inp.removeAttribute('title');
+                            }
+                        }
+                    }
+                } else if (isToday) {
+                    td.classList.add('col-today');
+                    if (inp) {
+                        inp.classList.remove('input-missing-past');
+                        if (inp.title === "Atenție: Lecție trecută fără notă sau absență completată") {
+                            inp.removeAttribute('title');
+                        }
+                    }
+                } else {
+                    if (inp) {
+                        inp.classList.remove('input-missing-past');
+                        if (inp.title === "Atenție: Lecție trecută fără notă sau absență completată") {
+                            inp.removeAttribute('title');
+                        }
+                    }
+                }
+            });
+        }
+
+        // Aplicăm linia de demarcație pe ultima coloană din trecut sau de azi
+        if (lastPastColIdx !== -1) {
+            if (headerCells[lastPastColIdx]) {
+                headerCells[lastPastColIdx].classList.add('col-last-past');
+            }
+            tbodyRows.forEach(row => {
+                const td = row.children[lastPastColIdx];
+                if (td) td.classList.add('col-last-past');
+            });
+        }
+    }
+
     let lastHoveredCol = -1;
     document.addEventListener('mousemove', e => { 
         const eregister = document.getElementById('eregister');
         if (eregister && eregister.classList.contains('disable-hover')) {
-            eregister.classList.remove('disable-hover');
+            if (!document.activeElement || !document.activeElement.closest('#eregister')) {
+                eregister.classList.remove('disable-hover');
+            }
         }
         
         let cell = e.target.closest('td, th');
@@ -1713,9 +2711,12 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
     });
 
     document.addEventListener('focusin', e => {
-        if (e.target.matches('input.student-note, input.student-evaluation, input[wire\\:model="topic"]')) {
+        if (e.target.matches('#eregister input, input[wire\\:model="topic"]')) {
             document.getElementById('eregister')?.classList.add('disable-hover');
-            document.querySelectorAll('.hovered-col').forEach(el => el.classList.remove('hovered-col'));
+            document.querySelectorAll('.hovered-col, .col-hover').forEach(el => {
+                el.classList.remove('hovered-col');
+                el.classList.remove('col-hover');
+            });
             lastHoveredCol = -1; 
 
             document.querySelectorAll('.focused-row').forEach(el => el.classList.remove('focused-row'));
@@ -1734,14 +2735,34 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
     });
 
     document.addEventListener('focusout', e => {
-        if (e.target.matches('input.student-note, input.student-evaluation, input[wire\\:model="topic"]')) {
-            document.querySelectorAll('.focused-row').forEach(el => el.classList.remove('focused-row'));
-            document.querySelectorAll('.focused-col').forEach(el => el.classList.remove('focused-col'));
+        if (e.target.matches('#eregister input, input[wire\\:model="topic"]')) {
+            setTimeout(() => {
+                if (!document.activeElement || !document.activeElement.closest('#eregister')) {
+                    document.querySelectorAll('.focused-row').forEach(el => el.classList.remove('focused-row'));
+                    document.querySelectorAll('.focused-col').forEach(el => el.classList.remove('focused-col'));
+                }
+            }, 60);
         }
     });
 
-    applyHeatmap(); reformatTopicDates();
-    const observer = new MutationObserver(() => { applyHeatmap(); reformatTopicDates(); });
+    // Curățare / actualizare alertă lipsă notă instant la tastare + reactualizare Heatmap culori
+    document.addEventListener('input', e => {
+        if (e.target.matches('#eregister input.student-note, #eregister input.student-evaluation, #eregister tbody td input')) {
+            applyHeatmap();
+            if (e.target.value.trim() !== '') {
+                e.target.classList.remove('input-missing-past');
+                if (e.target.title === "Atenție: Lecție trecută fără notă sau absență completată") {
+                    e.target.removeAttribute('title');
+                }
+            } else if (e.target.closest('td.col-past')) {
+                e.target.classList.add('input-missing-past');
+                e.target.title = "Atenție: Lecție trecută fără notă sau absență completată";
+            }
+        }
+    });
+
+    applyHeatmap(); reformatTopicDates(); highlightDateColumns();
+    const observer = new MutationObserver(() => { applyHeatmap(); reformatTopicDates(); highlightDateColumns(); });
     observer.observe(document.body, { childList: true, subtree: true });
 
     document.addEventListener('dblclick', async function(e) {
@@ -1843,7 +2864,14 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
     const topicSelector = 'input[wire\\:model="topic"]';
 
     function triggerAutoSaveNote(input, valueToSave) {
+        if (!window.saveEvaluationButton || !window.saveEvaluationButton.isPatched) {
+            patchSaveFunction();
+        }
+        if (window.jQuery) {
+            window.activeEvaluationInputField = window.jQuery(input);
+        }
         input.value = valueToSave;
+        applyHeatmap();
 
         // Try to click the matching button in the popup (for student-note inputs where the new site requires choosing from the popup)
         const popup = document.getElementById('keyboardEvaluationsPopup');
@@ -2034,6 +3062,106 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         }
     }
 
+    function patchSaveFunction() {
+        if (typeof window.saveEvaluationButton === 'function' && !window.saveEvaluationButton.isPatched) {
+            const originalSave = window.saveEvaluationButton;
+            let isProcessingPairSave = false;
+
+            window.saveEvaluationButton = function(noteData) {
+                const autoPair = localStorage.getItem('upsc_auto_pair_absences') !== null 
+                    ? localStorage.getItem('upsc_auto_pair_absences') === 'true' 
+                    : true;
+                const noteVal = (noteData && typeof noteData.val === 'function' ? noteData.val() : '').trim().toLowerCase();
+
+                if (!isProcessingPairSave && autoPair && noteVal === 'a' && noteData && !noteData.hasClass('student-evaluation')) {
+                    const currentEl = noteData.get(0);
+                    const tr = currentEl ? currentEl.closest('tr') : null;
+                    const currentDate = noteData.attr('data-date');
+                    const studentId = noteData.attr('data-student-id');
+
+                    if (tr && currentDate) {
+                        const sameDateInputs = Array.from(tr.querySelectorAll(`input.student-note[data-date="${currentDate}"]`))
+                            .filter(inp => !inp.disabled);
+
+                        if (sameDateInputs.length > 1) {
+                            const curIdx = sameDateInputs.indexOf(currentEl);
+                            let pairEl = null;
+
+                            // Căutăm celula alăturată din aceeași dată (dreapta sau stânga)
+                            if (curIdx >= 0) {
+                                if (curIdx + 1 < sameDateInputs.length) {
+                                    pairEl = sameDateInputs[curIdx + 1];
+                                } else if (curIdx - 1 >= 0) {
+                                    pairEl = sameDateInputs[curIdx - 1];
+                                }
+                            }
+
+                            // Duplicăm absența doar dacă celula pereche este liberă / goală
+                            if (pairEl && pairEl.value.trim() === '') {
+                                isProcessingPairSave = true;
+
+                                // Feedback vizual instantaneu în tabel
+                                pairEl.value = 'a';
+                                pairEl.classList.remove('grade-excellent', 'grade-good', 'grade-ok', 'grade-bad');
+                                pairEl.classList.add('grade-abs');
+
+                                if (window.jQuery) {
+                                    $('#keyboardEvaluationsPopup').addClass('d-none');
+                                    if ($('.card-body').length) {
+                                        $('.card-body').block({
+                                            message: '<div class="custom-loader"></div>',
+                                            overlayCSS: { backgroundColor: "#fff" },
+                                            css: { backgroundColor: "transparent", border: "none" }
+                                        });
+                                    }
+                                }
+
+                                const registerId = window.location.pathname.split('/').filter(Boolean).pop();
+                                const url = `https://simu.upsc.md/ro/teacher/electronicRegister/setNote/${registerId}`;
+                                const token = $('meta[name="csrf-token"]').attr('content') || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                                const pairData = {
+                                    student_id: pairEl.getAttribute('data-student-id') || studentId,
+                                    note: 'a',
+                                    date: pairEl.getAttribute('data-date') || currentDate,
+                                    event_id: pairEl.getAttribute('data-event-id')
+                                };
+
+                                $.ajax({
+                                    headers: { 'X-CSRF-TOKEN': token },
+                                    url: url,
+                                    type: 'POST',
+                                    data: pairData,
+                                    success: function(resp) {
+                                        console.log("[UPSC SIMU Plus] Absență duplicată pe pereche:", resp);
+                                        if (window.toastr) {
+                                            toastr.info("Absența a fost aplicată și la ora pereche din aceeași dată.", "UPSC Plus", { progressBar: true, timeOut: 3000 });
+                                        }
+                                    },
+                                    error: function(err) {
+                                        console.warn("[UPSC SIMU Plus] Eroare la duplicarea absenței:", err);
+                                    },
+                                    complete: function() {
+                                        // Salvăm nota originală prin funcția SIMU (care reîncarcă tabelul)
+                                        originalSave(noteData);
+                                        isProcessingPairSave = false;
+                                    }
+                                });
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                // Curs normal pentru orice alt caz
+                originalSave(noteData);
+            };
+
+            window.saveEvaluationButton.isPatched = true;
+            console.log("[UPSC SIMU Plus] Successfully patched saveEvaluationButton for pair absences.");
+        }
+    }
+
     // Optimizări pentru pagina de selectare a grupei (rânduri clicabile, abrevieri, ascundere coloane)
     function initSelectionPageOptimizations() {
         // Dacă suntem pe pagina catalogului propriu-zis (există #eregister), oprim optimizările de selectare
@@ -2125,5 +3253,10 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
     patchDeleteFunction();
     setTimeout(patchDeleteFunction, 200);
     setTimeout(patchDeleteFunction, 1000);
+
+    patchSaveFunction();
+    setTimeout(patchSaveFunction, 200);
+    setTimeout(patchSaveFunction, 1000);
+    setTimeout(patchSaveFunction, 2500);
 
 })();
