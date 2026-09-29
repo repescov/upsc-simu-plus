@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "UPSC SIMU Plus",
-  "version": "15.0",
+  "version": "15.0.1",
   "description": "Optimizare registru (Modern UI, Crosshair, Dark Mode 2.0, Import CSV AI, Auto-salvare, Statistici). Creat de Vadim Repeșco.",
   "author": "Vadim Repeșco",
   "icons": {

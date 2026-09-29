@@ -1,5 +1,5 @@
 # 🎓 UPSC SIMU Plus
-**Versiunea:** 15.0 (Ore Trecute & Curente, Absențe Pereche, Redesign Modern UI, Dark Mode 2.0 & Heatmap Odihnitor)  
+**Versiunea:** 15.0.1 (Hotfix Buclă Infinită Lecție Curentă AZI, Ore Trecute, Absențe Pereche, Redesign Modern UI)  
 **Autor:** Vadim Repeșco  
 **Platforma țintă:** `https://simu.upsc.md/*/teacher/electronicRegister/*`
 

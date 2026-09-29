@@ -1831,7 +1831,7 @@
 
         const brandBadge = document.createElement('div');
         brandBadge.className = 'upsc-brand-badge';
-        brandBadge.innerHTML = '⚡ UPSC Plus <b>v15.0</b>';
+        brandBadge.innerHTML = '⚡ UPSC Plus <b>v15.0.1</b>';
 
         controlsBar.appendChild(brandBadge);
         controlsBar.appendChild(tBtn);
@@ -2604,12 +2604,12 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
             const th = headerCells[colIdx];
             if (!th) continue;
 
-            // Curățăm clasele și badge-urile vechi de pe header
+            // Curățăm clasele vechi de pe header
             th.classList.remove('col-past', 'col-today', 'col-last-past');
             const existingBadge = th.querySelector('.badge-today');
-            if (existingBadge) existingBadge.remove();
 
             if (!colDate || !/^\d{4}-\d{2}-\d{2}$/.test(colDate)) {
+                if (existingBadge) existingBadge.remove();
                 // Dacă nu avem o dată validă pentru coloană, curățăm și celulele
                 tbodyRows.forEach(row => {
                     const td = row.children[colIdx];
@@ -2628,13 +2628,18 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
             if (isPast) {
                 th.classList.add('col-past');
                 lastPastColIdx = colIdx;
+                if (existingBadge) existingBadge.remove();
             } else if (isToday) {
                 th.classList.add('col-today');
                 lastPastColIdx = colIdx;
-                const badge = document.createElement('span');
-                badge.className = 'badge-today';
-                badge.textContent = 'AZI';
-                th.appendChild(badge);
+                if (!existingBadge) {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge-today';
+                    badge.textContent = 'AZI';
+                    th.appendChild(badge);
+                }
+            } else {
+                if (existingBadge) existingBadge.remove();
             }
 
             // Aplicăm stilurile pe fiecare celulă din rândurile tabelului
@@ -2761,8 +2766,26 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         }
     });
 
-    applyHeatmap(); reformatTopicDates(); highlightDateColumns();
-    const observer = new MutationObserver(() => { applyHeatmap(); reformatTopicDates(); highlightDateColumns(); });
+    function runAllDecorations() {
+        applyHeatmap();
+        reformatTopicDates();
+        highlightDateColumns();
+    }
+
+    let decorationTimeout = null;
+    const observer = new MutationObserver(() => {
+        if (decorationTimeout) clearTimeout(decorationTimeout);
+        decorationTimeout = setTimeout(() => {
+            observer.disconnect();
+            try {
+                runAllDecorations();
+            } finally {
+                observer.observe(document.body, { childList: true, subtree: true });
+            }
+        }, 80);
+    });
+
+    runAllDecorations();
     observer.observe(document.body, { childList: true, subtree: true });
 
     document.addEventListener('dblclick', async function(e) {
