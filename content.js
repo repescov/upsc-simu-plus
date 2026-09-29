@@ -3,961 +3,11 @@
 
     // Schimbare titlu pagină
     document.title = 'SIMU UPSC';
-    console.log('%c[UPSC SIMU Plus v15.0]%c Modern SaaS Design Activat! 🚀', 'background: #4f46e5; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;', 'color: #4f46e5; font-weight: bold;');
+    console.log('%c[UPSC SIMU Plus v15.1]%c Modern SaaS Design Activat! 🚀', 'background: #4f46e5; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;', 'color: #4f46e5; font-weight: bold;');
 
     // ==========================================
-    // 1. INJECTAREA STILIZĂRII (CSS Universal)
+    // 1. STILIZAREA UNIVERSALĂ (Încărcată ultra-rapid din style.css via manifest.json)
     // ==========================================
-    const style = document.createElement('style');
-    style.textContent = `
-        :root {
-            --upsc-primary: #4f46e5;
-            --upsc-primary-hover: #4338ca;
-            --upsc-primary-light: #eef2ff;
-            --upsc-border-subtle: #e2e8f0;
-            --upsc-shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
-            --upsc-shadow-md: 0 4px 14px -2px rgba(15,23,42,0.08), 0 2px 6px -2px rgba(15,23,42,0.04);
-            --upsc-shadow-xl: 0 20px 45px -10px rgba(15,23,42,0.25);
-        }
-
-        .container-fluid > .row:first-of-type > .col-lg-12,
-        .content > .row:first-of-type > .col-lg-12 { display: flex; gap: 20px; margin-bottom: 12px; }
-        @media (max-width: 1200px) { 
-            .container-fluid > .row:first-of-type > .col-lg-12,
-            .content > .row:first-of-type > .col-lg-12 { flex-direction: column; } 
-        }
-        .card { 
-            flex: 1; border: 1px solid #e2e8f0 !important; border-radius: 16px !important; 
-            box-shadow: 0 4px 16px -2px rgba(15,23,42,0.06) !important; margin-bottom: 16px !important; 
-            background: #ffffff !important; transition: box-shadow 0.2s ease; overflow: hidden !important;
-        }
-        .card-header { background: #f8fafc !important; border-bottom: 1px solid #f1f5f9 !important; padding: 1.25rem 1.5rem !important; }
-        .list-group-item { padding: 0.45rem 1rem !important; border: none !important; background-color: transparent !important; color: #334155; }
-
-        /* TABEL DISCIPLINA SUS (Sumar Unitate Curs) */
-        .panel.panel-default {
-            border: 1px solid #e2e8f0 !important; border-radius: 12px !important; overflow: hidden !important; 
-            box-shadow: 0 4px 12px -2px rgba(15,23,42,0.04) !important; margin-bottom: 0 !important; background: #ffffff !important;
-        }
-        .panel.panel-default table { margin-bottom: 0 !important; border: none !important; width: 100% !important; }
-        .panel.panel-default table th, .panel.panel-default table td { 
-            border: 1px solid #f1f5f9 !important; padding: 10px 14px !important; font-size: 13.5px !important; vertical-align: middle !important; 
-        }
-        .panel.panel-default table thead th { 
-            background: #f8fafc !important; color: #475569 !important; font-weight: 800 !important; font-size: 12px !important; 
-            text-transform: uppercase; letter-spacing: 0.6px; 
-        }
-        .panel.panel-default table thead th[style*="background-color: #008000"],
-        .panel.panel-default table thead th[style*="background-color: rgb(0, 128, 0)"] { 
-            background: #ecfdf5 !important; color: #047857 !important; border-bottom: 2.5px solid #10b981 !important; font-weight: 800 !important; 
-        }
-        .panel.panel-default table thead th[style*="background-color: #004080"],
-        .panel.panel-default table thead th[style*="background-color: rgb(0, 64, 128)"] { 
-            background: #eff6ff !important; color: #1d4ed8 !important; border-bottom: 2.5px solid #3b82f6 !important; font-weight: 800 !important; 
-        }
-        .panel.panel-default table thead th[style*="background-color: #e30d0d"],
-        .panel.panel-default table thead th[style*="background-color: rgb(227, 13, 13)"] { 
-            background: #fef2f2 !important; color: #b91c1c !important; border-bottom: 2.5px solid #ef4444 !important; font-weight: 800 !important; 
-        }
-
-        /* CONTAINER REGISTRU PRINCIPAL */
-        .tab-pane.scrollable-content { 
-            height: calc(100vh - 250px) !important; overflow: auto !important; border-radius: 16px !important; 
-            border: 1.5px solid #e2e8f0 !important; background: #ffffff !important; box-shadow: 0 10px 30px -5px rgba(15,23,42,0.08) !important;
-        }
-        #eregister { background: #ffffff !important; }
-        #eregister table.table, #eregister table.table-sm { 
-            border-collapse: separate !important; border-spacing: 0 !important; 
-            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif !important; 
-            width: 100% !important; border: none !important; margin-bottom: 0 !important;
-        }
-
-        /* 1. Antet Semestru (Rândul 1 Thead) */
-        #eregister thead tr:first-child th,
-        #eregister table.table-sm thead tr:first-child th { 
-            position: sticky !important; top: 0 !important; z-index: 25 !important;
-            background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%) !important; color: #f8fafc !important; 
-            border: none !important; font-size: 13px !important; font-weight: 800 !important; 
-            letter-spacing: 2px !important; text-transform: uppercase !important; 
-            padding: 10px 20px !important; text-align: left !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
-        }
-
-        /* 2. Antet Date & Grupa (Rândul 2 Thead - .register-notes-header) */
-        #eregister .register-notes-header th,
-        #eregister table.table-sm thead tr.register-notes-header th { 
-            position: sticky !important; top: 38px !important; z-index: 15 !important; 
-            background: #f8fafc !important; color: #334155 !important; 
-            border-bottom: 2px solid #cbd5e1 !important; border-right: 1px solid #e2e8f0 !important; 
-            border-top: none !important; vertical-align: middle !important; 
-            padding: 8px 6px !important; transition: all 0.15s ease !important;
-        }
-        #eregister table.table-sm thead tr.register-notes-header th.p-2 { 
-            position: sticky !important; top: 38px !important; left: 0 !important; z-index: 30 !important;
-            background: #f8fafc !important; border-right: 2px solid #cbd5e1 !important; border-bottom: 2px solid #cbd5e1 !important;
-            padding: 10px 16px !important; text-align: left !important; min-width: 16rem !important; width: 16rem !important;
-            box-shadow: 4px 0 12px rgba(0,0,0,0.04) !important;
-        }
-        #eregister table.table-sm thead tr.register-notes-header th.p-2 > div[style*="width"] { 
-            font-weight: 800 !important; font-size: 13.5px !important; color: #4f46e5 !important; line-height: 1.35 !important; 
-        }
-
-        /* Buton Adăugare Eveniment / Oră */
-        div[data-target="#addEventModal"] {
-            background: linear-gradient(135deg, #4f46e5, #3b82f6) !important; width: 34px !important; height: 34px !important; 
-            border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; 
-            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.4) !important; transition: all 0.2s ease !important; cursor: pointer !important;
-        }
-        div[data-target="#addEventModal"]:hover { transform: scale(1.12); box-shadow: 0 5px 14px rgba(79, 70, 229, 0.5) !important; }
-        div[data-target="#addEventModal"] img { filter: brightness(0) invert(1) !important; width: 16px !important; height: 16px !important; }
-
-        /* Coloanele de Date din Antet */
-        #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):not(:nth-last-child(-n+7)) { 
-            min-width: 52px !important; font-size: 12.5px !important; font-weight: 700 !important; 
-            line-height: 1.35 !important; cursor: pointer !important; text-align: center !important;
-        }
-        #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):not(:nth-last-child(-n+7)):hover,
-        #eregister table.table-sm thead tr.register-notes-header th.hovered-col,
-        #eregister table.table-sm thead tr.register-notes-header th.focused-col { 
-            background: #eef2ff !important; color: #4f46e5 !important; border-bottom-color: #4f46e5 !important; 
-        }
-
-        /* Badge-uri Tip Oră: Curs (C), Seminar (S), Examen (E) */
-        #eregister .register-notes-header th span[style*="color: #008000"],
-        #eregister .register-notes-header th span[style*="color: rgb(0, 128, 0)"] { 
-            display: inline-block !important; background: #ecfdf5 !important; color: #047857 !important; 
-            border: 1px solid #a7f3d0 !important; border-radius: 6px !important; padding: 2px 7px !important; 
-            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
-            box-shadow: 0 1px 2px rgba(16,185,129,0.12) !important;
-        }
-        #eregister .register-notes-header th span[style*="color: #004080"],
-        #eregister .register-notes-header th span[style*="color: rgb(0, 64, 128)"] { 
-            display: inline-block !important; background: #eff6ff !important; color: #1d4ed8 !important; 
-            border: 1px solid #bfdbfe !important; border-radius: 6px !important; padding: 2px 7px !important; 
-            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
-            box-shadow: 0 1px 2px rgba(37,99,235,0.12) !important;
-        }
-        #eregister .register-notes-header th span[style*="color: #e30d0d"],
-        #eregister .register-notes-header th span[style*="color: rgb(227, 13, 13)"] { 
-            display: inline-block !important; background: #fef2f2 !important; color: #b91c1c !important; 
-            border: 1px solid #fecaca !important; border-radius: 6px !important; padding: 2px 7px !important; 
-            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
-            box-shadow: 0 1px 2px rgba(239,68,68,0.12) !important;
-        }
-        #eregister .register-notes-header th span[style*="color: #7c3aed"],
-        #eregister .register-notes-header th span[style*="color: rgb(124, 58, 237)"] { 
-            display: inline-block !important; background: #f5f3ff !important; color: #6d28d9 !important; 
-            border: 1px solid #ddd6fe !important; border-radius: 6px !important; padding: 2px 7px !important; 
-            font-size: 11px !important; font-weight: 800 !important; margin-top: 4px !important; 
-        }
-
-        /* 3. COLOANA 1: NUMELE STUDENTULUI (Sticky Left) */
-        #eregister table.table-sm tbody th.text-left { 
-            position: sticky !important; left: 0 !important; background-color: #ffffff !important; z-index: 10 !important; 
-            border-right: 2px solid #cbd5e1 !important; border-bottom: 1px solid #f1f5f9 !important; 
-            width: 16rem !important; min-width: 16rem !important; padding: 8px 16px !important; 
-            box-shadow: 4px 0 10px rgba(0,0,0,0.03) !important; vertical-align: middle !important;
-            text-align: left !important; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        }
-        #eregister table.table-sm tbody th.text-left .user-avatar { 
-            width: 36px !important; height: 36px !important; border-radius: 10px !important; object-fit: cover !important; 
-            border: 2px solid #e2e8f0 !important; margin-right: 12px !important; vertical-align: middle !important; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important; display: inline-block !important;
-        }
-        #eregister table.table-sm tbody th.text-left span.text-dark { 
-            display: inline-block !important; font-size: 14px !important; font-weight: 700 !important; 
-            color: #1e293b !important; vertical-align: middle !important; line-height: 1.35 !important; 
-            white-space: normal !important; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            transform-origin: left center !important;
-        }
-        #eregister table.table-sm tbody tr:hover th.text-left { background-color: #f8fafc !important; }
-        #eregister table.table-sm tbody tr:hover th.text-left .user-avatar { border-color: #4f46e5 !important; transform: scale(1.08); }
-        #eregister table.table-sm tbody tr:hover th.text-left span.text-dark { color: #4f46e5 !important; }
-
-        /* Evidențiere puternică la Focus pe rând + mărire nume student */
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row th.text-left { 
-            background-color: #e0e7ff !important; 
-            border-left: 5px solid #4f46e5 !important; 
-            box-shadow: 4px 0 14px rgba(79, 70, 229, 0.18) !important; 
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row th.text-left .user-avatar { 
-            border-color: #4f46e5 !important; 
-            transform: scale(1.18); 
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35) !important; 
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row th.text-left span.text-dark { 
-            color: #3730a3 !important; 
-            font-size: 15.5px !important; 
-            font-weight: 800 !important; 
-            transform: scale(1.06) translateX(4px); 
-        }
-
-        /* 4. RÂNDURI ȘI CELULE TABEL */
-        #eregister table.table-sm tbody tr { border-bottom: 1px solid #f1f5f9 !important; transition: background-color 0.15s ease !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover { background-color: #f8fafc !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row { background-color: #e0e7ff !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td { background-color: #eef2ff !important; }
-
-        #eregister table.table-sm tbody td { 
-            padding: 4px 2px !important; vertical-align: middle !important; border: none !important; 
-            border-bottom: 1px solid #f1f5f9 !important; border-right: 1px solid rgba(241, 245, 249, 0.9) !important; 
-            text-align: center !important;
-        }
-        body:not(.upsc-dark-mode) .hovered-col, 
-        body:not(.upsc-dark-mode) .focused-col, 
-        body:not(.upsc-dark-mode) .col-hover { background-color: #f8fafc !important; transition: background-color 0.1s; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.hovered-col,
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-hover { background-color: #f1f5f9 !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.focused-col { background-color: #eef2ff !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.focused-col { background-color: #dbeafe !important; }
-
-        /* 5. CĂSUȚE NOTE ȘI EVALUĂRI (Toate input-urile din tabel) */
-        /* 5. CĂSUȚE NOTE ȘI EVALUĂRI (Toate input-urile din tabel) */
-        #eregister table.table-sm tbody td input,
-        #eregister .student-note, 
-        #eregister .student-evaluation {
-            height: 36px !important; width: 36px !important; font-size: 14.5px !important; font-weight: 700 !important;
-            padding: 0 !important; text-align: center !important; line-height: 36px !important;
-            border-radius: 8px !important; 
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important; outline: none !important; margin: 0 auto !important; display: inline-block !important;
-        }
-
-        /* Culori de bază doar pentru celule fără notă/absență (Light Mode) */
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
-            background-color: #ffffff !important; 
-            border: 1.5px solid #cbd5e1 !important; 
-            color: #1e293b !important;
-        }
-
-        #eregister table.table-sm tbody td input:hover {
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important; transform: translateY(-1px);
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs):hover {
-            border-color: #94a3b8 !important; 
-        }
-
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input:focus {
-            background-color: #ffffff !important; border: 2.5px solid #4f46e5 !important; 
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.22), 0 4px 12px rgba(79, 70, 229, 0.18) !important; 
-            transform: scale(1.18); z-index: 100 !important; position: relative;
-        }
-
-        /* Suprimare bug SIMU: prevenire transparență completă pe hover/focus în Light Mode */
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.focused-col input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
-            background-color: #ffffff !important;
-        }
-
-        #eregister table.table-sm tbody td input:disabled {
-            opacity: 1 !important; font-weight: 800 !important; background: #f8fafc !important; 
-            border: 1.5px solid #e2e8f0 !important; color: #475569 !important; cursor: default !important;
-        }
-        
-        /* HEATMAP REFINAT - Culori vii și clare pentru note și absențe (Light Mode) */
-        #eregister input.grade-excellent,
-        #eregister table.table-sm tbody td input.grade-excellent,
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-excellent { 
-            background-color: #d1fae5 !important; 
-            border: 1.5px solid #10b981 !important; 
-            color: #065f46 !important; 
-            font-weight: 800 !important; 
-            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.22) !important; 
-        } 
-        #eregister input.grade-good,
-        #eregister table.table-sm tbody td input.grade-good,
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-good { 
-            background-color: #dbeafe !important; 
-            border: 1.5px solid #3b82f6 !important; 
-            color: #1e40af !important; 
-            font-weight: 800 !important; 
-            box-shadow: 0 2px 5px rgba(59, 130, 246, 0.22) !important; 
-        } 
-        #eregister input.grade-ok,
-        #eregister table.table-sm tbody td input.grade-ok,
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-ok { 
-            background-color: #fef3c7 !important; 
-            border: 1.5px solid #f59e0b !important; 
-            color: #92400e !important; 
-            font-weight: 800 !important; 
-            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.22) !important; 
-        } 
-        #eregister input.grade-bad,
-        #eregister table.table-sm tbody td input.grade-bad,
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-bad { 
-            background-color: #fee2e2 !important; 
-            border: 1.5px solid #ef4444 !important; 
-            color: #991b1b !important; 
-            font-weight: 800 !important; 
-            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.22) !important; 
-        } 
-        #eregister input.grade-abs,
-        #eregister table.table-sm tbody td input.grade-abs,
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td input.grade-abs { 
-            background-color: #ffe4e6 !important; 
-            border: 1.5px solid #f43f5e !important; 
-            color: #be123c !important; 
-            font-weight: 900 !important; 
-            box-shadow: 0 2px 5px rgba(244, 63, 94, 0.28) !important; 
-        } 
-
-        /* 6. COLOANE TOTALIZARE ȘI EVALUĂRI PERIODICE (Ultimele 7 coloane) */
-        #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(-n+7) {
-            position: sticky !important; top: 38px !important; z-index: 18 !important;
-            background: #f1f5f9 !important; color: #475569 !important;
-            font-size: 11px !important; font-weight: 800 !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;
-            border-bottom: 2px solid #cbd5e1 !important; border-left: 1px solid #e2e8f0 !important; border-top: none !important;
-            padding: 8px 3px !important; vertical-align: middle !important;
-        }
-        #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(7) {
-            border-left: 2.5px solid #6366f1 !important;
-            box-shadow: -6px 0 10px -4px rgba(15, 23, 42, 0.08) !important;
-        }
-        #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(1) {
-            background: #eef2ff !important; color: #4338ca !important; border-left: 2px solid #6366f1 !important;
-        }
-
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(-n+7) {
-            background-color: #ffffff !important; border-left: 1px solid #f1f5f9 !important;
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(7) { 
-            border-left: 2.5px solid #6366f1 !important; 
-            box-shadow: -6px 0 10px -4px rgba(15, 23, 42, 0.08) !important;
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(7) input { 
-            background-color: #f8fafc !important; border-color: #e2e8f0 !important; color: #64748b !important; font-weight: 700 !important;
-        }
-
-        /* Nota Semestrială Finală (Ultima Coloană) */
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) { 
-            background-color: #f8faff !important; border-left: 2px solid #6366f1 !important; 
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) input { 
-            background-color: #eef2ff !important; border: 2px solid #818cf8 !important; color: #4338ca !important; 
-            font-size: 15px !important; font-weight: 900 !important; box-shadow: 0 2px 6px rgba(99, 102, 241, 0.2) !important; 
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) input[style*="color:red"],
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td:nth-last-child(1) input[style*="color: red"] { 
-            background-color: #fff1f2 !important; border: 2px solid #f43f5e !important; color: #e11d48 !important; 
-            box-shadow: 0 2px 6px rgba(244, 63, 94, 0.2) !important; 
-        }
-
-        body.hide-extra-cols #eregister th:nth-last-child(-n+7), 
-        body.hide-extra-cols #eregister td:nth-last-child(-n+7) { display: none !important; }
-
-        /* 6.1 COLOANE ORE TRECUTE (PÂNĂ LA ZIUA DE AZI) ȘI ZIUA CURENTĂ (LIGHT MODE) */
-        body:not(.upsc-dark-mode) #eregister table.table-sm thead tr.register-notes-header th.col-past {
-            background: #eef2f6 !important;
-            color: #475569 !important;
-            border-bottom: 2.5px solid #94a3b8 !important;
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-past {
-            background-color: #f1f5f9 !important;
-            border-right: 1px solid #e2e8f0 !important;
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-past input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
-            background-color: #f8fafc !important;
-            border-color: #cbd5e1 !important;
-        }
-
-        /* Semnalizare căsuțe uitate/necompletate din trecut */
-        #eregister table.table-sm tbody td.col-past input.input-missing-past {
-            border: 1.5px dashed #f59e0b !important;
-            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15) !important;
-        }
-
-        /* Coloana lecției de AZI */
-        body:not(.upsc-dark-mode) #eregister table.table-sm thead tr.register-notes-header th.col-today {
-            background: #eff6ff !important;
-            color: #1d4ed8 !important;
-            border-bottom: 3px solid #3b82f6 !important;
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-today {
-            background-color: #f0f7ff !important;
-            border-right: 1px solid #bfdbfe !important;
-        }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody td.col-today input:focus {
-            border-color: #2563eb !important;
-        }
-
-        /* Badge "AZI" */
-        .badge-today {
-            display: inline-block !important;
-            background: linear-gradient(135deg, #4f46e5, #3b82f6) !important;
-            color: #ffffff !important;
-            font-size: 10px !important;
-            font-weight: 800 !important;
-            padding: 1px 6px !important;
-            border-radius: 9999px !important;
-            margin-top: 3px !important;
-            letter-spacing: 0.5px !important;
-            box-shadow: 0 1px 4px rgba(79, 70, 229, 0.3) !important;
-        }
-
-        /* Linia de separare cronologică între trecut și viitor */
-        #eregister table.table-sm thead tr.register-notes-header th.col-last-past,
-        #eregister table.table-sm tbody td.col-last-past {
-            border-right: 2.5px solid #6366f1 !important;
-            box-shadow: 4px 0 8px -3px rgba(99, 102, 241, 0.18) !important;
-        }
-
-        /* Interacțiune Hover și Focus pentru celulele din orele trecute și de azi (Light Mode) */
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover td.col-past { background-color: #e2e8f0 !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-past { background-color: #e0e7ff !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-past.focused-col { background-color: #c7d2fe !important; }
-
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr:hover td.col-today { background-color: #e0f2fe !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-today { background-color: #dbeafe !important; }
-        body:not(.upsc-dark-mode) #eregister table.table-sm tbody tr.focused-row td.col-today.focused-col { background-color: #bfdbfe !important; }
-
-
-        tr[wire\\:id] td:nth-child(4), tr[wire\\:id] td:nth-child(5) { display: none !important; }
-        input[wire\\:model="topic"] { width: 100% !important; height: 40px !important; border-radius: 8px !important; border: 1.5px solid #cbd5e1 !important; padding: 8px 14px !important; font-size: 0.95rem !important; color: #334155 !important; transition: all 0.2s; }
-        input[wire\\:model="topic"]:focus { border-color: #4f46e5 !important; background-color: #fff !important; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18) !important; outline: none; }
-        #eregister thead th button.btn-danger { display: none !important; }
-
-
-        /* BARA DE CONTROL (TOOLBAR) */
-        .upsc-controls-wrapper { 
-            display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
-            padding: 8px 14px; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(10px);
-            border: 1px solid #e2e8f0; border-radius: 30px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-            width: fit-content;
-        }
-        .upsc-brand-badge {
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            color: #ffffff;
-            font-size: 12.5px;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 9999px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
-            letter-spacing: 0.3px;
-        }
-        .upsc-brand-badge b { font-weight: 900; background: rgba(255,255,255,0.22); padding: 1px 7px; border-radius: 6px; }
-
-        .upsc-btn { 
-            padding: 7px 16px; border-radius: 9999px; font-weight: 600; cursor: pointer; border: none; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.06); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            font-size: 13.5px; display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
-        }
-        .upsc-btn:hover { transform: translateY(-1.5px); box-shadow: 0 5px 12px rgba(0,0,0,0.12); }
-        .upsc-btn:active { transform: translateY(0); }
-
-        #toggle-extra-cols-btn, #toggle-pair-absences-btn, #toggle-highlight-past-btn { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
-        #toggle-extra-cols-btn:hover, #toggle-pair-absences-btn:hover, #toggle-highlight-past-btn:hover { background-color: #e2e8f0; color: #0f172a; }
-        #toggle-pair-absences-btn.active {
-            background: linear-gradient(135deg, #0284c7, #0369a1) !important;
-            color: #ffffff !important;
-            border-color: #0284c7 !important;
-            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35) !important;
-        }
-        #toggle-pair-absences-btn.active b {
-            background: rgba(255, 255, 255, 0.22);
-            padding: 1px 6px;
-            border-radius: 6px;
-        }
-        #toggle-highlight-past-btn.active {
-            background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
-            color: #ffffff !important;
-            border-color: #4f46e5 !important;
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35) !important;
-        }
-        #toggle-highlight-past-btn.active b {
-            background: rgba(255, 255, 255, 0.22);
-            padding: 1px 6px;
-            border-radius: 6px;
-        }
-
-        .btn-stats { 
-            background: linear-gradient(135deg, #7c3aed, #6d28d9); color: white; 
-            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3); 
-        }
-        .btn-stats:hover { box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4); }
-
-        .btn-export { 
-            background: linear-gradient(135deg, #10b981, #059669); color: white; 
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3); 
-        }
-        .btn-export:hover { box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
-
-        .btn-open-import { 
-            background: linear-gradient(135deg, #f59e0b, #d97706); color: white; 
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3); 
-        }
-        .btn-open-import:hover { box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4); }
-
-        /* FLOATING SETTINGS FAB & PANEL */
-        #upsc-settings-fab { 
-            position: fixed; bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 50%; 
-            background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; display: flex; 
-            align-items: center; justify-content: center; cursor: pointer; 
-            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35); z-index: 9999; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid rgba(255,255,255,0.25);
-        }
-        #upsc-settings-fab:hover { transform: scale(1.1) rotate(60deg); box-shadow: 0 12px 30px rgba(79, 70, 229, 0.45); }
-        #upsc-settings-fab svg { width: 24px; height: 24px; }
-        
-        #upsc-settings-panel { 
-            position: fixed; bottom: 88px; right: 24px; width: 390px; background: rgba(255, 255, 255, 0.97); 
-            backdrop-filter: blur(16px); border-radius: 16px; box-shadow: 0 20px 45px -10px rgba(15,23,42,0.22); 
-            z-index: 9998; padding: 22px; display: none; border: 1px solid #e2e8f0; 
-            max-height: 82vh; overflow-y: auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; 
-        }
-        #upsc-settings-panel.active { display: block; animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
-        
-        .upsc-panel-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; margin-bottom: 16px; }
-        .upsc-panel-title { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; color: #1e293b; }
-        .upsc-btn-icon-close { 
-            background: #f1f5f9; border: none; border-radius: 50%; width: 28px; height: 28px; 
-            display: flex; align-items: center; justify-content: center; cursor: pointer; color: #64748b; 
-            font-size: 13px; font-weight: bold; transition: all 0.15s ease;
-        }
-        .upsc-btn-icon-close:hover { background: #e2e8f0; color: #0f172a; }
-        
-        #upsc-settings-panel label { font-size: 13.5px; font-weight: 700; color: #334155; margin-bottom: 6px; display: block; margin-top: 14px; }
-        #upsc-settings-panel input, #upsc-settings-panel select { 
-            width: 100%; padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; 
-            font-size: 14px; color: #1e293b; background-color: #f8fafc; transition: all 0.2s ease; box-sizing: border-box; 
-        }
-        #upsc-settings-panel input:focus, #upsc-settings-panel select:focus { 
-            background-color: #ffffff; border-color: #4f46e5; outline: none; 
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); 
-        }
-        
-        .help-tip { 
-            background-color: #eef2ff; border-left: 4px solid #4f46e5; padding: 14px; border-radius: 10px; 
-            margin-top: 18px; font-size: 13px; color: #3730a3; line-height: 1.55; 
-        }
-        .help-tip b { color: #1e1b4b; font-weight: 800; }
-        
-        #mia-qr-container { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out; text-align: center; }
-        #mia-qr-container.show-qr { max-height: 260px; opacity: 1; margin-top: 10px; }
-        .donation { text-align: center; margin-top: 22px; padding-top: 14px; border-top: 1px dashed #e2e8f0; font-size: 13px; font-weight: 600; color: #64748b; }
-
-        /* COMUTATOR MODERN iOS SWITCH */
-        .upsc-switch-wrapper { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; padding: 12px 0; border-top: 1px solid #f1f5f9; }
-        .upsc-switch-label { font-size: 14px; font-weight: 700; color: #334155; }
-        .upsc-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .upsc-switch input { opacity: 0; width: 0; height: 0; }
-        .upsc-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 9999px; }
-        .upsc-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-        input:checked + .upsc-slider { background-color: #4f46e5; }
-        input:checked + .upsc-slider:before { transform: translateX(20px); }
-
-        /* SECTIUNE TEMATICI */
-        #upsc-topics-toolbar-wrapper { 
-            margin: 22px 0 10px 0; padding: 16px; background-color: #ffffff; border-radius: 14px; 
-            border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: flex-start; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        #toggle-topics-btn { 
-            border: 1.5px solid #06b6d4; color: #0891b2; background: #ecfeff; font-weight: 700;
-        }
-        #toggle-topics-btn.active { background-color: #06b6d4; color: #ffffff; }
-        #toggle-topics-btn:hover { background-color: #0891b2; color: #ffffff; }
-        #upsc-topics-toolbar { display: flex; gap: 10px; margin-top: 14px; overflow: hidden; transition: all 0.3s ease; flex-wrap: wrap; width: 100%; }
-        .upsc-btn-apply { background: linear-gradient(135deg, #4f46e5, #4338ca); color: #fff; border-radius: 8px;}
-        .upsc-btn-copy { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border-radius: 8px;}
-        .upsc-btn-paste { background: linear-gradient(135deg, #10b981, #059669); color: #fff; border-radius: 8px;}
-
-        /* CSS MODAL STATISTICI */
-        #upsc-stats-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65) !important; z-index: 10000 !important; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        #upsc-stats-overlay.active { display: flex !important; animation: fadeIn 0.2s ease; }
-        #upsc-stats-modal { background: #ffffff; border-radius: 18px; width: 480px; max-width: 92%; padding: 26px; box-shadow: 0 20px 45px -10px rgba(15,23,42,0.25); position: relative; border: 1px solid rgba(255,255,255,0.8); }
-        #upsc-stats-modal h3 { color: #4f46e5; margin: 0; font-size: 20px; font-weight: 800; }
-        
-        .upsc-modal-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 18px; }
-        .upsc-modal-close { 
-            background: #f1f5f9; border: none; border-radius: 50%; width: 30px; height: 30px; 
-            display: flex; align-items: center; justify-content: center; cursor: pointer; color: #64748b; 
-            font-size: 14px; font-weight: bold; transition: all 0.15s ease;
-        }
-        .upsc-modal-close:hover { background: #e2e8f0; color: #0f172a; }
-
-        .stats-top-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px; }
-        .stat-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 6px; text-align: center; transition: all 0.2s ease; }
-        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-        .stat-val { font-size: 26px; font-weight: 900; line-height: 1; letter-spacing: -0.5px; }
-        .stat-desc { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.5px;}
-        .stat-card.primary .stat-val { color: #4f46e5; }
-        .stat-card.success .stat-val { color: #10b981; }
-        .stat-card.danger .stat-val { color: #f43f5e; }
-        .stat-card.info .stat-val { color: #06b6d4; }
-        .stat-missing { font-size: 11px; color: #e11d48; margin-top: 6px; font-weight: 700; background: #fff1f2; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecdd3; display: inline-block;}
-        
-        .chart-wrap { margin-top: 14px; background: #f8fafc; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .chart-title { font-size: 12.5px; font-weight: 800; color: #475569; margin-bottom: 12px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;}
-        .bar-row { display: flex; align-items: center; margin-bottom: 6px; }
-        .bar-label { width: 32px; font-size: 13px; font-weight: 800; color: #475569; text-align: right; padding-right: 8px;}
-        .bar-track { flex: 1; background: #e2e8f0; height: 12px; border-radius: 9999px; overflow: hidden; position: relative; }
-        .bar-fill { height: 100%; border-radius: 9999px; transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1); width: 0%; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; font-size: 9px; font-weight: 800; color: white;}
-        .bar-count { width: 28px; font-size: 12px; font-weight: 700; color: #334155; text-align: left; padding-left: 8px;}
-        
-        #btn-close-stats { margin-top: 20px; width: 100%; padding: 11px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 14px;}
-        #btn-close-stats:hover { background: #e2e8f0; color: #0f172a; }
-
-        /* CSS MODAL IMPORT */
-        #upsc-import-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.65) !important; z-index: 10001 !important; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        #upsc-import-overlay.active { display: flex !important; animation: fadeIn 0.3s ease; }
-        #upsc-import-modal { background: #ffffff; border-radius: 20px; width: 600px; max-width: 95%; padding: 28px; box-shadow: 0 20px 45px -10px rgba(15,23,42,0.25); position: relative; max-height: 90vh; overflow-y: auto; border: 1px solid rgba(255,255,255,0.8); }
-        #upsc-import-modal h3 { margin: 0; color: #10b981; font-weight: 800; font-size: 20px; }
-        
-        .prompt-box { background: #f8fafc; border: 1.5px dashed #cbd5e1; padding: 18px; border-radius: 12px; margin-bottom: 22px; position: relative; margin-top: 12px;}
-        .prompt-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12.5px; color: #334155; white-space: pre-wrap; margin: 0; line-height: 1.6; font-weight: 500; }
-        .btn-copy-prompt { position: absolute; top: -12px; right: 14px; padding: 5px 14px; font-size: 11.5px; background: #4f46e5; color: white; border: none; border-radius: 9999px; cursor: pointer; font-weight: 700; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); transition: all 0.2s; }
-        .btn-copy-prompt:hover { background: #4338ca; transform: scale(1.04); }
-        
-        .import-upload-zone { border: 2.5px dashed #10b981; background: #ecfdf5; padding: 36px 20px; text-align: center; border-radius: 14px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 10px; margin-top: 12px;}
-        .import-upload-zone:hover { background: #d1fae5; border-color: #059669; transform: translateY(-2px); }
-        .import-zone-icon { font-size: 38px; margin-bottom: 10px; }
-        .import-upload-zone span { font-size: 14.5px; font-weight: 700; color: #047857; }
-        
-        #btn-close-import { margin-top: 22px; width: 100%; padding: 11px; background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 14px;}
-        #btn-close-import:hover { background: #e2e8f0; color: #0f172a; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* DARK MODE 2.0 (SLATE / ZINC HIGH-END THEME) */
-        body.upsc-dark-mode { background-color: #0b0f19 !important; color: #cbd5e1 !important; }
-        body.upsc-dark-mode .card, 
-        body.upsc-dark-mode #upsc-settings-panel, 
-        body.upsc-dark-mode #upsc-stats-modal,
-        body.upsc-dark-mode #upsc-import-modal,
-        body.upsc-dark-mode #upsc-topics-toolbar-wrapper { 
-            background-color: #131b2e !important; color: #cbd5e1 !important; 
-            border-color: rgba(255, 255, 255, 0.08) !important; box-shadow: 0 16px 36px rgba(0,0,0,0.4) !important; 
-        }
-        body.upsc-dark-mode .upsc-controls-wrapper {
-            background: rgba(19, 27, 46, 0.9) !important; border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-        body.upsc-dark-mode .upsc-panel-title,
-        body.upsc-dark-mode #upsc-stats-modal h3,
-        body.upsc-dark-mode #upsc-import-modal h3 { color: #f8fafc !important; }
-        body.upsc-dark-mode .upsc-panel-header,
-        body.upsc-dark-mode .upsc-modal-header { border-bottom-color: rgba(255, 255, 255, 0.08) !important; }
-        body.upsc-dark-mode .upsc-btn-icon-close,
-        body.upsc-dark-mode .upsc-modal-close { background: #1e293b !important; color: #94a3b8 !important; }
-        body.upsc-dark-mode .upsc-btn-icon-close:hover,
-        body.upsc-dark-mode .upsc-modal-close:hover { background: #334155 !important; color: #fff !important; }
-
-        body.upsc-dark-mode .panel.panel-default { background-color: #131b2e !important; border-color: rgba(255, 255, 255, 0.08) !important; }
-        body.upsc-dark-mode .panel.panel-default table th, body.upsc-dark-mode .panel.panel-default table td { background-color: #131b2e !important; color: #cbd5e1 !important; border-color: rgba(255, 255, 255, 0.06) !important; }
-        body.upsc-dark-mode .panel.panel-default table thead th { background-color: #0f172a !important; color: #94a3b8 !important; }
-
-        body.upsc-dark-mode .tab-pane.scrollable-content { background-color: #0b0f19 !important; border-color: #1e293b !important; }
-        body.upsc-dark-mode #eregister { background-color: #0b0f19 !important; }
-        body.upsc-dark-mode #eregister table.table,
-        body.upsc-dark-mode #eregister table.table-sm { background-color: #0b0f19 !important; }
-
-        body.upsc-dark-mode #eregister thead.sticky-thead tr:first-child th,
-        body.upsc-dark-mode #eregister table.table-sm thead tr:first-child th {
-            background: #090d16 !important; color: #f8fafc !important; border-bottom: 2px solid #1e293b !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.p-2 {
-            background: #131b2e !important; border-right: 2px solid #1e293b !important; border-bottom: 2px solid #1e293b !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):not(:nth-last-child(-n+7)) {
-            background: #131b2e !important; color: #cbd5e1 !important; border-bottom: 2px solid #1e293b !important; border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:not(.p-2):hover,
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.hovered-col,
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.focused-col {
-            background: #1e293b !important; color: #818cf8 !important; border-bottom-color: #6366f1 !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(-n+7) {
-            background: #162033 !important; color: #94a3b8 !important; border-left: 1px solid rgba(255, 255, 255, 0.06) !important; border-bottom: 2px solid #1e293b !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th:nth-last-child(1) {
-            background: #1e1b4b !important; color: #a5b4fc !important; border-left: 2px solid #6366f1 !important;
-        }
-
-        body.upsc-dark-mode #eregister table.table-sm tbody th.text-left { 
-            background-color: #131b2e !important; color: #f1f5f9 !important; 
-            border-right: 2px solid rgba(255, 255, 255, 0.08) !important; border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody th.text-left span.text-dark { color: #f1f5f9 !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody th.text-left .user-avatar { border-color: #334155 !important; }
-
-        /* Evidențiere Hover în Dark Mode */
-        body.upsc-dark-mode #eregister:not(.disable-hover) tbody tr:hover td, 
-        body.upsc-dark-mode #eregister:not(.disable-hover) tbody tr:hover th,
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover,
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover > td,
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover > th { background-color: #162033 !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover th.text-left span.text-dark { color: #818cf8 !important; }
-
-        /* Evidențiere Puternică la Focus în Dark Mode */
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row { background-color: #1e294d !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td { background-color: #1a233e !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row th.text-left {
-            background-color: #1e294d !important;
-            border-left: 5px solid #818cf8 !important;
-            box-shadow: 4px 0 14px rgba(0, 0, 0, 0.5) !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row th.text-left span.text-dark {
-            color: #ffffff !important;
-            font-size: 15.5px !important;
-            font-weight: 800 !important;
-            transform: scale(1.06) translateX(4px);
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row th.text-left .user-avatar {
-            border-color: #818cf8 !important;
-            transform: scale(1.18);
-            box-shadow: 0 4px 12px rgba(129, 140, 248, 0.4) !important;
-        }
-
-        /* Coloane evidențiate în Dark Mode */
-        body.upsc-dark-mode .hovered-col, 
-        body.upsc-dark-mode .col-hover,
-        body.upsc-dark-mode #eregister table.table-sm tbody td.hovered-col,
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-hover,
-        body.upsc-dark-mode #eregister table.table-sm tbody th.col-hover,
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-hover:nth-last-child(-n+7),
-        body.upsc-dark-mode #eregister table.table-sm tbody td.hovered-col:nth-last-child(-n+7) { 
-            background-color: #162033 !important; 
-        }
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.focused-col {
-            background: #1e294d !important;
-            color: #c7d2fe !important;
-            border-bottom: 3px solid #818cf8 !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td.focused-col { background-color: #182038 !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.focused-col { background-color: #243054 !important; }
-
-        /* Toate celulele și input-urile din tabel în Dark Mode - NICIUN ELEMENT ALB */
-        body.upsc-dark-mode #eregister table.table-sm tbody td,
-        body.upsc-dark-mode #eregister table.table-sm tbody th {
-            border-bottom-color: rgba(255, 255, 255, 0.05) !important;
-            border-right-color: rgba(255, 255, 255, 0.04) !important;
-        }
-
-        body.upsc-dark-mode #eregister table.table-sm tbody td input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-hover input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body.upsc-dark-mode #eregister table.table-sm tbody td.hovered-col input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body.upsc-dark-mode #eregister table.table-sm tbody td.focused-col input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs),
-        body.upsc-dark-mode input[wire\:model="topic"], 
-        body.upsc-dark-mode #upsc-settings-panel input, 
-        body.upsc-dark-mode #upsc-settings-panel select,
-        body.upsc-dark-mode #upsc-topics-toolbar textarea { 
-            background-color: #0b0f19 !important; border: 1.5px solid #334155 !important; color: #f8fafc !important; 
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td input:hover { border-color: #64748b !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody td input:focus { 
-            border-color: #818cf8 !important; background-color: #0f172a !important; 
-            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25) !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td input:disabled { background-color: #111827 !important; border-color: #1f2937 !important; color: #9ca3af !important; }
-
-        /* Coloanele de totalizare în Dark Mode */
-        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(-n+7) {
-            background-color: #131b2e !important; border-left: 1px solid rgba(255, 255, 255, 0.06) !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover td:nth-last-child(-n+7) {
-            background-color: #162033 !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td:nth-last-child(-n+7) {
-            background-color: #1a233e !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(7) input { 
-            background-color: #111827 !important; border-color: #334155 !important; color: #94a3b8 !important; 
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(1) {
-            background-color: #161c36 !important; border-left: 2px solid #6366f1 !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td:nth-last-child(1) {
-            background-color: #1e2448 !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td:nth-last-child(1) input {
-            background-color: #1e1b4b !important; border-color: #6366f1 !important; color: #c7d2fe !important;
-        }
-
-        /* HEATMAP în Dark Mode cu specificitate maximă */
-        #eregister input.grade-excellent,
-        body.upsc-dark-mode #eregister input.grade-excellent,
-        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-excellent { 
-            background-color: rgba(16, 185, 129, 0.3) !important; 
-            color: #6ee7b7 !important; 
-            border: 1.5px solid rgba(52, 211, 153, 0.6) !important; 
-            font-weight: 800 !important;
-            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15) !important;
-        }
-        #eregister input.grade-good,
-        body.upsc-dark-mode #eregister input.grade-good,
-        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-good { 
-            background-color: rgba(59, 130, 246, 0.3) !important; 
-            color: #93c5fd !important; 
-            border: 1.5px solid rgba(96, 165, 250, 0.6) !important; 
-            font-weight: 800 !important;
-            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15) !important;
-        }
-        #eregister input.grade-ok,
-        body.upsc-dark-mode #eregister input.grade-ok,
-        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-ok { 
-            background-color: rgba(245, 158, 11, 0.3) !important; 
-            color: #fde68a !important; 
-            border: 1.5px solid rgba(251, 191, 36, 0.6) !important; 
-            font-weight: 800 !important;
-            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.15) !important;
-        }
-        #eregister input.grade-bad,
-        body.upsc-dark-mode #eregister input.grade-bad,
-        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-bad { 
-            background-color: rgba(239, 68, 68, 0.3) !important; 
-            color: #fca5a5 !important; 
-            border: 1.5px solid rgba(248, 113, 113, 0.6) !important; 
-            font-weight: 800 !important;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15) !important;
-        }
-        #eregister input.grade-abs,
-        body.upsc-dark-mode #eregister input.grade-abs,
-        body.upsc-dark-mode #eregister table.table-sm tbody td input.grade-abs { 
-            background-color: rgba(225, 29, 72, 0.35) !important; 
-            color: #fda4af !important; 
-            border: 1.5px solid rgba(251, 113, 133, 0.7) !important; 
-            font-weight: 900 !important; 
-            box-shadow: 0 2px 6px rgba(225, 29, 72, 0.2) !important; 
-        }
-
-        /* 6.2 COLOANE ORE TRECUTE ȘI ZIUA CURENTĂ (DARK MODE) */
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.col-past {
-            background: #0f1626 !important;
-            color: #94a3b8 !important;
-            border-bottom: 2.5px solid #334155 !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-past {
-            background-color: #101726 !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-past input:not(.grade-excellent):not(.grade-good):not(.grade-ok):not(.grade-bad):not(.grade-abs) {
-            background-color: #0b101b !important;
-            border-color: #1e293b !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-past input.input-missing-past {
-            border: 1.5px dashed #f59e0b !important;
-            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2) !important;
-        }
-
-        /* Coloana de azi în Dark Mode */
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.col-today {
-            background: #17223b !important;
-            color: #93c5fd !important;
-            border-bottom: 3px solid #60a5fa !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-today {
-            background-color: #131c31 !important;
-            border-right: 1px solid #2563eb !important;
-        }
-        body.upsc-dark-mode .badge-today {
-            background: linear-gradient(135deg, #6366f1, #818cf8) !important;
-            color: #ffffff !important;
-            box-shadow: 0 1px 6px rgba(129, 140, 248, 0.4) !important;
-        }
-        body.upsc-dark-mode #eregister table.table-sm thead tr.register-notes-header th.col-last-past,
-        body.upsc-dark-mode #eregister table.table-sm tbody td.col-last-past {
-            border-right: 2.5px solid #818cf8 !important;
-            box-shadow: 4px 0 8px -3px rgba(129, 140, 248, 0.3) !important;
-        }
-
-        /* Interacțiune Hover și Focus pentru celulele din orele trecute și de azi (Dark Mode) */
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover td.col-past { background-color: #162033 !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-past { background-color: #1a233e !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-past.focused-col { background-color: #243054 !important; }
-
-        body.upsc-dark-mode #eregister table.table-sm tbody tr:hover td.col-today { background-color: #192642 !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-today { background-color: #1e2e50 !important; }
-        body.upsc-dark-mode #eregister table.table-sm tbody tr.focused-row td.col-today.focused-col { background-color: #2b3e6b !important; }
-
-        body.upsc-dark-mode .stat-card,
-        body.upsc-dark-mode .chart-wrap { background: #0b0f19 !important; border-color: #1e293b !important; }
-        body.upsc-dark-mode .stat-val { color: #f8fafc !important; }
-        body.upsc-dark-mode .bar-track { background: #1e293b !important; }
-        body.upsc-dark-mode .prompt-box { background-color: #0b0f19 !important; border-color: #334155 !important; }
-        body.upsc-dark-mode .prompt-text { color: #93c5fd !important; }
-        body.upsc-dark-mode .import-upload-zone { background-color: rgba(16, 185, 129, 0.08) !important; border-color: #10b981 !important; }
-        body.upsc-dark-mode .import-upload-zone span { color: #34d399 !important; }
-        body.upsc-dark-mode #toggle-extra-cols-btn,
-        body.upsc-dark-mode #toggle-pair-absences-btn,
-        body.upsc-dark-mode #toggle-highlight-past-btn,
-        body.upsc-dark-mode #btn-close-stats,
-        body.upsc-dark-mode #btn-close-import { background-color: #1e293b !important; border-color: #334155 !important; color: #cbd5e1 !important; }
-        body.upsc-dark-mode #toggle-extra-cols-btn:hover,
-        body.upsc-dark-mode #toggle-pair-absences-btn:hover,
-        body.upsc-dark-mode #toggle-highlight-past-btn:hover,
-        body.upsc-dark-mode #btn-close-stats:hover,
-        body.upsc-dark-mode #btn-close-import:hover { background-color: #334155 !important; color: #fff !important; }
-        body.upsc-dark-mode #toggle-pair-absences-btn.active { 
-            background: linear-gradient(135deg, #0284c7, #0369a1) !important; 
-            color: #ffffff !important; 
-            border-color: #38bdf8 !important; 
-            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.45) !important; 
-        }
-        body.upsc-dark-mode #toggle-pair-absences-btn.active b { 
-            background: rgba(255, 255, 255, 0.22); padding: 1px 6px; border-radius: 6px; 
-        }
-        body.upsc-dark-mode #toggle-highlight-past-btn.active { 
-            background: linear-gradient(135deg, #4338ca, #4f46e5) !important; 
-            color: #ffffff !important; 
-            border-color: #818cf8 !important; 
-            box-shadow: 0 2px 8px rgba(129, 140, 248, 0.45) !important; 
-        }
-        body.upsc-dark-mode #toggle-highlight-past-btn.active b { 
-            background: rgba(255, 255, 255, 0.22); padding: 1px 6px; border-radius: 6px; 
-        }
-        body.upsc-dark-mode .help-tip { background-color: #162033 !important; border-left-color: #4f46e5 !important; color: #93c5fd !important; }
-        body.upsc-dark-mode .help-tip b { color: #e2e8f0 !important; }
-        body.upsc-dark-mode .list-group-item { color: #cbd5e1 !important; }
-        body.upsc-dark-mode .breadcrumb { background-color: #131b2e !important; }
-        body.upsc-dark-mode .breadcrumb-item.active { color: #94a3b8 !important; }
-        body.upsc-dark-mode .main-header { background-color: #131b2e !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; }
-        body.upsc-dark-mode .nav-link { color: #cbd5e1 !important; }
-
-        body.upsc-dark-mode .card-header { background-color: #131b2e !important; border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important; }
-        body.upsc-dark-mode .card-header .bg-light, body.upsc-dark-mode .card-header .table th, body.upsc-dark-mode .card-header .table td { background-color: #1e293b !important; color: #cbd5e1 !important; border-color: #334155 !important; }
-        body.upsc-dark-mode .card-header .text-dark { color: #cbd5e1 !important; }
-        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #008000"] { background-color: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; border-bottom: 2px solid #10b981 !important; }
-        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #004080"] { background-color: rgba(6, 182, 212, 0.2) !important; color: #22d3ee !important; border-bottom: 2px solid #06b6d4 !important; }
-        body.upsc-dark-mode .card-header .table thead th[style*="background-color: #e30d0d"] { background-color: rgba(239, 68, 68, 0.2) !important; color: #f87171 !important; border-bottom: 2px solid #ef4444 !important; }
-
-
-        /* Toast Notification */
-        .upsc-toast {
-            position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px);
-            background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); color: #ffffff; 
-            padding: 10px 24px; border-radius: 9999px; box-shadow: 0 20px 30px -5px rgba(0,0,0,0.3); 
-            z-index: 10005; font-weight: 600; font-size: 14px; pointer-events: none; opacity: 0; 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(255,255,255,0.15);
-        }
-        .upsc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-        /* Rânduri selectabile pentru selectarea grupei */
-        .clickable-group-row {
-            cursor: pointer;
-            transition: background-color 0.15s ease, transform 0.1s ease;
-        }
-        .clickable-group-row:hover {
-            background-color: rgba(79, 70, 229, 0.08) !important;
-        }
-        body.upsc-dark-mode .clickable-group-row:hover {
-            background-color: rgba(79, 70, 229, 0.18) !important;
-        }
-
-        /* Ascundere ultima coloană pe pagina de selectare a grupei */
-        body.upsc-selection-page table th:last-child,
-        body.upsc-selection-page table td:last-child {
-            display: none !important;
-        }
-    `;
-    document.head.appendChild(style);
 
     // Funcție pentru notificări discrete
     function showToast(message, duration = 3000) {
@@ -985,573 +35,28 @@
         document.body.classList.add('upsc-dark-mode');
     }
 
-    const teacherOptionsHtml = `
-        <option disabled="" selected="">Alege Profesorul...</option>
-        <option value="614">-  -</option>
-        <option value="591">Mohamad Mohamad Abu</option>
-        <option value="584">Ludmila Adamciuc</option>
-        <option value="1">Viorica Adăscăliţa</option>
-        <option value="2">Paulus Adelsgruber</option>
-        <option value="571">Aliona Afanas</option>
-        <option value="429">Dorin Afanas</option>
-        <option value="651">Victoria Afonin</option>
-        <option value="3">Ecaterina Ajder</option>
-        <option value="4">Alexandru Alavaţchi</option>
-        <option value="5">Mariana Albu-Oprea</option>
-        <option value="421">Nicolae Aluchi</option>
-        <option value="6">Alexandru Anghel</option>
-        <option value="428">Diana Antoci</option>
-        <option value="7">Natalia Antonevici</option>
-        <option value="8">Olimpiada Arbuz-Spatari</option>
-        <option value="412">Tatiana Arpentii</option>
-        <option value="388">Ion Arsene</option>
-        <option value="10">Natalia Avornicesă</option>
-        <option value="12">Eugenia Babîră</option>
-        <option value="11">Stanislav Babiuc</option>
-        <option value="570">Sergiu Baciu</option>
-        <option value="628">Vasile Balaban</option>
-        <option value="589">Rodica Balan</option>
-        <option value="15">Nicolae Balmuş</option>
-        <option value="595">Olga Balmuș</option>
-        <option value="16">Veronica Baltag</option>
-        <option value="644">Elena Bannaia</option>
-        <option value="541">Felicia Banu</option>
-        <option value="18">Victoria Baraga</option>
-        <option value="473">Nadejda Baraliuc</option>
-        <option value="400">Alic Barbă</option>
-        <option value="357">Alexandra Barbăneagră</option>
-        <option value="553">Lucia Bayrleitner</option>
-        <option value="21">Iurii Bejan</option>
-        <option value="22">Ludmila Bejenaru</option>
-        <option value="558">Victoria Belous</option>
-        <option value="23">Ion Bencheci</option>
-        <option value="24">Virginia Bernic</option>
-        <option value="25">Elena Bîceva</option>
-        <option value="582">Claudia Bîrgăoanu</option>
-        <option value="399">Elena Bîrsan</option>
-        <option value="509">Svetlana Bîrsan</option>
-        <option value="505">Nicolae Boboc</option>
-        <option value="26">Iuliana Bobrova</option>
-        <option value="404">Viorel Bocancea</option>
-        <option value="28">Cornelia Bodorin</option>
-        <option value="504">Violeta Bogdanova</option>
-        <option value="30">Veronica Bolduma</option>
-        <option value="29">Viorel Bolduma</option>
-        <option value="31">Anna Bolucencova</option>
-        <option value="430">Valeriu Bordan</option>
-        <option value="32">Irina Bordei</option>
-        <option value="34">Maia Borozan</option>
-        <option value="35">Marina Bostan</option>
-        <option value="409">Angela Botezatu</option>
-        <option value="478">Ion Botezatu</option>
-        <option value="36">Nina Botezatu</option>
-        <option value="403">Valentina Botnari</option>
-        <option value="494">Paulina Bouroș</option>
-        <option value="38">Olga Boz</option>
-        <option value="436">Andrei Braicov</option>
-        <option value="39">Eleonora Brigalda</option>
-        <option value="375">Lilia Brînză</option>
-        <option value="40">Olesea Bucuci</option>
-        <option value="42">Ana Budnic</option>
-        <option value="43">Ana Bulat</option>
-        <option value="642">Ion Bulicanu</option>
-        <option value="413">Radu Burdujan</option>
-        <option value="519">Svetlana Burea</option>
-        <option value="47">Alexandru Burlacu</option>
-        <option value="46">Valentin Burlacu</option>
-        <option value="48">Eugenia Bușmachiu</option>
-        <option value="451">Natalia Butmalai</option>
-        <option value="359">Aurica Buzenco</option>
-        <option value="50">Elena Buzinschi</option>
-        <option value="596">Lenuța Buzu</option>
-        <option value="432">Mihai Calalb</option>
-        <option value="620">Angela Calancea</option>
-        <option value="51">Carolina Calaraș</option>
-        <option value="561">Victoria Calistru</option>
-        <option value="632">Tatiana Callo</option>
-        <option value="463">Laurențiu Calmuțchi</option>
-        <option value="640">Angela Candu</option>
-        <option value="346">Teodor Candu</option>
-        <option value="52">Ludmila Canțîr</option>
-        <option value="468">Lucia Căpățină</option>
-        <option value="54">Natalia Carabet</option>
-        <option value="55">Olimpiada Caracaș</option>
-        <option value="168">Elena Carachentseva</option>
-        <option value="56">Vlad Caraman</option>
-        <option value="57">Dumitru Carata</option>
-        <option value="634">Liuba Carnet</option>
-        <option value="58">Ivan Carp</option>
-        <option value="223">Mihaela Cașcaval</option>
-        <option value="652">Victoria Casminina</option>
-        <option value="59">Andrei Castravăț</option>
-        <option value="443">Tudor Castraveț</option>
-        <option value="60">Sergiu Cataraga</option>
-        <option value="392">Nadejda Cazacioc</option>
-        <option value="535">Veronica Ceban</option>
-        <option value="62">Lilia Cebanu</option>
-        <option value="578">Stanislav Cebotari</option>
-        <option value="63">Natalia Celpan-Patic</option>
-        <option value="64">Lucia Cepraga</option>
-        <option value="501">Olga Cerbu</option>
-        <option value="27">Galina Cereteu</option>
-        <option value="65">Viorica Cerneavschi</option>
-        <option value="67">Silvia Chicu</option>
-        <option value="68">Nicolae Chicuș</option>
-        <option value="452">Grigore Chiperi</option>
-        <option value="586">Nadejda Chiperi</option>
-        <option value="542">Oxana Chira</option>
-        <option value="69">Larisa Chirev</option>
-        <option value="383">Eugenia Chiriac</option>
-        <option value="532">Ghenadie Chiriac</option>
-        <option value="464">Liubomir Chiriac</option>
-        <option value="70">Tatiana Chiriac</option>
-        <option value="540">Lilia Chirilov</option>
-        <option value="71">Vasile Chirilov</option>
-        <option value="72">Sebastian Chirimbu</option>
-        <option value="525">Olga Chirvas</option>
-        <option value="389">Diana Chișca</option>
-        <option value="74">Victor Chiseliov</option>
-        <option value="75">Lucia Chitoroga</option>
-        <option value="76">Liubovi Cibotaru</option>
-        <option value="77">Iurie Cibric</option>
-        <option value="79">Adriana Ciobanu</option>
-        <option value="479">Eugeniu Ciobanu</option>
-        <option value="78">Iraida Ciobanu</option>
-        <option value="543">Mihaela Ciobanu</option>
-        <option value="631">Nicoleta Ciobanu</option>
-        <option value="80">Valentina Ciobanu</option>
-        <option value="587">Ana-Maria Ciocoi</option>
-        <option value="611">Ana-Maria Ciocoi</option>
-        <option value="82">Constantin Ciorbă</option>
-        <option value="352">Svetlana Ciorbă</option>
-        <option value="391">Victor Ciornea</option>
-        <option value="83">Lilia Cîrlan</option>
-        <option value="416">Tatiana Cîrlig</option>
-        <option value="85">Natalia Ciubotaru</option>
-        <option value="84">Nicolae Ciubotaru</option>
-        <option value="508">Ludmila Coadă</option>
-        <option value="374">Viorica Coadă</option>
-        <option value="397">Igor Codreanu</option>
-        <option value="377">Sergiu Codreanu</option>
-        <option value="86">Sergiu Cogut</option>
-        <option value="87">Lidia Cojocari</option>
-        <option value="461">Snejana Cojocari-Luchian</option>
-        <option value="338">Aurelia Cojocaru</option>
-        <option value="560">Svetlana Cojocaru</option>
-        <option value="89">Valentina Cojocaru</option>
-        <option value="90">Vasile Cojocaru</option>
-        <option value="405">Victoria Cojocaru</option>
-        <option value="406">Violeta Cojocaru</option>
-        <option value="92">Liubov Colesnic</option>
-        <option value="483">Lilia Constantinov</option>
-        <option value="500">Valentin Constantinov</option>
-        <option value="93">Angela Copacinschi</option>
-        <option value="347">Nina Corcinschi</option>
-        <option value="576">Cristian Corolenco</option>
-        <option value="387">Eduard Coropceanu</option>
-        <option value="384">Diana Coșcodan</option>
-        <option value="549">Valeria Covalenco</option>
-        <option value="95">Elena Covaliova</option>
-        <option value="96">Olga Covaliova</option>
-        <option value="381">Tudor Cozari</option>
-        <option value="368">Dumitru Cozma</option>
-        <option value="97">Tatiana Cozman</option>
-        <option value="98">Valeria Crasov</option>
-        <option value="99">Tatiana Cravcenco</option>
-        <option value="590">Maria Crețu</option>
-        <option value="419">Vasile Crețu</option>
-        <option value="534">Aurelia Crivoi</option>
-        <option value="101">Ion Croitoru</option>
-        <option value="536">Angela Cucer</option>
-        <option value="102">Adrian Cucereavîi</option>
-        <option value="348">Lucia Cucu</option>
-        <option value="469">Vadim Cujbă</option>
-        <option value="103">Stelian Culea</option>
-        <option value="104">Uliana Culea</option>
-        <option value="105">Angela Curacițchi</option>
-        <option value="106">Valentin Cușcă</option>
-        <option value="353">Angela Cutasevici</option>
-        <option value="495">Olesea Cuzan</option>
-        <option value="108">Larisa Cuznețov</option>
-        <option value="633">Anatolie Daicu</option>
-        <option value="109">Nadejda Damian</option>
-        <option value="607">Daniel Dandeș</option>
-        <option value="528">Malai Daniela</option>
-        <option value="531">Aureliu Danilov</option>
-        <option value="111">Gabriela Darii</option>
-        <option value="113">Emilia Denisov</option>
-        <option value="114">Svetlana Dermenji</option>
-        <option value="480">Vitalie Dilan</option>
-        <option value="115">Maria Diţa</option>
-        <option value="552">Liuba Dobîndă</option>
-        <option value="601">Carolina Dodu-Savca</option>
-        <option value="116">Liubovi Donic</option>
-        <option value="118">Diana Donoagă</option>
-        <option value="627">Vadim Druță</option>
-        <option value="120">Tatiana Dubineanschi</option>
-        <option value="393">Gheorghe Duca</option>
-        <option value="621">Ina Dumbravă</option>
-        <option value="121">Roza Dumbraveanu</option>
-        <option value="573">Robert Eckhart</option>
-        <option value="597">Adelina Efros</option>
-        <option value="124">Valentina Enachi</option>
-        <option value="125">Alexandru Ermurache</option>
-        <option value="126">Irina Ețco</option>
-        <option value="128">Veaceslav Fisticanu</option>
-        <option value="489">Valentina Fluierar</option>
-        <option value="130">Olesea Frunze</option>
-        <option value="564">Valentina Gaiciuc</option>
-        <option value="619">Daniela Galațanu</option>
-        <option value="131">Lilia Gălușcă</option>
-        <option value="132">Olesea Gangan</option>
-        <option value="133">Nina Garștea</option>
-        <option value="437">Ala Gasnaș</option>
-        <option value="134">Olesea Ghedrovici</option>
-        <option value="135">Cezara Gheorghiță</option>
-        <option value="385">Elena Gherasim</option>
-        <option value="136">Olga Gherlovan</option>
-        <option value="606">Natalia Ghetmanenco</option>
-        <option value="139">Adrian Ghicov</option>
-        <option value="140">Zinaida Ghilan</option>
-        <option value="142">Gheorghe Gînju</option>
-        <option value="141">Stela Gînju</option>
-        <option value="143">Aurelia Glavan</option>
-        <option value="438">Angela Globa</option>
-        <option value="144">Ana Gobjila</option>
-        <option value="593">Ecaterina Godoroja</option>
-        <option value="145">Tamara Gogu</option>
-        <option value="476">Sergiu Golub</option>
-        <option value="146">Silvia Golubițchi</option>
-        <option value="147">Oxana Golubovschi</option>
-        <option value="521">Victoria Gonța</option>
-        <option value="420">Elena Gorincioi</option>
-        <option value="580">Elena Gozun</option>
-        <option value="152">Petru Gozun</option>
-        <option value="153">Svetlana Gozun</option>
-        <option value="154">Vasile Grama</option>
-        <option value="155">Aliona Grati</option>
-        <option value="156">Jana Grecu</option>
-        <option value="376">Sofia Grigorcea</option>
-        <option value="158">Olga Grosu</option>
-        <option value="599">Vladimir Grozdov</option>
-        <option value="160">Adela Guțu</option>
-        <option value="433">Leonid Guțuleac</option>
-        <option value="161">Maria Guzun</option>
-        <option value="356">Ana Guzun-Bulat</option>
-        <option value="583">Olesea Haceatrean</option>
-        <option value="162">Efrosinia Haheu-Munteanu</option>
-        <option value="530">Mihaela Hajdeu</option>
-        <option value="164">Lilia Herța</option>
-        <option value="163">Valeriu Herța</option>
-        <option value="608">Gabriel Ichim-Radu</option>
-        <option value="165">Yurie Ilaşco</option>
-        <option value="453">Anatolie Ionaș</option>
-        <option value="166">Ina Isac</option>
-        <option value="650">Cătălina Istrati</option>
-        <option value="548">Adriana Istrati-Ștefănescu</option>
-        <option value="457">Iulia Iurchevici</option>
-        <option value="511">Constantin Ivanov</option>
-        <option value="395">Anastasia Ivanova</option>
-        <option value="481">Elena Jechiu</option>
-        <option value="167">Petru Jelescu</option>
-        <option value="585">Elena Jigău</option>
-        <option value="490">Victor Jitari</option>
-        <option value="523">Natalia Josu</option>
-        <option value="556">Viorica Juc</option>
-        <option value="579">Dumitru Juraveli</option>
-        <option value="349">Tatiana Kononova</option>
-        <option value="555">Mart Laanpere</option>
-        <option value="170">Tatiana Lagaeva</option>
-        <option value="171">Emilia Lapoşina</option>
-        <option value="588">Tudor Lapp</option>
-        <option value="474">Lilia Lașcu</option>
-        <option value="484">Tatiana Lașcu</option>
-        <option value="491">Vadim Lavric</option>
-        <option value="172">Alexandru Leahu</option>
-        <option value="173">Natalia Leu</option>
-        <option value="518">Daria Levițchi</option>
-        <option value="492">Nina Liogchi</option>
-        <option value="577">Ala Lipceanu</option>
-        <option value="174">Angela Lisnic</option>
-        <option value="176">Elena Losîi</option>
-        <option value="497">Vasile Lozovan</option>
-        <option value="617">Ecaterina Lungu</option>
-        <option value="533">Lidia Lungu</option>
-        <option value="636">Marinela Lungu</option>
-        <option value="517">Viorelia Lungu</option>
-        <option value="439">Natalia Lupașco</option>
-        <option value="177">Lilia Lupașcu</option>
-        <option value="178">Ala Lupu</option>
-        <option value="465">Ilie Lupu</option>
-        <option value="645">Lucia Lupu</option>
-        <option value="417">Rodica Maistru</option>
-        <option value="180">Vitalie Malcoci</option>
-        <option value="447">Vitalie Mamot</option>
-        <option value="635">Iuliana Manoli</option>
-        <option value="182">Alina Mardari</option>
-        <option value="510">Angela Mardari</option>
-        <option value="183">Mariana Marin</option>
-        <option value="185">Tatiana Matran</option>
-        <option value="186">Vasile Maxim</option>
-        <option value="187">Victoria Maximciuc</option>
-        <option value="390">Eugenia Melentiev</option>
-        <option value="624">Maxim Melinte</option>
-        <option value="188">Veronica Melinti</option>
-        <option value="637">Natalia Melnic</option>
-        <option value="189">Radu Melniciuc</option>
-        <option value="351">Zinaida Micleuşanu</option>
-        <option value="524">Tatiana Midrigan</option>
-        <option value="488">Cristina Mihai</option>
-        <option value="568">Veronica Mihailov</option>
-        <option value="502">Lilia Mihalachi</option>
-        <option value="444">Ion Mironov</option>
-        <option value="190">Iulia Mîrza</option>
-        <option value="458">Valentina Mîslițchi</option>
-        <option value="191">Liuba Mocanu</option>
-        <option value="623">Anatolii Mogîlda</option>
-        <option value="192">Ludmila Moisei</option>
-        <option value="193">Ludmila Mokan-Vozian</option>
-        <option value="345">Iosif Moldovanu</option>
-        <option value="194">Ion Morărescu</option>
-        <option value="563">Ivan Morozan</option>
-        <option value="496">Elena Moșanu</option>
-        <option value="396">Lora Moșanu-Șupac</option>
-        <option value="195">Andrei Munteanu</option>
-        <option value="196">Octavian Munteanu</option>
-        <option value="471">Tamara Munteanu</option>
-        <option value="197">Ilie Mușinschi</option>
-        <option value="199">Dumitru Musteață</option>
-        <option value="477">Elena Musteață</option>
-        <option value="198">Sergiu Musteață</option>
-        <option value="641">Svetlana Nastas</option>
-        <option value="547">Anca-Mihaela Nastasă</option>
-        <option value="200">Cristina Nazaru</option>
-        <option value="201">Liliana Neaga</option>
-        <option value="499">Vasile Neaga</option>
-        <option value="520">Natalia Neagu</option>
-        <option value="203">Gina-Aurora Necula</option>
-        <option value="378">Boris Nedbaliuc</option>
-        <option value="653">Ecaterina Neer</option>
-        <option value="559">Corina Negară</option>
-        <option value="493">Angela Nevoia</option>
-        <option value="394">Elena Nicolau</option>
-        <option value="205">Gheorghe Niculiță</option>
-        <option value="206">Larisa Noroc</option>
-        <option value="514">Alexandra Nour</option>
-        <option value="424">Ecaterina Novacovscaia</option>
-        <option value="643">Alexandru Obadă</option>
-        <option value="207">Veronica Oboroceanu</option>
-        <option value="411">Viorica Oboroceanu</option>
-        <option value="208">Diana Oganisean</option>
-        <option value="209">Aliona Ohrimenco</option>
-        <option value="210">Valentina Olărescu</option>
-        <option value="211">Anastasia Oloieru</option>
-        <option value="380">Nadejda Ovcerenco</option>
-        <option value="516">Liuba Paiu</option>
-        <option value="212">Eugen Palade</option>
-        <option value="402">Vasile Panico</option>
-        <option value="566">Aliona Paniș</option>
-        <option value="213">Ludmila Papuc</option>
-        <option value="184">Violeta Paraschiv</option>
-        <option value="551">Cristina Pascalova</option>
-        <option value="639">Valentina Pascari</option>
-        <option value="214">Dumitru Patrașcu</option>
-        <option value="554">Cebotaru Paula</option>
-        <option value="440">Dorin Pavel</option>
-        <option value="441">Maria Pavel</option>
-        <option value="215">Mihaela Pavlenco</option>
-        <option value="459">Lilia Pavlenko</option>
-        <option value="216">Carolina Perjan</option>
-        <option value="355">Anatol Petrenco</option>
-        <option value="217">Liuba Petrenco</option>
-        <option value="219">Lilia Petriciuc</option>
-        <option value="512">Elena Petrov</option>
-        <option value="538">Nina Petrovschi</option>
-        <option value="386">Pavel Pînzaru</option>
-        <option value="220">Mariana Pîrvan</option>
-        <option value="221">Stela Pîslari</option>
-        <option value="418">Daniela Placinta</option>
-        <option value="222">Victoria Plămădeală</option>
-        <option value="350">Inga Platon</option>
-        <option value="224">Maria Pleşca</option>
-        <option value="225">Galina Pleșcenco</option>
-        <option value="226">Elena Ploșniță</option>
-        <option value="227">Dorina Ponomari</option>
-        <option value="647">Lilia Popa</option>
-        <option value="370">Mihail Popa</option>
-        <option value="229">Natalia Popa</option>
-        <option value="613">Oxana Popa</option>
-        <option value="228">Pavel Popa</option>
-        <option value="232">Cristina Popescu</option>
-        <option value="231">Maria Popescu</option>
-        <option value="602">Angela Popovici</option>
-        <option value="233">Sergiu Port</option>
-        <option value="407">Liliana Posțan</option>
-        <option value="234">Ana-Maria Postolache</option>
-        <option value="434">Igor Postolachi</option>
-        <option value="435">Valentina Postolachi</option>
-        <option value="235">Liuba Prangache</option>
-        <option value="482">Afanasie Prepeliță</option>
-        <option value="467">Natalia Procop</option>
-        <option value="238">Irina Prosii</option>
-        <option value="448">Petru Prunici</option>
-        <option value="239">Elena Prus</option>
-        <option value="240">Elizabeta Puică</option>
-        <option value="594">Viorica Purcel</option>
-        <option value="610">Viorica Purcel</option>
-        <option value="445">Anatolie Puțuntică</option>
-        <option value="369">Vitalie Puțuntică</option>
-        <option value="242">Iurie Puzdrovski</option>
-        <option value="569">Elena Puzur</option>
-        <option value="246">Aurelia Racu</option>
-        <option value="243">Igor Racu</option>
-        <option value="244">Iulia Racu</option>
-        <option value="245">Jana Racu</option>
-        <option value="485">Mario Radermacher</option>
-        <option value="648">Mihaela Railean</option>
-        <option value="544">Stela Railean</option>
-        <option value="247">Olga Raileanu</option>
-        <option value="248">Veronica Răileanu</option>
-        <option value="626">Elena Rațeeva</option>
-        <option value="249">Eugen Reabenchi</option>
-        <option value="371">Vadim Repeșco</option>
-        <option value="575">Aurelian Roman</option>
-        <option value="507">Nicolae Roman</option>
-        <option value="253">Daniela Roșca</option>
-        <option value="251">Ruslan Roșca</option>
-        <option value="398">Andrei Rotaru</option>
-        <option value="255">Elena Rotaru</option>
-        <option value="254">Maria Rotaru</option>
-        <option value="557">Ljudmilla Rozhdestvenskaja</option>
-        <option value="529">Elena Rozovel</option>
-        <option value="486">Taisa Rudeanu</option>
-        <option value="342">Călin Rus</option>
-        <option value="401">Elena Rusu</option>
-        <option value="513">Nina Rusu</option>
-        <option value="256">Valentin Rusu</option>
-        <option value="258">Larisa Sadovei</option>
-        <option value="259">Eraneac Sagoian</option>
-        <option value="260">Natalia Sajin</option>
-        <option value="431">Larisa Sali</option>
-        <option value="261">Josef Sallanz</option>
-        <option value="515">Ludmila Samanati</option>
-        <option value="262">Elena Samburic</option>
-        <option value="263">Sergiu Sanduleac</option>
-        <option value="622">Victoria Saracuța</option>
-        <option value="150">Liliana Saranciuc-Gordea</option>
-        <option value="545">Constantin Șarcov</option>
-        <option value="422">Viorica Șargarovschi</option>
-        <option value="264">Anastasia Sava</option>
-        <option value="265">Igor Sava</option>
-        <option value="266">Lucia Sava</option>
-        <option value="267">Corina Savițchi</option>
-        <option value="498">Victor Șcerbacov</option>
-        <option value="269">Constantin Șchiopu</option>
-        <option value="268">Lucia Șchiopu</option>
-        <option value="270">Kathrin Schoberl</option>
-        <option value="581">Olga Scoric</option>
-        <option value="654">Viorica Sculea</option>
-        <option value="487">Albina Scutaru</option>
-        <option value="656">Daniela Șerban</option>
-        <option value="630">Nicoleta Sergentu</option>
-        <option value="466">Nicolae Silistraru</option>
-        <option value="273">Ana Simac</option>
-        <option value="274">Irina Simcenco</option>
-        <option value="275">Larisa Sinițaru</option>
-        <option value="522">Rodica Sîrbu</option>
-        <option value="276">Olesea Sîrghi</option>
-        <option value="277">Olga Smochin</option>
-        <option value="278">Dumitrița Smolnițchi</option>
-        <option value="449">Elena Sochircă</option>
-        <option value="279">Natalia Socolova</option>
-        <option value="460">Larisa Șofron</option>
-        <option value="280">Angela Solcan</option>
-        <option value="539">Rodica Solovei</option>
-        <option value="281">Rodica Spătaru</option>
-        <option value="612">Diana Spulber</option>
-        <option value="423">Elena Stamati</option>
-        <option value="282">Ion Ștefăniță</option>
-        <option value="283">Elena Stempovschi</option>
-        <option value="655">Cristina Stîrcu</option>
-        <option value="475">Cristina Straistari-Lungu</option>
-        <option value="454">Natalia Străjescu</option>
-        <option value="285">Valentina Stratan</option>
-        <option value="472">Victoria Stratan</option>
-        <option value="450">Maria Strechii</option>
-        <option value="372">Alexandru Șuba</option>
-        <option value="286">Svetlana Șugjda</option>
-        <option value="646">Vera Surățel</option>
-        <option value="287">Dorina Surugiu</option>
-        <option value="625">Sergiu Suvac</option>
-        <option value="546">Silvia Suvac</option>
-        <option value="408">Elena Taban</option>
-        <option value="609">Liliana Tăbîrța</option>
-        <option value="455">Polina Taburceanu</option>
-        <option value="289">Svetlana Talpă</option>
-        <option value="175">Cristina Tamazlîcari</option>
-        <option value="290">Elena Țap</option>
-        <option value="291">Ion Țapu</option>
-        <option value="292">Boris Țarălungă</option>
-        <option value="294">Ecaterina Țărnă</option>
-        <option value="296">Angela Tataru</option>
-        <option value="295">Nina Tataru</option>
-        <option value="297">Angela Teleman</option>
-        <option value="572">Ana Țîbuleac</option>
-        <option value="373">Ana Ticaciuc</option>
-        <option value="298">Lucia Țîcu</option>
-        <option value="415">Ana Țîganaș</option>
-        <option value="638">Ion Țîgulea</option>
-        <option value="299">Elena Țîmbaliuc</option>
-        <option value="300">Olga Timuș</option>
-        <option value="301">Iuliana Tiosa</option>
-        <option value="302">Olga Tiron</option>
-        <option value="503">Inga Țîțchiev</option>
-        <option value="592">Anatolie Tomoianu</option>
-        <option value="550">Natalia Topal</option>
-        <option value="303">Gabriella Topor</option>
-        <option value="629">Viorica Trifăuțan</option>
-        <option value="425">Alina Trofim</option>
-        <option value="306">Alexei Țulea</option>
-        <option value="379">Lilia Țurcan</option>
-        <option value="657">Alina-Maria Țurcanu</option>
-        <option value="343">Aurelii Tverdohleb</option>
-        <option value="309">Igor Tverdohleb</option>
-        <option value="310">Irina Țvic</option>
-        <option value="562">Profesor UPSC</option>
-        <option value="313">Rodica Ursachi</option>
-        <option value="605">Ion Ursu</option>
-        <option value="456">Lucia Ursu</option>
-        <option value="315">Ludmila Ursu</option>
-        <option value="314">Valentina Ursu</option>
-        <option value="317">Doina Usaci</option>
-        <option value="318">Larisa Usatîi</option>
-        <option value="319">Mariana Vacarciuc</option>
-        <option value="442">Teodora Vascan</option>
-        <option value="470">Tatiana Vasian</option>
-        <option value="321">Andrei Vasilache</option>
-        <option value="649">Ana Vasina</option>
-        <option value="322">Alexandru Vatavu</option>
-        <option value="600">Tatiana Verdeș</option>
-        <option value="323">Vasile Versteac</option>
-        <option value="410">Tatiana Veveriță</option>
-        <option value="324">Marcela Vîlcu</option>
-        <option value="462">Elena Vinnicenco</option>
-        <option value="325">Maria Vîrlan</option>
-        <option value="326">Ala Vitcovschii</option>
-        <option value="598">Irina Vlas</option>
-        <option value="446">Nina Volontir</option>
-        <option value="327">Vasile Vozian</option>
-        <option value="567">Violeta Vrabii</option>
-        <option value="328">Tatiana Yavuz</option>
-        <option value="329">Corina Zagaievschi</option>
-        <option value="330">Viorica Zaharia</option>
-        <option value="331">Simion Zamșa</option>
-        <option value="332">Ion Zderciuc</option>
-        <option value="414">Vera Zdraguș</option>
-        <option value="333">Aliona Zgardan-Crudu</option>
-        <option value="334">Ecaterina Zubenschi</option>
-        <option value="616">Mariana Zubenschi</option>
-    `;
+
+    function getTeacherOptionsHtml() {
+        const nativeTeacherSelect = document.querySelector('select[x-ref="teacher"]');
+        if (nativeTeacherSelect && nativeTeacherSelect.options && nativeTeacherSelect.options.length > 5) {
+            localStorage.setItem('upsc_cached_teachers_html', nativeTeacherSelect.innerHTML);
+            return nativeTeacherSelect.innerHTML;
+        }
+        const cached = localStorage.getItem('upsc_cached_teachers_html');
+        if (cached && cached.length > 50) {
+            return cached;
+        }
+        return '<option disabled selected>Alege Profesorul...</option>';
+    }
+
+    function populateTeacherSelect() {
+        const teacherSelect = document.getElementById('set-teacher');
+        if (!teacherSelect) return;
+        if (teacherSelect.options.length <= 1) {
+            teacherSelect.innerHTML = getTeacherOptionsHtml();
+            if (s_teacher) teacherSelect.value = s_teacher;
+        }
+    }
 
     const fab = document.createElement('div'); 
     fab.id = 'upsc-settings-fab'; 
@@ -1578,7 +83,7 @@
         
         <label>Profesor</label>
         <select id="set-teacher">
-            ${teacherOptionsHtml}
+            ${getTeacherOptionsHtml()}
         </select>
         
         <label>ID Bloc</label>
@@ -1626,7 +131,7 @@
             Îți este utilă această extensie?<br>
             <a href="#" id="toggle-qr-btn" style="color: #d97706; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; background: #fffbeb; border-radius: 9999px; margin-top: 8px; border: 1px solid #fde68a; transition: all 0.2s; font-size: 12px;">☕ Oferă o cafea autorului (MIA)</a>
             <div id="mia-qr-container">
-                <img src="https://i.imgur.com/ss0xMzu.jpeg" width="192" height="192" style="border-radius: 12px; border: 1px solid #e2e8f0; padding: 6px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,0.08); margin-top: 8px;">
+                <img src="data:image/jpeg;base64,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" width="192" height="192" style="border-radius: 12px; border: 1px solid #e2e8f0; padding: 6px; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,0.08); margin-top: 8px;">
                 <div style="font-size: 11px; color: #64748b; margin-top: 6px; font-weight: 500;">Scanează cu orice aplicație bancară din MD</div>
             </div>
         </div>
@@ -1634,7 +139,7 @@
     document.body.appendChild(fab); document.body.appendChild(panel);
     document.getElementById('set-teacher').value = s_teacher;
 
-    fab.addEventListener('click', () => panel.classList.toggle('active'));
+    fab.addEventListener('click', () => { panel.classList.toggle('active'); populateTeacherSelect(); });
     const closeSettingsBtn = document.getElementById('upsc-settings-close');
     if (closeSettingsBtn) {
         closeSettingsBtn.addEventListener('click', () => panel.classList.remove('active'));
@@ -1720,6 +225,180 @@
             }, 100);
         }
     });
+
+    // ==========================================
+    // AJUTĂTOARE REGISTRU & SALVARE DIRECTĂ AJAX
+    // ==========================================
+    function getRegisterId() {
+        const match = window.location.pathname.match(/\/electronicRegister\/(\d+)/);
+        if (match) return match[1];
+        
+        const wireEl = document.querySelector('[wire\\:initial-data*="register_id"]');
+        if (wireEl) {
+            const m = wireEl.getAttribute('wire:initial-data').match(/["']register_id["']\s*:\s*(\d+)/);
+            if (m) return m[1];
+        }
+
+        const flagLink = document.querySelector('a[href*="/electronicRegister/"]');
+        if (flagLink) {
+            const m = flagLink.href.match(/\/electronicRegister\/(\d+)/);
+            if (m) return m[1];
+        }
+
+        return window.location.pathname.split('/').filter(Boolean).pop();
+    }
+
+    function getRegisterBaseUrl() {
+        const langMatch = window.location.pathname.match(/^\/([a-z]{2})\//);
+        const lang = langMatch ? langMatch[1] : 'ro';
+        return `${window.location.origin}/${lang}/teacher/electronicRegister`;
+    }
+
+    async function saveNoteDirectAJAX(input, noteValue, registerId, csrfToken) {
+        return new Promise((resolve, reject) => {
+            const regId = registerId || getRegisterId();
+            const token = csrfToken || (window.jQuery && window.jQuery('meta[name="csrf-token"]').attr('content')) || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const baseUrl = getRegisterBaseUrl();
+
+            const isEval = input.classList.contains('student-evaluation');
+            const url = isEval
+                ? `${baseUrl}/setEvaluationNote/${regId}`
+                : `${baseUrl}/setNote/${regId}`;
+
+            const data = {
+                student_id: input.getAttribute('data-student-id'),
+                note: noteValue
+            };
+
+            if (isEval) {
+                data.type = input.getAttribute('data-type');
+            } else {
+                data.date = input.getAttribute('data-date');
+                data.event_id = input.getAttribute('data-event-id');
+            }
+
+            if (window.jQuery) {
+                window.jQuery.ajax({
+                    headers: { 'X-CSRF-TOKEN': token },
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    success: function(resp) {
+                        if (resp && resp.type === 'error') {
+                            reject(new Error(resp.message || 'Eroare server SIMU la salvarea notei'));
+                        } else {
+                            resolve(resp);
+                        }
+                    },
+                    error: function(err) {
+                        if (err.status === 419 && window.toastr) {
+                            window.toastr.error("Sesiunea SIMU a expirat! Te rugăm să reîmprospătezi pagina (F5).", "Sesiune Expirată", { progressBar: true });
+                        }
+                        reject(err);
+                    }
+                });
+            } else {
+                fetch(url, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'X-CSRF-TOKEN': token,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: new URLSearchParams(data).toString()
+                })
+                .then(res => res.json())
+                .then(resp => {
+                    if (resp && resp.type === 'error') {
+                        reject(new Error(resp.message || 'Eroare server SIMU la salvarea notei'));
+                    } else {
+                        resolve(resp);
+                    }
+                })
+                .catch(reject);
+            }
+        });
+    }
+
+    function normalizeName(str) {
+        if (!str) return '';
+        return str
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[\-_\.]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    function nameSimilarity(name1, name2) {
+        const n1 = normalizeName(name1);
+        const n2 = normalizeName(name2);
+        if (n1 === n2) return 1.0;
+
+        const words1 = n1.split(' ').filter(w => w.length > 1);
+        const words2 = n2.split(' ').filter(w => w.length > 1);
+
+        const matchCount1 = words1.filter(w1 => words2.some(w2 => w2.includes(w1) || w1.includes(w2))).length;
+        const matchCount2 = words2.filter(w2 => words1.some(w1 => w1.includes(w2) || w2.includes(w1))).length;
+
+        const tokenScore = Math.max(
+            words1.length > 0 ? matchCount1 / words1.length : 0,
+            words2.length > 0 ? matchCount2 / words2.length : 0
+        );
+        if (tokenScore >= 0.8) return tokenScore;
+
+        const len1 = n1.length, len2 = n2.length;
+        if (len1 === 0 || len2 === 0) return 0;
+
+        const matrix = Array.from({ length: len1 + 1 }, () => new Array(len2 + 1).fill(0));
+        for (let i = 0; i <= len1; i++) matrix[i][0] = i;
+        for (let j = 0; j <= len2; j++) matrix[0][j] = j;
+
+        for (let i = 1; i <= len1; i++) {
+            for (let j = 1; j <= len2; j++) {
+                const cost = n1[i - 1] === n2[j - 1] ? 0 : 1;
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j - 1] + cost
+                );
+            }
+        }
+        return 1 - (matrix[len1][len2] / Math.max(len1, len2));
+    }
+
+    function findMatchingStudent(csvName, studentList) {
+        const normCsv = normalizeName(csvName);
+        if (!normCsv) return null;
+
+        // 1. Potrivire exactă normalizată
+        const exact = studentList.find(s => s.normalized === normCsv);
+        if (exact) return exact;
+
+        // 2. Token match (toate cuvintele din nume)
+        const csvWords = normCsv.split(' ').filter(w => w.length > 1);
+        const tokenMatch = studentList.find(s => {
+            const simuWords = s.normalized.split(' ').filter(w => w.length > 1);
+            return (csvWords.length > 0 && csvWords.every(cw => simuWords.some(sw => sw.includes(cw) || cw.includes(sw)))) ||
+                   (simuWords.length > 0 && simuWords.every(sw => csvWords.some(cw => cw.includes(sw) || sw.includes(cw))));
+        });
+        if (tokenMatch) return tokenMatch;
+
+        // 3. Similaritate bazată pe distanță Levenshtein (prag 0.75)
+        let bestMatch = null;
+        let bestScore = 0;
+        for (let s of studentList) {
+            let score = nameSimilarity(normCsv, s.normalized);
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = s;
+            }
+        }
+        if (bestScore >= 0.75) return bestMatch;
+        return null;
+    }
 
     // ==========================================
     // 3. MENU ACTIUNI (Extra Cols, Statistici, Export)
@@ -1831,7 +510,7 @@
 
         const brandBadge = document.createElement('div');
         brandBadge.className = 'upsc-brand-badge';
-        brandBadge.innerHTML = '⚡ UPSC Plus <b>v15.0.1</b>';
+        brandBadge.innerHTML = '⚡ UPSC Plus <b>v15.1</b>';
 
         controlsBar.appendChild(brandBadge);
         controlsBar.appendChild(tBtn);
@@ -1919,6 +598,10 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
             }
         });
 
+
+        // ==========================================
+        // TURBO CSV IMPORT (DIRECT AJAX CU PROGRES LIN)
+        // ==========================================
         async function handleCSVImport(file) {
             const reader = new FileReader();
             reader.onload = async (e) => {
@@ -1933,16 +616,16 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                 const progressArea = document.getElementById('import-progress-area');
                 const progressBar = document.getElementById('import-progress-bar');
                 const statusText = document.getElementById('import-status-text');
-                
+
                 progressArea.style.display = 'block';
                 progressBar.style.width = '0%';
-                
+
                 const allTheadRows = Array.from(document.querySelectorAll('#eregister thead tr'));
                 let dateHeaderRow = null;
                 const simuDateSlots = [];
-                
-                const monthMap = { 
-                    'ian': '01', 'feb': '02', 'mar': '03', 'apr': '04', 'mai': '05', 'iun': '06', 
+
+                const monthMap = {
+                    'ian': '01', 'feb': '02', 'mar': '03', 'apr': '04', 'mai': '05', 'iun': '06',
                     'iul': '07', 'aug': '08', 'sep': '09', 'oct': '10', 'nov': '11', 'dec': '12',
                     'jan': '01', 'may': '05', 'jun': '06', 'jul': '07'
                 };
@@ -1977,109 +660,115 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                     currentVisualIdx += colspan;
                 });
 
-                console.log("Harta sloturilor SIMU (Visual Index):", simuDateSlots);
+                console.log("[Turbo Import] Harta sloturilor SIMU (Visual Index):", simuDateSlots);
 
-                let totalTasks = 0;
-                let completedTasks = 0;
-                csvRows.forEach(row => { csvHeader.forEach((h, i) => { if (i > 0) totalTasks++; }); });
+                // Construim lista de studenți din tabelul SIMU
+                const simuRows = Array.from(document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)'));
+                const simuStudents = simuRows.map(tr => {
+                    const nameSpan = tr.querySelector('th.text-left span.text-dark');
+                    const rawName = nameSpan ? nameSpan.innerText.trim() : '';
+                    return {
+                        tr,
+                        name: rawName,
+                        normalized: normalizeName(rawName)
+                    };
+                }).filter(s => s.name.length > 0);
+
+                const tasksToSave = [];
+                const unmatchedStudents = [];
 
                 for (let i = 0; i < csvRows.length; i++) {
                     const row = csvRows[i];
-                    const studentNameCSV = row[0];
+                    const studentNameCSV = row[0] ? row[0].trim() : '';
                     if (!studentNameCSV) continue;
+
+                    const matchedStudent = findMatchingStudent(studentNameCSV, simuStudents);
+                    if (!matchedStudent) {
+                        if (!unmatchedStudents.includes(studentNameCSV)) unmatchedStudents.push(studentNameCSV);
+                        continue;
+                    }
 
                     let usedSlots = [];
                     for (let j = 1; j < csvHeader.length; j++) {
                         const dateCSV = csvHeader[j] ? csvHeader[j].trim() : '';
                         const valCSV = row[j] ? row[j].trim() : '';
+                        if (!valCSV) continue;
 
                         const slot = simuDateSlots.find(s => s.date === dateCSV && !usedSlots.includes(s.index));
                         if (slot) {
-                            usedSlots.push(slot.index); 
-
-                            if (valCSV && valCSV !== '') {
-                                // RE-CĂUTĂM STUDENTUL ÎN DOM LA FIECARE PAS (pentru a evita erorile de re-randare Livewire)
-                                const simuRows = document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)');
-                                let targetTr = null;
-                                const searchName = studentNameCSV.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-                                const searchWords = searchName.split(/\s+/).filter(w => w.length > 1);
-
-                                for (let tr of simuRows) {
-                                    const nameSpan = tr.querySelector('th.text-left span.text-dark');
-                                    if (nameSpan) {
-                                        const simuName = nameSpan.innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                                        if (searchWords.every(word => simuName.includes(word))) { targetTr = tr; break; }
-                                    }
-                                }
-
-                                if (!targetTr) {
-                                    console.warn(`[Import] Studentul "${studentNameCSV}" nu a mai fost găsit după refresh.`);
-                                    continue;
-                                }
-
-                                const cell = targetTr.children[slot.index];
-                                const input = cell?.querySelector('input');
-                                
-                                if (input && !input.disabled) {
-                                    if (input.value.trim().toLowerCase() === valCSV.toLowerCase()) continue;
-
-                                    statusText.innerText = `Se completează: ${studentNameCSV} (${dateCSV})...`;
-                                    
-                                    input.click();
-                                    input.focus();
-                                    await new Promise(r => setTimeout(r, 500));
-
-                                    const popup = document.getElementById('keyboardEvaluationsPopup');
-                                    if (popup) {
-                                        const buttons = Array.from(popup.querySelectorAll('button'));
-                                        const targetBtn = buttons.find(b => b.innerText.trim().toLowerCase() === valCSV.toLowerCase());
-                                        if (targetBtn) {
-                                            targetBtn.click();
-                                            await new Promise(r => setTimeout(r, 400));
-                                            popup.querySelector('#saveEvaluationButton')?.click();
-                                        } else {
-                                            input.value = valCSV;
-                                            if (input.classList.contains('student-evaluation')) {
-                                                input.dispatchEvent(new Event('input', { bubbles: true }));
-                                            }
-                                            input.dispatchEvent(new Event('change', { bubbles: true }));
-                                            document.querySelector('#saveEvaluationButton')?.click();
-                                        }
-                                    } else {
-                                        input.value = valCSV;
-                                        if (input.classList.contains('student-evaluation')) {
-                                            input.dispatchEvent(new Event('input', { bubbles: true }));
-                                        }
-                                        input.dispatchEvent(new Event('change', { bubbles: true }));
-                                        document.querySelector('#saveEvaluationButton')?.click();
-                                    }
-
-                                    completedTasks++;
-                                    progressBar.style.width = `${(completedTasks / totalTasks) * 100}%`;
-                                    
-                                    // Așteptăm procesarea serverului
-                                    await new Promise(r => setTimeout(r, 1800)); 
-                                    let waitAttempts = 0;
-                                    while (document.querySelector('.blockUI') && waitAttempts < 100) {
-                                        await new Promise(r => setTimeout(r, 200));
-                                        waitAttempts++;
-                                    }
-                                    await new Promise(r => setTimeout(r, 800)); 
-                                }
+                            usedSlots.push(slot.index);
+                            const cell = matchedStudent.tr.children[slot.index];
+                            const input = cell ? cell.querySelector('input') : null;
+                            if (input && !input.disabled) {
+                                if (input.value.trim().toLowerCase() === valCSV.toLowerCase()) continue;
+                                tasksToSave.push({
+                                    studentName: matchedStudent.name,
+                                    dateCSV,
+                                    valCSV,
+                                    input
+                                });
                             }
                         }
                     }
                 }
 
-                statusText.innerText = `✅ Import finalizat! ${completedTasks} note actualizate.`;
-                setTimeout(() => {
-                    alert(`Gata! S-au actualizat ${completedTasks} note.`);
-                    importOverlay.classList.remove('active');
+                if (tasksToSave.length === 0) {
                     progressArea.style.display = 'none';
-                }, 1500);
+                    if (unmatchedStudents.length > 0) {
+                        alert("Nu s-au găsit note noi de actualizat! Studenți din CSV negăsiți:\n- " + unmatchedStudents.join('\n- '));
+                    } else {
+                        alert("Toate notele din CSV sunt deja la zi în catalog!");
+                    }
+                    return;
+                }
+
+                statusText.innerText = `Pornire Turbo Import: ${tasksToSave.length} note de salvat...`;
+
+                const registerId = window.location.pathname.split('/').filter(Boolean).pop();
+                const csrfToken = $('meta[name="csrf-token"]').attr('content') || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+                let completedTasks = 0;
+                const totalTasks = tasksToSave.length;
+
+                for (let task of tasksToSave) {
+                    statusText.innerText = `[${completedTasks + 1}/${totalTasks}] Se salvează: ${task.studentName} (${task.dateCSV} -> ${task.valCSV})...`;
+                    task.input.value = task.valCSV;
+                    applyHeatmap();
+
+                    try {
+                        await saveNoteDirectAJAX(task.input, task.valCSV, registerId, csrfToken);
+                        completedTasks++;
+                    } catch (err) {
+                        console.warn(`[Turbo Import] Eroare la ${task.studentName}:`, err);
+                    }
+
+                    progressBar.style.width = `${Math.round((completedTasks / totalTasks) * 100)}%`;
+                    await new Promise(r => setTimeout(r, 120));
+                }
+
+                statusText.innerText = `✅ Salvare finalizată! Sincronizare catalog...`;
+
+                const baseUrl = getRegisterBaseUrl();
+                $('#eregister').load(`${baseUrl}/${registerId} #eregister > table`, function () {
+                    runAllDecorations();
+                    $('.card-body').unblock();
+                    if (window.toastr) {
+                        toastr.success(`Turbo Import finalizat: ${completedTasks} note actualizate cu succes!`, "UPSC Plus", { progressBar: true });
+                    }
+                    if (unmatchedStudents.length > 0) {
+                        setTimeout(() => {
+                            alert(`Atenție: Următorii studenți din CSV nu au fost găsiți în catalog:\n- ${unmatchedStudents.join('\n- ')}`);
+                        }, 500);
+                    }
+                    setTimeout(() => {
+                        importOverlay.classList.remove('active');
+                        progressArea.style.display = 'none';
+                    }, 1200);
+                });
             };
             reader.readAsText(file);
         }
+
 
         // Injectăm modalul pentru statistici în body
         const statsOverlay = document.createElement('div');
@@ -2183,12 +872,12 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
 
             document.getElementById('stat-total-grades').innerText = grades.length;
             document.getElementById('stat-absences').innerText = `${absences} din ${totalProcessedCells}`;
-            let avg = grades.length > 0 ? (grades.reduce((a,b)=>a+b,0) / grades.length).toFixed(2) : '0.00';
+            let avg = grades.length > 0 ? (grades.reduce((a,b)=>a+b,0) / grades.length).toFixed(2).replace('.', ',') : '0,00';
             document.getElementById('stat-avg').innerText = avg;
 
             let card1 = document.getElementById('card-eval1');
             if (eval1Grades.length > 0) {
-                document.getElementById('stat-eval1').innerText = (eval1Grades.reduce((a,b)=>a+b,0) / eval1Grades.length).toFixed(2);
+                document.getElementById('stat-eval1').innerText = (eval1Grades.reduce((a,b)=>a+b,0) / eval1Grades.length).toFixed(2).replace('.', ',');
                 let missingBadge1 = document.getElementById('stat-eval1-missing');
                 if (eval1Missing > 0) {
                     let totalEval1 = eval1Grades.length + eval1Missing;
@@ -2204,7 +893,7 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
 
             let card2 = document.getElementById('card-eval2');
             if (eval2Grades.length > 0) {
-                document.getElementById('stat-eval2').innerText = (eval2Grades.reduce((a,b)=>a+b,0) / eval2Grades.length).toFixed(2);
+                document.getElementById('stat-eval2').innerText = (eval2Grades.reduce((a,b)=>a+b,0) / eval2Grades.length).toFixed(2).replace('.', ',');
                 let missingBadge2 = document.getElementById('stat-eval2-missing');
                 if (eval2Missing > 0) {
                     let totalEval2 = eval2Grades.length + eval2Missing;
@@ -2217,7 +906,6 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
             } else {
                 card2.style.display = 'none';
             }
-
             let evalGrid = document.getElementById('periodic-eval-grid');
             if (eval1Grades.length > 0 || eval2Grades.length > 0) {
                 evalGrid.style.display = 'grid';
@@ -2696,25 +1384,39 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
     }
 
     let lastHoveredCol = -1;
+    let isMouseMoveThrottled = false;
+
     document.addEventListener('mousemove', e => { 
         const eregister = document.getElementById('eregister');
-        if (eregister && eregister.classList.contains('disable-hover')) {
+        if (!eregister) return;
+
+        if (eregister.classList.contains('disable-hover')) {
             if (!document.activeElement || !document.activeElement.closest('#eregister')) {
                 eregister.classList.remove('disable-hover');
             }
         }
-        
-        let cell = e.target.closest('td, th');
-        if (cell && cell.closest('#eregister')) {
-            let tr = cell.closest('tr'); let index = Array.from(tr.children).indexOf(cell);
-            if (index !== lastHoveredCol) {
-                document.querySelectorAll('.hovered-col').forEach(el => el.classList.remove('hovered-col'));
-                document.querySelectorAll('#eregister tr').forEach(row => { if (row.children[index]) row.children[index].classList.add('hovered-col'); });
-                lastHoveredCol = index;
-            }
-        }
-    });
 
+        if (isMouseMoveThrottled) return;
+        isMouseMoveThrottled = true;
+
+        requestAnimationFrame(() => {
+            isMouseMoveThrottled = false;
+            let cell = e.target.closest('td, th');
+            if (cell && cell.closest('#eregister')) {
+                let tr = cell.closest('tr');
+                if (tr) {
+                    let index = Array.from(tr.children).indexOf(cell);
+                    if (index !== lastHoveredCol && index >= 0) {
+                        document.querySelectorAll('.hovered-col').forEach(el => el.classList.remove('hovered-col'));
+                        document.querySelectorAll('#eregister tr').forEach(row => {
+                            if (row.children[index]) row.children[index].classList.add('hovered-col');
+                        });
+                        lastHoveredCol = index;
+                    }
+                }
+            }
+        });
+    }, { passive: true });
     document.addEventListener('focusin', e => {
         if (e.target.matches('#eregister input, input[wire\\:model="topic"]')) {
             document.getElementById('eregister')?.classList.add('disable-hover');
@@ -2750,6 +1452,21 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         }
     });
 
+    document.addEventListener('click', e => {
+        let th = e.target.closest('#eregister table.table-sm thead tr.register-notes-header th');
+        if (th && th.closest('#eregister')) {
+            let tr = th.closest('tr');
+            let index = Array.from(tr.children).indexOf(th);
+            if (index > 0) {
+                document.querySelectorAll('.focused-row').forEach(el => el.classList.remove('focused-row'));
+                document.querySelectorAll('.focused-col').forEach(el => el.classList.remove('focused-col'));
+                document.querySelectorAll('#eregister tr').forEach(row => {
+                    if (row.children[index]) row.children[index].classList.add('focused-col');
+                });
+            }
+        }
+    });
+
     // Curățare / actualizare alertă lipsă notă instant la tastare + reactualizare Heatmap culori
     document.addEventListener('input', e => {
         if (e.target.matches('#eregister input.student-note, #eregister input.student-evaluation, #eregister tbody td input')) {
@@ -2766,27 +1483,204 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         }
     });
 
+    async function fillAbsencesForColumn(colIdx, dateName) {
+        const registerId = getRegisterId();
+        const csrfToken = (window.jQuery && window.jQuery('meta[name="csrf-token"]').attr('content')) || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        const rows = Array.from(document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)'));
+        const emptyInputs = [];
+        for (let tr of rows) {
+            const cell = tr.children[colIdx];
+            const input = cell ? cell.querySelector('input.student-note, input.student-evaluation') : null;
+            if (input && !input.disabled && input.value.trim() === '') {
+                emptyInputs.push(input);
+            }
+        }
+
+        if (emptyInputs.length === 0) {
+            if (window.toastr) toastr.info("Toate celulele din această dată sunt deja completate!", "UPSC Plus");
+            else showToast("Toate celulele din această dată sunt deja completate!");
+            return;
+        }
+
+        const dateSuffix = dateName ? ` (${dateName})` : '';
+        showToast(`⚡ Se pun absențe pentru ${emptyInputs.length} studenți...`, 4000);
+        let processedCount = 0;
+
+        for (let input of emptyInputs) {
+            input.value = 'a';
+            applyHeatmap();
+            try {
+                await saveNoteDirectAJAX(input, 'a', registerId, csrfToken);
+                processedCount++;
+            } catch (err) {
+                console.warn('[Bulk Absences] Eroare la salvarea notei:', err);
+            }
+            await new Promise(r => setTimeout(r, 90));
+        }
+
+        if (processedCount > 0) {
+            if (window.toastr) {
+                toastr.success(`S-au marcat ${processedCount} absențe${dateSuffix}! Se sincronizează catalogul...`, "UPSC Plus", { progressBar: true });
+            }
+            const baseUrl = getRegisterBaseUrl();
+            $('#eregister').load(`${baseUrl}/${registerId} #eregister > table`, function () {
+                runAllDecorations();
+                if ($('.card-body').unblock) $('.card-body').unblock();
+            });
+        } else {
+            if (window.toastr) {
+                toastr.error("Nu s-a putut salva nicio absență. Verificați sesiunea sau consola (F12).", "Eroare Salvare", { progressBar: true });
+            } else {
+                showToast("⚠️ Nu s-a putut salva nicio absență.");
+            }
+        }
+    }
+
+    function initColumnBulkButtons() {
+        const eregisterTable = document.querySelector('#eregister table.table-sm');
+        if (!eregisterTable) return;
+
+        const headerRow = eregisterTable.querySelector('thead tr.register-notes-header');
+        if (!headerRow) return;
+
+        const headerCells = Array.from(headerRow.children);
+        const totalCols = headerCells.length;
+        const maxLessonCol = Math.max(1, totalCols - 7);
+
+        for (let colIdx = 1; colIdx < maxLessonCol; colIdx++) {
+            const th = headerCells[colIdx];
+            if (!th) continue;
+
+            const isDateCol = th.innerText.match(/\d{1,2}\s+[a-z]{3}/i) || 
+                              th.innerText.match(/\d{1,2}[\.\/]\d{1,2}/) || 
+                              th.querySelector('span[style*="color"]');
+            if (!isDateCol) continue;
+
+            let bulkBtn = th.querySelector('.btn-bulk-abs-col');
+            if (!bulkBtn) {
+                bulkBtn = document.createElement('button');
+                bulkBtn.type = 'button';
+                bulkBtn.className = 'btn-bulk-abs-col';
+                bulkBtn.innerHTML = '⚡ a';
+                bulkBtn.title = "Click: Pune absență ('a') tuturor celor fără notă din această coloană.";
+                
+                let resetConfirmTimer = null;
+
+                bulkBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+
+                    if (bulkBtn.dataset.saving === 'true') return;
+
+                    // Pasul 1: Primul click -> transformare inline în "Sigur? ⚡" (fără pop-up)
+                    if (!bulkBtn.classList.contains('btn-bulk-confirming')) {
+                        // Resetăm orice alt buton care așteaptă confirmare
+                        document.querySelectorAll('.btn-bulk-abs-col.btn-bulk-confirming').forEach(b => {
+                            b.classList.remove('btn-bulk-confirming');
+                            b.innerHTML = '⚡ a';
+                            b.title = "Click: Pune absență ('a') tuturor celor fără notă din această coloană.";
+                        });
+
+                        // Verificăm dacă sunt celule goale
+                        const rows = document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)');
+                        let hasEmpty = false;
+                        for (let r of rows) {
+                            const cell = r.children[colIdx];
+                            const inp = cell ? cell.querySelector('input.student-note, input.student-evaluation') : null;
+                            if (inp && !inp.disabled && inp.value.trim() === '') {
+                                hasEmpty = true;
+                                break;
+                            }
+                        }
+                        if (!hasEmpty) {
+                            if (window.toastr) toastr.info("Toate celulele din această dată sunt deja completate!", "UPSC Plus");
+                            else showToast("Toate celulele sunt deja completate!");
+                            return;
+                        }
+
+                        bulkBtn.classList.add('btn-bulk-confirming');
+                        bulkBtn.innerHTML = 'Sigur? ⚡';
+                        bulkBtn.title = "Click din nou pentru a confirma marcarea absențelor ('a')";
+
+                        if (resetConfirmTimer) clearTimeout(resetConfirmTimer);
+                        resetConfirmTimer = setTimeout(() => {
+                            bulkBtn.classList.remove('btn-bulk-confirming');
+                            bulkBtn.innerHTML = '⚡ a';
+                            bulkBtn.title = "Click: Pune absență ('a') tuturor celor fără notă din această coloană.";
+                        }, 3500);
+                        return;
+                    }
+
+                    // Pasul 2: Al doilea click -> Execuție salvare
+                    if (resetConfirmTimer) clearTimeout(resetConfirmTimer);
+                    bulkBtn.classList.remove('btn-bulk-confirming');
+                    bulkBtn.dataset.saving = 'true';
+                    bulkBtn.innerHTML = '⏳ ...';
+                    bulkBtn.disabled = true;
+
+                    const cleanDate = th.innerText.replace(/AZI/g, '').replace(/⚡ a/g, '').replace(/Sigur\?\s*⚡?/g, '').trim().split('\n')[0];
+                    try {
+                        await fillAbsencesForColumn(colIdx, cleanDate);
+                    } finally {
+                        bulkBtn.dataset.saving = 'false';
+                        bulkBtn.disabled = false;
+                        bulkBtn.innerHTML = '⚡ a';
+                        bulkBtn.title = "Click: Pune absență ('a') tuturor celor fără notă din această coloană.";
+                    }
+                });
+
+                th.appendChild(bulkBtn);
+            }
+        }
+    }
+
+    // Resetare stare buton confirmare la click în afara lui
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.btn-bulk-abs-col.btn-bulk-confirming')) {
+            document.querySelectorAll('.btn-bulk-abs-col.btn-bulk-confirming').forEach(b => {
+                b.classList.remove('btn-bulk-confirming');
+                b.innerHTML = '⚡ a';
+                b.title = "Click: Pune absență ('a') tuturor celor fără notă din această coloană.";
+            });
+        }
+    }, true);
+
     function runAllDecorations() {
         applyHeatmap();
         reformatTopicDates();
         highlightDateColumns();
+        initColumnBulkButtons();
     }
 
     let decorationTimeout = null;
-    const observer = new MutationObserver(() => {
+    const observer = new MutationObserver((mutations) => {
+        // Ignorăm mutațiile din propriile elemente de UI ale extensiei
+        const isSelfUI = mutations.every(m => {
+            const t = m.target;
+            return t && (
+                t.id === 'upsc-toast-msg' ||
+                (t.closest && t.closest('#upsc-settings-panel, #upsc-stats-modal, #upsc-import-modal, #upsc-controls-bar, #upsc-toast-msg'))
+            );
+        });
+        if (isSelfUI) return;
+
         if (decorationTimeout) clearTimeout(decorationTimeout);
         decorationTimeout = setTimeout(() => {
             observer.disconnect();
             try {
                 runAllDecorations();
             } finally {
-                observer.observe(document.body, { childList: true, subtree: true });
+                const targetEl = document.getElementById('eregister') || document.body;
+                observer.observe(targetEl, { childList: true, subtree: true });
             }
-        }, 80);
+        }, 100);
     });
 
     runAllDecorations();
-    observer.observe(document.body, { childList: true, subtree: true });
+    const initialObsTarget = document.getElementById('eregister') || document.body;
+    observer.observe(initialObsTarget, { childList: true, subtree: true });
 
     document.addEventListener('dblclick', async function(e) {
         let th = e.target.closest('th');
@@ -2800,71 +1694,9 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                 if (cell === th) break;
                 visualColIndex += parseInt(cell.getAttribute('colspan') || '1');
             }
-            
-            if (confirm("Puneți absență ('a') tuturor studenților fără notă din această coloană?")) {
-                let processedCount = 0;
-                let maxToProcess = 100; // Limită de siguranță
-
-                // Obținem rândurile inițiale
-                let rows = Array.from(document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)'));
-                
-                for (let i = 0; i < rows.length && processedCount < maxToProcess; i++) {
-                    // Re-scanăm rândurile la fiecare iterație pentru a evita elementele detașate (DOM stale)
-                    const currentRows = document.querySelectorAll('#eregister tbody tr:not(.register-notes-header)');
-                    const tr = currentRows[i];
-                    if (!tr) continue;
-
-                    const cell = tr.children[visualColIndex];
-                    const input = cell?.querySelector('input');
-
-                    if (input && !input.disabled && input.value.trim() === '') {
-                        processedCount++;
-                        console.log(`[Bulk] Procesare rând ${i}, index vizual ${visualColIndex}`);
-                        
-                        // Încercăm să deschidem pop-up-ul
-                        input.click();
-                        input.focus();
-                        await new Promise(r => setTimeout(r, 500));
-
-                        const popup = document.getElementById('keyboardEvaluationsPopup');
-                        let success = false;
-
-                        if (popup && popup.offsetParent !== null) { // Verificăm dacă e vizibil
-                            const buttons = Array.from(popup.querySelectorAll('button'));
-                            const absBtn = buttons.find(b => b.innerText.trim().toLowerCase() === 'a');
-                            
-                            if (absBtn) {
-                                absBtn.click();
-                                await new Promise(r => setTimeout(r, 250));
-                                popup.querySelector('#saveEvaluationButton')?.click();
-                                success = true;
-                            }
-                        }
-
-                        if (!success) {
-                            console.log(`[Bulk] Fallback pentru rândul ${i}`);
-                            input.value = 'a';
-                            if (input.classList.contains('student-evaluation')) {
-                                input.dispatchEvent(new Event('input', { bubbles: true }));
-                            }
-                            input.dispatchEvent(new Event('change', { bubbles: true }));
-                            document.querySelector('#saveEvaluationButton')?.click();
-                        }
-                        
-                        // Așteptăm salvarea serverului indiferent de metodă
-                        await new Promise(r => setTimeout(r, 1500));
-                        let wait = 0;
-                        while (document.querySelector('.blockUI') && wait < 60) {
-                            await new Promise(r => setTimeout(r, 150)); wait++;
-                        }
-                        await new Promise(r => setTimeout(r, 400));
-                    }
-                }
-                alert(`Gata! S-au procesat ${processedCount} rânduri.`);
-            }
+            fillAbsencesForColumn(visualColIndex, '');
         }
     });
-
     // ==========================================
     // 5. FOCUS PERSISTENT ȘI NOTE TASTAURĂ
     // ==========================================
@@ -2927,6 +1759,91 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         if (saveBtn) saveBtn.click();
     }
 
+
+    // ==========================================
+    // EXCEL / GOOGLE SHEETS MULTI-CELL CLIPBOARD PASTE
+    // ==========================================
+    async function handleExcelPaste(e) {
+        const active = document.activeElement;
+        if (!active || !active.matches('input.student-note, input.student-evaluation')) return;
+
+        const clipboardData = (e.clipboardData || window.clipboardData);
+        if (!clipboardData) return;
+
+        const rawText = clipboardData.getData('text') || '';
+        if (!rawText) return;
+
+        const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(l => l !== '');
+        if (lines.length <= 1 && !lines[0]?.includes('\t')) {
+            // Este o singură valoare simplă, lăsăm fluxul standard
+            return;
+        }
+
+        // Avem date multi-celulă din Excel / Sheets!
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        const currentTd = active.closest('td');
+        const currentTr = currentTd ? currentTd.closest('tr') : null;
+        if (!currentTd || !currentTr) return;
+
+        const currentTbody = currentTr.closest('tbody');
+        const allRows = Array.from(currentTbody.querySelectorAll('tr:not(.register-notes-header)'));
+        const startRowIndex = allRows.indexOf(currentTr);
+        if (startRowIndex === -1) return;
+
+        const tdIndex = Array.from(currentTr.children).indexOf(currentTd);
+        const registerId = getRegisterId();
+        const csrfToken = (window.jQuery && window.jQuery('meta[name="csrf-token"]').attr('content')) || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        const validGradeRegex = /^(10|[1-9]|a)$/i;
+        let savedCount = 0;
+        showToast(`📋 Se lipesc ${lines.length} valori din Excel...`, 2000);
+
+        for (let i = 0; i < lines.length; i++) {
+            const targetRow = allRows[startRowIndex + i];
+            if (!targetRow) break;
+
+            const targetTd = targetRow.children[tdIndex];
+            const targetInput = targetTd ? targetTd.querySelector('input.student-note, input.student-evaluation') : null;
+            if (!targetInput || targetInput.disabled) continue;
+
+            let val = lines[i].split('\t')[0].trim();
+            if (val === '-' || val === '/' || val.toLowerCase() === 'abs') val = 'a';
+
+            if (validGradeRegex.test(val)) {
+                val = val.toLowerCase();
+                targetInput.value = val;
+                applyHeatmap();
+
+                try {
+                    await saveNoteDirectAJAX(targetInput, val, registerId, csrfToken);
+                    savedCount++;
+                } catch (err) {
+                    console.warn('[Excel Paste] Eroare:', val, err);
+                }
+                await new Promise(r => setTimeout(r, 100));
+            }
+        }
+
+        if (savedCount > 0) {
+            if (window.toastr) {
+                toastr.success(`S-au lipit și salvat ${savedCount} note din Excel!`, "UPSC Plus", { progressBar: true });
+            } else {
+                showToast(`✅ S-au lipit și salvat ${savedCount} note din Excel!`);
+            }
+            const baseUrl = getRegisterBaseUrl();
+            $('#eregister').load(`${baseUrl}/${registerId} #eregister > table`, function() {
+                runAllDecorations();
+                if ($('.card-body').unblock) $('.card-body').unblock();
+            });
+        } else {
+            showToast("⚠️ Nicio notă validă (1-10 sau 'a') nu a putut fi extrasă.", 4000);
+        }
+    }
+
+    document.addEventListener('paste', handleExcelPaste, true);
     document.addEventListener('keydown', function(e) {
         const key = e.key.toLowerCase();
         if (key.startsWith('arrow') || key === 'tab') { if (focusInterval) clearInterval(focusInterval); }
@@ -3030,8 +1947,9 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                         event_id: noteData.attr('data-event-id')
                     };
 
-                    let registerId = window.location.pathname.split('/').filter(Boolean).pop();
-                    let url = `https://simu.upsc.md/ro/teacher/electronicRegister/deleteNote/${registerId}`;
+                    let registerId = getRegisterId();
+                    const baseUrl = getRegisterBaseUrl();
+                    let url = `${baseUrl}/deleteNote/${registerId}`;
 
                     $.ajax({
                         headers: {
@@ -3051,7 +1969,7 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                             console.log(response);
                             if (response.type == 'success') {
                                 toastr.success(response.message, 'Success', {progressBar: true});
-                                $('#eregister').load(`https://simu.upsc.md/ro/teacher/electronicRegister/${registerId} #eregister > table`, function () {
+                                $('#eregister').load(`${baseUrl}/${registerId} #eregister > table`, function () {
                                     noteData.removeClass('border-primary border-danger');
                                     $('.card-body').unblock();
                                 });
@@ -3061,6 +1979,11 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                             }
                         },
                         error: function (e) {
+                            if (e.status === 419 && window.toastr) {
+                                toastr.error('Sesiunea SIMU a expirat! Te rugăm să reîmprospătezi pagina (F5).', 'Sesiune Expirată', {progressBar: true});
+                                $('.card-body').unblock();
+                                return;
+                            }
                             if (e.status === 404 || e.status === 405) {
                                 console.warn("[UPSC SIMU Plus] deleteNote endpoint not found. Falling back to setNote with empty value.");
                                 if (typeof window.saveEvaluationButton === 'function') {
@@ -3139,8 +2062,9 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
                                     }
                                 }
 
-                                const registerId = window.location.pathname.split('/').filter(Boolean).pop();
-                                const url = `https://simu.upsc.md/ro/teacher/electronicRegister/setNote/${registerId}`;
+                                const registerId = getRegisterId();
+                                const baseUrl = getRegisterBaseUrl();
+                                const url = `${baseUrl}/setNote/${registerId}`;
                                 const token = $('meta[name="csrf-token"]').attr('content') || document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
                                 const pairData = {
@@ -3269,9 +2193,11 @@ Asigură-te că numele studenților sunt extrase complet și corect.</p>
         });
     }
 
-    initSelectionPageOptimizations();
-    const selectionPageObserver = new MutationObserver(initSelectionPageOptimizations);
-    selectionPageObserver.observe(document.body, { childList: true, subtree: true });
+    if (!document.getElementById('eregister')) {
+        initSelectionPageOptimizations();
+        const selectionPageObserver = new MutationObserver(initSelectionPageOptimizations);
+        selectionPageObserver.observe(document.body, { childList: true, subtree: true });
+    }
 
     patchDeleteFunction();
     setTimeout(patchDeleteFunction, 200);

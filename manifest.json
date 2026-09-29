@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "UPSC SIMU Plus",
-  "version": "15.0.1",
-  "description": "Optimizare registru (Modern UI, Crosshair, Dark Mode 2.0, Import CSV AI, Auto-salvare, Statistici). Creat de Vadim Repeșco.",
+  "version": "15.1",
+  "description": "Optimizare registru (Modern UI, Turbo Import CSV, Lipire Excel, Absențe Rapide Inline, Dark Mode 2.0, Statistici). Creat de Vadim Repeșco.",
   "author": "Vadim Repeșco",
   "icons": {
     "16": "icon16.png",
@@ -10,6 +10,13 @@
     "128": "icon128.png"
   },
   "content_scripts": [
+    {
+      "matches": [
+        "https://simu.upsc.md/*/teacher/electronicRegister*"
+      ],
+      "css": ["style.css"],
+      "run_at": "document_start"
+    },
     {
       "matches": [
         "https://simu.upsc.md/*/teacher/electronicRegister*"
